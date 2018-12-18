@@ -1,13 +1,48 @@
-/* eslint-disable */
-const defs = [
-    {
-        name: 'arrowMarker',
-        path: 'M 0,0 m -5,-5 L 5,0 L -5,5 Z',
-        viewbox: '-5 -5 10 10',
-    }
-]
+export function buildDefs() {
+	let patterns = '';
 
-export function getDefWithId(name) {
-    const def = defs.find(d => d.name === name);
-    return def || null;
+	// eslint-disable-next-line func-style
+	const builder = function (svg) {
+		let defs = svg.select('defs');
+		if (defs.empty()) {
+			defs = svg.append('svg:defs');
+		}
+
+		defs.html(patterns);
+	};
+
+	builder.patterns = function (value) {
+		patterns = value ||  patterns;
+		return builder;
+	};
+
+	return builder;
+}
+
+const arrowPattern = (id) => `
+    <marker 
+        id=${id}
+        refX="-5"
+        refY="0"
+        viewBox="0 -5 10 10"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto"
+    >
+        <path 
+            d="M0,0L10,-5L10,5"
+            fill="none"
+            stroke-width="1"
+            stroke="#000"
+            shape-rendering="auto"
+        />
+    </pattern>
+`;
+
+// type: 'arrow'
+export function getPattern(type) {
+	switch (type) {
+		case 'arrow': return arrowPattern;
+		default: return arrowPattern;
+	}
 }

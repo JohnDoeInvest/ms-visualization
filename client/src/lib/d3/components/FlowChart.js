@@ -5,6 +5,7 @@ import { buildFlowChart } from '../charts/flow.charts';
 import { createConfigurationBuilder } from '../types/base.types';
 import { buildNodes } from '../types/node.types';
 import { buildLinks } from '../types/link.types';
+import { buildDefs, getPattern } from '../types/defs.types';
 
 class FlowChart extends Component {
     containerEl = null;
@@ -29,7 +30,7 @@ class FlowChart extends Component {
 
         const dimension = this.getContainerDimension();
         const svg = d3.select(this.containerEl).select('svg');
-        
+
         const nodesBuilder = buildNodes();
         const nodes = createConfigurationBuilder(
             nodesBuilder, 

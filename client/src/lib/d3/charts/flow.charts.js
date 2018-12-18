@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { buildDefs, getPattern } from '../types/defs.types';
 
 export function buildFlowChart() {
 	let svg = null;
@@ -33,6 +34,9 @@ export function buildFlowChart() {
 			.attr('height', height);
 
 		svg.datum(root.descendants());
+
+		const defsBuilder = buildDefs().patterns(getPattern('arrow')('arrow-marker'));
+		svg.call(defsBuilder);
 
 		let rootGroup = svg.select('g.root');
 		if (rootGroup.empty()) {

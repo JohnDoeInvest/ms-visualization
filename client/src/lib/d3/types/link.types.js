@@ -16,7 +16,8 @@ export function buildLinks() {
 			.attr('d', d => diagonal(d))
 			.attr('fill', 'none')
 			.attr('stroke', '#000')
-			.attr('stroke-width', 1);
+			.attr('stroke-width', 1)
+			.attr('marker-end', 'url(#arrow-marker)');
 
 		links.exit().remove();
 	};
