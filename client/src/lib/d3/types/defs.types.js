@@ -22,7 +22,7 @@ export function buildDefs() {
 const arrowPattern = (id) => `
     <marker 
         id=${id}
-        refX="-5"
+        refX="0"
         refY="0"
         viewBox="0 -5 10 10"
         markerWidth="6"
@@ -31,9 +31,8 @@ const arrowPattern = (id) => `
     >
         <path 
             d="M0,0L10,-5L10,5"
-            fill="none"
-            stroke-width="1"
-            stroke="#000"
+            fill="#000"
+            stroke="none"
             shape-rendering="auto"
         />
     </pattern>
