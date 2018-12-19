@@ -1,0 +1,12 @@
+.chart-flow .node > .node-description {
+    font-size: 16px;
+    font-weight: 700;
+    stroke: #fff;
+    stroke-width: 0.5px;
+}
+
+.chart-flow path.link {
+    stroke: #9E9E9E;
+    stroke-width: 1px;
+    fill: none;
+}

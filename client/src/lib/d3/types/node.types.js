@@ -22,17 +22,16 @@ export function buildNodes() {
 			.attr('class', 'node-img')
 			.attr('xlink:href', d => d.data.icon)
 			.attr('width', d => d.x1 - d.x0)
-			.attr('height', d => d.y1 - d.y0);
+			.attr('height', d => d.y1 - d.y0)
+			.attr('viewBox', d => `0 0 ${d.x1 - d.x0} ${d.y1 - d.y0}`);
 
 		descriptionTxt
 			.attr('class', 'node-description')
-			.attr('x', d => (d.x1 - d.x0) / 2)
+			.attr('x', d => alignText(d))
 			.attr('y', d => (d.y1 - d.y0) / 2)
-			.attr('dx', d => d.data.description ? d.data.description.dx : 0)
-			.attr('dy', d => d.data.description ? d.data.description.dy : 0)
+			// .attr('dx', d => d.data.description ? d.data.description.dx : 0)
+			// .attr('dy', d => d.data.description ? d.data.description.dy : 0)
 			.attr('text-anchor', 'middle')
-			.style('font-size', '10px')
-			.style('font-weight', 700)
 			.text(d => d.data.description ? d.data.description.value : '');
 
 		nodes.exit().remove();
@@ -42,6 +41,20 @@ export function buildNodes() {
 		context = value;
 		return builder;
 	};
+
+	function alignText(d) {
+		const { data, x0, x1, y0, y1 } = d;
+		const width = x1 - x0;
+		const { rootId } = data;
+
+		switch (rootId) {
+			case 'microservices': return width / 2;
+			case 'restAPI': return (width * 2) / 3;
+			case 'stores': return (width * 2) / 3;
+			case 'topics': return (width * 2) / 3;
+			default: return width / 2;
+		}
+	}
 
 	return builder;
 }

@@ -16,6 +16,13 @@ export function getNodeDataOnEditor(editorData) {
 				nodesData.children.push(restAPINodeData);
 			}
 		}
+
+		if (editorData.stores) {
+			const storesNodeData = getStoresNodeData(editorData.stores, 'stores');
+			if (storesNodeData) {
+				nodesData.children.push(storesNodeData);
+			}
+		}
     
 		if (editorData.produces && editorData.consumes) {
 			const topicsNodeData = getTopicsNodeData(editorData, 'topics');
@@ -24,13 +31,6 @@ export function getNodeDataOnEditor(editorData) {
 			}
 		}
   
-		if (editorData.stores) {
-			const storesNodeData = getStoresNodeData(editorData.stores, 'stores');
-			if (storesNodeData) {
-				nodesData.children.push(storesNodeData);
-			}
-		}
-    
 		addMicroserviceNodeData(editorData, nodesData, 'microservices');
   
 		return nodesData;
