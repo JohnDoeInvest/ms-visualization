@@ -74,6 +74,11 @@ export function buildFlowChart() {
 		return chart;
 	};
 	chart.destroy = function () {
+		for (const component of childComponents) {
+			if (component.destroy) {
+				component.destroy();
+			}
+		}
 		return svg && svg.remove();
 	};
 
