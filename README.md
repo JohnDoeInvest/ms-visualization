@@ -46,3 +46,7 @@ The project was inspired by https://articles.microservices.com/an-alternative-wa
     ]
 }
 ``` 
+
+### Load file
+Sample json url: https://raw.githubusercontent.com/lamdoann/serviceDescriptions/master/serviceDescription-0.json
+
