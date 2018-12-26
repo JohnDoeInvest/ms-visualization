@@ -1,15 +1,3 @@
 .home {
-	padding: 56px 20px;
-	min-height: 100%;
-	width: 100%;
-	position: relative;
-}
-
-.editorContainer {
-	position: relative;
-	padding: 8px;
-}
-.flowContainer {
-	position: relative;
-	padding: 8px;
+	padding-top: 56px
 }

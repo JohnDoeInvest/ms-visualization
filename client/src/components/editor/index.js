@@ -17,6 +17,12 @@ class Editor extends Component {
         this.editor.setTheme('ace/theme/monokai');
     }
 
+    componentDidUpdate() {
+        if (this.editor) {
+            this.editor.setValue(this.props.value || '');
+        }
+    }
+
     handleVisualize = () => {
         try {
             const jsonStr = this.editor.getSession().getValue();
@@ -34,10 +40,11 @@ class Editor extends Component {
             <div class={style.container}>
                 <div id="editor" class={style.editor} />
                 <button
-                    class={style.btn}
+                    class="ui button primary"
                     style={{marginTop: '16px'}}
                     onClick={this.handleVisualize}
                 >
+                    <i class="chart area icon" />
                     Visualize
                 </button>
                 {state.error && (

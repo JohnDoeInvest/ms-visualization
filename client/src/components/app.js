@@ -1,8 +1,19 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
-
-// Code-splitting is automated for routes
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'preact-redux';
+import createSagaMiddleware from 'redux-saga';
+import { createLogger } from 'redux-logger';
+import rootReducer from '../reducers/root.reducer';
 import Home from '../routes/home';
+import rootSaga from '../sagas/root.saga';
+
+import LoaderContainer from './loader';
+import ErrorContainer from './error';
+
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, createLogger()));
+sagaMiddleware.run(rootSaga);
 
 export default class App extends Component {
 	
@@ -16,11 +27,15 @@ export default class App extends Component {
 
 	render() {
 		return (
-			<div id="app">
-				<Router onChange={this.handleRoute}>
-					<Home path="/" />
-				</Router>
-			</div>
+			<Provider store={store}>
+				<div id="app">
+					<Router onChange={this.handleRoute}>
+						<Home path="/" />
+					</Router>
+					<LoaderContainer />
+					{/* <ErrorContainer /> */}
+				</div>
+			</Provider>
 		);
 	}
 }

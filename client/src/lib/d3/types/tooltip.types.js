@@ -49,7 +49,8 @@ export function buildTooltip() {
     }
     
     function getNode() {
-        if (!nodeEl) {
+        const tooltipEl = d3.select('.tooltip');
+        if (tooltipEl.empty()) {
             nodeEl = initNodeEl();
             rootEl.appendChild(nodeEl);
         }

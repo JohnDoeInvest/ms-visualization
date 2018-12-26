@@ -1,10 +1,13 @@
 /* eslint-disable */
 import { h, Component } from 'preact';
+import { connect } from 'preact-redux';
 import Editor from '../../components/editor';
 import style from './style';
 import { FlowChart } from '../../lib/d3/components';
 import { getPercentOfNodeValue, getNodeDataOnEditor } from '../../lib/d3/utils/node.utils';
 import { getLinksDataOnNodeData } from '../../lib/d3/utils/link.utils';
+import ServiceDescriptionContainer from '../../components/searchServiceDescription';
+import { fetchServiceDescriptionRequest, loadServiceDescriptionSuccess } from '../../actions/serviceDescription.action'
 
 class Home extends Component {
 	constructor(props) {
@@ -14,37 +17,95 @@ class Home extends Component {
 
 	getState() {
 		return {
-			editorData: undefined,
+			url: null
 		};
 	}
 
-	handleGetEditorData = (editorData) => {
-		this.setState({ editorData });
-	} 
+	handleGetEditorData = (serviceDescriptions) => {
+		this.props.loadServiceDescriptionSuccess(serviceDescriptions || []);
+	}
+
+	handleChangeUrl = (event) => {
+		this.setState({ url: event.target.value })
+	}
+
+	handleLoadServiceDescription = () => {
+		if (this.state.url) {
+			this.props.fetchServiceDescriptionRequest(this.state.url);
+		}
+	}
 
 	render(props, state) {
-		const nodesData = getNodeDataOnEditor(state.editorData);
-		const linksData = getLinksDataOnNodeData(nodesData);
-
+		const editorValue = JSON.stringify(
+			props.selectedServiceDescriptions.reduce((acc, serviceDes) => [...acc, serviceDes], []),
+			null,
+			'\t'
+		);
 		return (
-			<div class={style.home}>
-				<div class={style.editorContainer}>
-					<Editor onData={this.handleGetEditorData} />
+			<div class="ui container">
+				<div class="ui grid">
+					<div class="four column row mg mg-top">
+						<div class="left floated column ">
+							<div class="ui action input">
+								<input
+									type="text"
+									value={state.url}
+									onInput={this.handleChangeUrl}
+								/>
+								<button
+									class="ui right labeled icon button"
+									onClick={this.handleLoadServiceDescription}
+								>
+									<i class="sync alternate icon" />
+									Load
+								</button>
+							</div>
+						</div>
+						<div class="right floated column">
+							<ServiceDescriptionContainer />
+						</div>
+					</div>
+					<div class="row">
+						<div class="column">
+							<Editor
+								onData={this.handleGetEditorData}
+								value={editorValue}
+							/>
+						</div>
+					</div>
 				</div>
-				{nodesData && 
-					(<div class={style.flowContainer}>
-						<FlowChart
-							id="flow-chart"
-							width="auto"
-							height={800}
-							margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-							linksData={linksData}
-							nodesData={nodesData}
-						/>
-					</div>)}
+				{props.selectedServiceDescriptions.map((serviceDesctiption, i) => {
+					const nodesData = getNodeDataOnEditor(serviceDesctiption);
+					const linksData = getLinksDataOnNodeData(nodesData);
+					return (
+						<div key={i} class={style.flowContainer}>
+							<FlowChart
+								id={`flow-chart-${i}`}
+								width="auto"
+								height={800}
+								margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+								linksData={linksData}
+								nodesData={nodesData}
+							/>
+						</div>
+					);
+				})}
 			</div>
 		);
 	}
 }
 
-export default Home;
+const mapStateToProps = (state, ownProps) => ({
+	selectedServiceDescription: state.serviceDescription.selectedServiceDescription,
+	selectedServiceDescriptions: state.serviceDescription.selectedServiceDescriptions
+});
+
+const mapDispatchToProps = {
+	fetchServiceDescriptionRequest,
+	loadServiceDescriptionSuccess
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Home);
