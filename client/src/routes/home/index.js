@@ -51,6 +51,7 @@ class Home extends Component {
 									type="text"
 									value={state.url}
 									onInput={this.handleChangeUrl}
+									placeholder="Input json url"
 								/>
 								<button
 									class="ui right labeled icon button"

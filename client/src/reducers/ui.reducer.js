@@ -4,6 +4,7 @@ import { SERVICE_DESCRIPTION_SEARCH_REQUESTED, SERVICE_DESCRIPTION_SEARCH_SUCCEE
 const initialState = {
     isFetching: false,
     error: null,
+    isSearching: false
 };
 
 export default function uiReducer(state = initialState, action) {
