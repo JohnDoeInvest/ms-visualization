@@ -14,15 +14,16 @@ export async function fetchServiceDescriptionAPI(url) {
     }
 }
 
-export async function searchServiceDescriptionAPI(text) {
+export async function searchServiceDescriptionAPI(repo) {
     try {
-        const url = `https://api.github.com/search/code?q=name+filename:${text}+extension:json+repo:lamdoann/serviceDescriptions`;
+        const url = `https://api.github.com/search/code?q=name+filename:serviceDescription+extension:json+repo:${repo}`;
         const response = await fetch(url);
+        console.log('response', response);
         if (response.ok) {
             const data = await response.json();
             return data.items;
         }
-        throw new Error('Cannot search service description');
+        return [];
     } catch (error) {
         console.error('searchServiceDescriptionAPI', error);
         throw new Error('Cannot search service description');

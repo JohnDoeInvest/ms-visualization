@@ -4,7 +4,10 @@ import { connect } from 'preact-redux';
 class ErrorContainer extends Component {
     constructor(props) {
         super(props);
+        this.state = { active: false };
     }
+
+    
 
     render(props, state) {
         if (!props.error) {

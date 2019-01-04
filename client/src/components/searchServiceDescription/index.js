@@ -7,7 +7,7 @@ class SearchServiceDescription extends Component {
     constructor(props) {
         super(props);
         this.state = this.getState();
-        this.handleSearch = arrayHelpers.debounce(this.handleSearch, 1000);
+        this.handleSearch = arrayHelpers.debounce(this.handleSearch, 500);
     }
 
     getState() {
@@ -36,12 +36,11 @@ class SearchServiceDescription extends Component {
     handleSearch = (event) => {
         const { target: { value } } = event;
         this.props.searchServiceDescriptionRequest(value);
-        this.setState({ value })
     }
 
     handleLoadAll = () => {
         const selectedCodes = [];
-        
+
         for (const [key, checkbox] of Object.entries(this.state.checkboxes)) {
             if (checkbox.checked) {
                 selectedCodes.push(checkbox.value);
@@ -60,7 +59,6 @@ class SearchServiceDescription extends Component {
                         class="prompt"
                         type="text"
                         placeholder="Search service description..."
-                        value={state.value}
                         onInput={this.handleSearch}
                     />
                     <i class="search icon" />
@@ -81,7 +79,7 @@ class SearchServiceDescription extends Component {
                                     </div>
                                     <i class="large github middle aligned icon" />
                                     <div class="content">
-                                        <a class="header">{serviceDescription.repository.full_name}</a>
+                                        <a class="header">{serviceDescription.path}</a>
                                         <div class="description">{serviceDescription.name}</div>
                                     </div>
                                 </div>))}

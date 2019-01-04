@@ -79,7 +79,7 @@ class Home extends Component {
 					const nodesData = getNodeDataOnEditor(serviceDesctiption);
 					const linksData = getLinksDataOnNodeData(nodesData);
 					return (
-						<div key={i} class={style.flowContainer}>
+						<div class="ui orange tall stacked segment">
 							<FlowChart
 								id={`flow-chart-${i}`}
 								width="auto"
