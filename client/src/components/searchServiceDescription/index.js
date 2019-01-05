@@ -26,7 +26,7 @@ class SearchServiceDescription extends Component {
 
     handleChangeCheckbox = (item) => (event) => {
         const checkboxes = {...this.state.checkboxes};
-        checkboxes[item.name] = {
+        checkboxes[item.path] = {
             value: item,
             checked: event.target.checked,
         }
@@ -38,7 +38,7 @@ class SearchServiceDescription extends Component {
         this.props.searchServiceDescriptionRequest(value);
     }
 
-    handleLoadAll = () => {
+    handleLoadServiceDescriptions = () => {
         const selectedCodes = [];
 
         for (const [key, checkbox] of Object.entries(this.state.checkboxes)) {
@@ -47,8 +47,10 @@ class SearchServiceDescription extends Component {
             }
         }
         this.props.loadAllCodeContentRequest(selectedCodes);
+    }
 
-        this.setState({ value: null });
+    handleLoadAllServiceDescriptions = () => {
+        this.props.loadAllCodeContentRequest(this.props.searchedServiceDescriptions);
     }
 
     render(props, state) {
@@ -84,13 +86,20 @@ class SearchServiceDescription extends Component {
                                     </div>
                                 </div>))}
                         </div>)}
-                        <button
-                            class="ui button primary"
-                            onClick={this.handleLoadAll}
-                            style={{margin: '16px', float: 'right'}}
-                        >
-                            Load
-                        </button>
+                        <div style={{margin: '16px', float: 'right'}}>
+                            <button
+                                class="ui button primary"
+                                onClick={this.handleLoadServiceDescriptions}
+                            >
+                                Load
+                            </button>
+                            <button
+                                class="ui button primary"
+                                onClick={this.handleLoadAllServiceDescriptions}
+                            >
+                                Load all
+                            </button>
+                        </div>
                 </div>
             </div>
         );

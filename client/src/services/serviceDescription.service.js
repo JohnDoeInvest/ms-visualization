@@ -18,9 +18,9 @@ export async function searchServiceDescriptionAPI(repo) {
     try {
         const url = `https://api.github.com/search/code?q=name+filename:serviceDescription+extension:json+repo:${repo}`;
         const response = await fetch(url);
-        console.log('response', response);
         if (response.ok) {
             const data = await response.json();
+            console.log('data', data);
             return data.items;
         }
         return [];
