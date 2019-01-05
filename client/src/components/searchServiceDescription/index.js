@@ -14,7 +14,8 @@ class SearchServiceDescription extends Component {
         return {
             isSearching: false,
             value: null,
-            checkboxes: {}
+            checkboxes: {},
+            checkAll: false,
         };
     }
 
@@ -51,13 +52,14 @@ class SearchServiceDescription extends Component {
 
     handleCheckAllServiceDescriptions = () => {
         const checkboxes = {};
+        const checked = !this.state.checkAll;
         for (const serviceDescription of this.props.searchedServiceDescriptions) {
             checkboxes[serviceDescription.path] = {
                 value: serviceDescription,
-                checked: true
+                checked
             }
         }
-        this.setState({ checkboxes });
+        this.setState({ checkboxes, checkAll: checked });
     }
 
     render(props, state) {
@@ -82,7 +84,7 @@ class SearchServiceDescription extends Component {
                                             <input
                                                 type="checkbox"
                                                 onInput={this.handleChangeCheckbox(serviceDescription)}
-                                                checked={state.checkboxes[serviceDescription.path] ? state.checkboxes[serviceDescription.path].value : false}
+                                                checked={state.checkboxes[serviceDescription.path] ? state.checkboxes[serviceDescription.path].checked : false}
                                             />
                                             <label />
                                         </div>
