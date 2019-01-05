@@ -49,8 +49,15 @@ class SearchServiceDescription extends Component {
         this.props.loadAllCodeContentRequest(selectedCodes);
     }
 
-    handleLoadAllServiceDescriptions = () => {
-        this.props.loadAllCodeContentRequest(this.props.searchedServiceDescriptions);
+    handleCheckAllServiceDescriptions = () => {
+        const checkboxes = {};
+        for (const serviceDescription of this.props.searchedServiceDescriptions) {
+            checkboxes[serviceDescription.path] = {
+                value: serviceDescription,
+                checked: true
+            }
+        }
+        this.setState({ checkboxes });
     }
 
     render(props, state) {
@@ -75,6 +82,7 @@ class SearchServiceDescription extends Component {
                                             <input
                                                 type="checkbox"
                                                 onInput={this.handleChangeCheckbox(serviceDescription)}
+                                                checked={state.checkboxes[serviceDescription.path] ? state.checkboxes[serviceDescription.path].value : false}
                                             />
                                             <label />
                                         </div>
@@ -95,9 +103,9 @@ class SearchServiceDescription extends Component {
                             </button>
                             <button
                                 class="ui button primary"
-                                onClick={this.handleLoadAllServiceDescriptions}
+                                onClick={this.handleCheckAllServiceDescriptions}
                             >
-                                Load all
+                                Check all
                             </button>
                         </div>
                 </div>
