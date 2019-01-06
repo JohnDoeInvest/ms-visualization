@@ -10,3 +10,7 @@
     stroke-width: 1px;
     fill: none;
 }
+
+.chart-flow .highlight path.link {
+    stroke-width: 3px;
+}

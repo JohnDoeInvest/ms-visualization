@@ -31,7 +31,7 @@ const arrowPattern = (id) => `
     >
         <path 
             d="M0,0L10,-5L10,5"
-            fill="#000"
+            fill="#9E9E9E"
             stroke="none"
             shape-rendering="auto"
         />
