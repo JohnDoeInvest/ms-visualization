@@ -6,7 +6,8 @@ import style from './style';
 import { FlowChart } from '../../lib/d3/components';
 import { getPercentOfNodeValue, getNodeDataOnEditor } from '../../lib/d3/utils/node.utils';
 import { getLinksDataOnNodeData } from '../../lib/d3/utils/link.utils';
-import ServiceDescriptionContainer from '../../components/searchServiceDescription';
+import ServiceDescriptionSearchContainer from '../../components/searchServiceDescription';
+import ServiceDescriptionTableContainer from '../../components/serviceDescriptionTable';
 import { fetchServiceDescriptionRequest, loadServiceDescriptionSuccess } from '../../actions/serviceDescription.action'
 
 class Home extends Component {
@@ -63,7 +64,7 @@ class Home extends Component {
 							</div>
 						</div>
 						<div class="right floated column">
-							<ServiceDescriptionContainer />
+							<ServiceDescriptionSearchContainer />
 						</div>
 					</div>
 					<div class="row">
@@ -74,12 +75,17 @@ class Home extends Component {
 							/>
 						</div>
 					</div>
+					<div class="row">
+						<div class="column">
+							<ServiceDescriptionTableContainer />
+						</div>
+					</div>
 				</div>
 				{props.selectedServiceDescriptions.map((serviceDesctiption, i) => {
 					const nodesData = getNodeDataOnEditor(serviceDesctiption);
 					const linksData = getLinksDataOnNodeData(nodesData);
 					return (
-						<div class="ui orange tall stacked segment">
+						<div key={i} class="ui orange tall stacked segment">
 							<FlowChart
 								id={`flow-chart-${i}`}
 								width="auto"
@@ -87,6 +93,7 @@ class Home extends Component {
 								margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
 								linksData={linksData}
 								nodesData={nodesData}
+								highlight={i === props.selectedServiceDescriptionIndex}
 							/>
 						</div>
 					);
@@ -97,8 +104,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	selectedServiceDescription: state.serviceDescription.selectedServiceDescription,
-	selectedServiceDescriptions: state.serviceDescription.selectedServiceDescriptions
+	selectedServiceDescriptions: state.serviceDescription.selectedServiceDescriptions,
+	selectedServiceDescriptionIndex: state.serviceDescription.selectedServiceDescriptionIndex,
 });
 
 const mapDispatchToProps = {

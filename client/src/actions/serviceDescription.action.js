@@ -4,6 +4,7 @@ export const SERVICE_DESCRIPTION_SEARCH_REQUESTED = 'SERVICE_DESCRIPTION_SEARCH_
 export const SERVICE_DESCRIPTION_SEARCH_SUCCEEDED = 'SERVICE_DESCRIPTION_SEARCH_SUCCEEDED';
 export const SERVICE_DESCRIPTION_LOAD_CONTENT_REQUESTED = 'SERVICE_DESCRIPTION_LOAD_CONTENT_REQUESTED';
 export const SERVICE_DESCRIPTION_LOAD_CONTENT_SUCCEEDED = 'SERVICE_DESCRIPTION_LOAD_CONTENT_SUCCEEDED';
+export const SERVICE_DESCRIPTION_SELECTED = 'SERVICE_DESCRIPTION_SELECTED';
 
 export const fetchServiceDescriptionRequest = (url) => {
     return {
@@ -34,4 +35,9 @@ export const loadAllCodeContentRequest = (codes) => {
         type: SERVICE_DESCRIPTION_LOAD_CONTENT_REQUESTED,
         payload: { codes }
     }
-}
+};
+
+export const selectServiceDescription = (selectedServiceDescriptionIndex) => ({
+    type: SERVICE_DESCRIPTION_SELECTED,
+    payload: { selectedServiceDescriptionIndex }
+})
