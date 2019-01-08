@@ -1,5 +1,11 @@
 import fetch from 'unfetch';
 
+const GITHUB_TOKEN = 'deec35fbe282c5ba5053958d2ded8ac1d191491d';
+const AUTHORIZATION_HEADER = `token ${GITHUB_TOKEN}`;
+const defaultHeaders = {
+    'Authorization': AUTHORIZATION_HEADER
+}
+
 export async function fetchServiceDescriptionAPI(url) {
     try {
         const response = await fetch(url);
@@ -17,7 +23,9 @@ export async function fetchServiceDescriptionAPI(url) {
 export async function searchServiceDescriptionAPI(repo) {
     try {
         const url = `https://api.github.com/search/code?q=name+filename:serviceDescription+extension:json+repo:${repo}`;
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {...defaultHeaders}
+        });
         if (response.ok) {
             const data = await response.json();
             console.log('data', data);
@@ -34,7 +42,9 @@ export async function loaddAllCodeContentsAPI(codes) {
         let responses = await Promise.all(codes.map(async (code) => {
             const { path, repository: { full_name }} = code;
             const url = `https://api.github.com/repos/${full_name}/contents/${path}`;
-            return fetch(url);
+            return fetch(url, {
+                headers: {...defaultHeaders}
+            });
         }));
 
         responses = await Promise.all(responses.filter(res => res.ok).map(async (res) => res.json()));
