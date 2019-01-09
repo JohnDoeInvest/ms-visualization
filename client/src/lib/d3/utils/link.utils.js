@@ -41,25 +41,24 @@ export function getLinksDataOnNodeData(nodesData) {
 		const { children } = nodesData;
 		const flatChildren = children.reduce((accFlatChildren, child) => [...accFlatChildren, ...child.children], []);
         
-		const mircroserviceNode = flatChildren.find(c => c.id === 'microservice');
-    
-		if (mircroserviceNode) {
-			const microserviceId = mircroserviceNode.id;
-    
+		const mircroserviceNodes = flatChildren.filter(c => c.type === 'microservice');
+
+		for (const microservice of mircroserviceNodes) {
+			const microserviceId = microservice.id;
 			for (const node of flatChildren) {
-				if (node.rootId === 'restAPI') {
-					linksData.push({ source: node.id, target: microserviceId });
+				if (node.rootId === 'restAPIs') {
+					linksData.push({ source: node.id, target: node.belongToMicroserviceId });
 					// eslint-disable-next-line brace-style
 				} else if (node.rootId === 'topics') {
-					linksData.push({ source: node.id, target: microserviceId });
-					linksData.push({ source: microserviceId, target: node.id });
+					linksData.push({ source: node.id, target: node.belongToMicroserviceId });
+					linksData.push({ source: node.belongToMicroserviceId, target: node.id });
 					// eslint-disable-next-line brace-style
 				} else if (node.rootId === 'stores') {
-					linksData.push({ source: microserviceId, target: node.id });
+					linksData.push({ source: node.belongToMicroserviceId, target: node.id });
 				}
 			}
 		}
-    
+
 		return linksData;
 	}
 }

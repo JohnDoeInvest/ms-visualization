@@ -42,6 +42,9 @@ class Home extends Component {
 			null,
 			'\t'
 		);
+		const nodesData = getNodeDataOnEditor(props.selectedServiceDescriptions);
+		const linksData = getLinksDataOnNodeData(nodesData);
+
 		return (
 			<div class="ui container">
 				<div class="ui grid">
@@ -81,23 +84,16 @@ class Home extends Component {
 						</div>
 					</div>
 				</div>
-				{props.selectedServiceDescriptions.map((serviceDesctiption, i) => {
-					const nodesData = getNodeDataOnEditor(serviceDesctiption);
-					const linksData = getLinksDataOnNodeData(nodesData);
-					return (
-						<div key={i} class="ui orange tall stacked segment">
-							<FlowChart
-								id={`flow-chart-${i}`}
-								width="auto"
-								height={800}
-								margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-								linksData={linksData}
-								nodesData={nodesData}
-								highlight={i === props.selectedServiceDescriptionIndex}
-							/>
-						</div>
-					);
-				})}
+				<div class="ui orange tall stacked segment">
+					<FlowChart
+						id={`flow-chart`}
+						width="auto"
+						height={800}
+						margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+						linksData={linksData}
+						nodesData={nodesData}
+					/>
+				</div>
 			</div>
 		);
 	}

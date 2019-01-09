@@ -1,8 +1,66 @@
 export const getPercentOfNodeValue = (nums) => 1000 / nums;
 export const SOURCE_ASSET_BASE_URI = '/assets/d3';
 
+function convertNodeDataArrToObj(editorDataArr) {
+	const nodeDataObj = {
+		mircoservices: [],
+		restAPIs: [],
+		sharedServices: [],
+		topics: [],
+		stores: []
+	};
+
+	nodeDataObj.mircoservices = editorDataArr.map((data, i) => ({
+		id: data.name + '-' + i,
+		name: data.name,
+		description: data.description,
+	}));
+
+	for (let i = 0; i < editorDataArr.length; i++) {
+		const editorData = editorDataArr[i];
+		const microserviceId = editorData.name + '-' + i;
+
+		if (editorData.restAPI) {
+			nodeDataObj.restAPIs = [
+				...nodeDataObj.restAPIs, 
+				...addBelongToMicroserviceId(editorData.restAPI, microserviceId)
+			];
+		}
+
+		if (editorData.sharedServices) {
+			nodeDataObj.sharedServices = [
+				...nodeDataObj.sharedServices,
+				...addBelongToMicroserviceId(editorData.sharedServices, microserviceId)
+			];
+		}
+
+		if (editorData.produces) {
+			nodeDataObj.topics = [
+				...nodeDataObj.topics,
+				...addBelongToMicroserviceId(editorData.produces, microserviceId)
+			];
+		}
+
+		if (editorData.stores) {
+			nodeDataObj.stores = [
+				...nodeDataObj.stores,
+				...addBelongToMicroserviceId(editorData.stores, microserviceId)
+			];
+		}
+
+	}
+
+	return nodeDataObj;
+}
+
+function addBelongToMicroserviceId(servicesArr, microserviceId) {
+	return servicesArr.map((service) => ({...service, belongToMicroserviceId: microserviceId}));
+}
+
 export function getNodeDataOnEditor(editorData) {
 	if (editorData) {
+		const nodeDataObj = convertNodeDataArrToObj(editorData);
+		
 		const nodesData = {
 			id: 'root',
 			name: 'root',
@@ -10,28 +68,25 @@ export function getNodeDataOnEditor(editorData) {
 			children: []
 		};
     
-		if (editorData.restAPI) {
-			const restAPINodeData = getRestAPINodeData(editorData.restAPI, 'restAPI');
-			if (restAPINodeData) {
-				nodesData.children.push(restAPINodeData);
-			}
+		const restAPINodeData = getRestAPINodeData(nodeDataObj.restAPIs, 'restAPIs');
+		if (restAPINodeData) {
+			nodesData.children.push(restAPINodeData);
 		}
 
-		if (editorData.stores) {
-			const storesNodeData = getStoresNodeData(editorData.stores, 'stores');
-			if (storesNodeData) {
-				nodesData.children.push(storesNodeData);
-			}
+		const mircoservicesNodeData = getMicroserviceNodeData(nodeDataObj.mircoservices, 'microservices');
+		if (mircoservicesNodeData) {
+			nodesData.children.push(mircoservicesNodeData);
+		}
+
+		const storesNodeData = getStoresNodeData(nodeDataObj.stores, 'stores');
+		if (storesNodeData) {
+			nodesData.children.push(storesNodeData);
 		}
     
-		if (editorData.produces && editorData.consumes) {
-			const topicsNodeData = getTopicsNodeData(editorData, 'topics');
-			if (topicsNodeData) {
-				nodesData.children.push(topicsNodeData);
-			}
+		const topicsNodeData = getTopicsNodeData(nodeDataObj.topics, 'topics');
+		if (topicsNodeData) {
+			nodesData.children.push(topicsNodeData);
 		}
-  
-		addMicroserviceNodeData(editorData, nodesData, 'microservices');
   
 		return nodesData;
 	}
@@ -40,35 +95,7 @@ export function getNodeDataOnEditor(editorData) {
 	return undefined;
 }
 
-function addMicroserviceNodeData(editorData, nodesData, rootId) {
-	const { children } = nodesData;
-	const positionOfMicroservice = children.length / 2;
-	const microserviceNodeData = {
-		id: rootId,
-		name: rootId,
-		type: 'group',
-		children: [
-			{
-				id: `microservice`,
-				rootId,
-				description: {
-					value: 'service',
-					dx: 0,
-					dy: 0
-				},
-				icon: SOURCE_ASSET_BASE_URI + '/icn-service.svg',
-				size: getPercentOfNodeValue(1)
-			}
-		]
-	};
-
-	nodesData.children = [
-		...children.slice(0, positionOfMicroservice),
-		microserviceNodeData,
-		...children.slice(positionOfMicroservice)];
-}
-
-function getRestAPINodeData(restEditorData, rootId) {
+function getMicroserviceNodeData(microservices, rootId) {
 	const rootNodeData = {
 		id: rootId,
 		name: rootId,
@@ -77,7 +104,42 @@ function getRestAPINodeData(restEditorData, rootId) {
 	};
 
 	const nodes = [];
-	for (const rest of restEditorData) {
+	for (const microservice of microservices) {
+		const microserviceNode = {
+			id: microservice.id,
+			type: 'microservice',
+			rootId,
+			description: {
+				value: 'service',
+				dx: 0,
+				dy: 0
+			},
+			icon: SOURCE_ASSET_BASE_URI + '/icn-service.svg',
+			size: 0,
+		};
+		nodes.push(microserviceNode);
+	}
+  
+	if (nodes.length === 0) {
+		return undefined;
+	}
+  
+	addSizeOfNodes(nodes);
+	rootNodeData.children = nodes;
+  
+	return rootNodeData;
+}
+
+function getRestAPINodeData(restAPIs, rootId) {
+	const rootNodeData = {
+		id: rootId,
+		name: rootId,
+		type: 'group',
+		children: []
+	};
+
+	const nodes = [];
+	for (const rest of restAPIs) {
 		if (rest.uri && rest.method) {
 			const restNode = {
 				id: `${rootId}_${rest.method.toLowerCase()}_${rest.uri}`,
@@ -88,11 +150,14 @@ function getRestAPINodeData(restEditorData, rootId) {
 					dy: 0
 				},
 				icon: getRestAPIImageSource(rest),
-				size: 0
+				size: 0,
+				belongToMicroserviceId: rest.belongToMicroserviceId
 			};
 			nodes.push(restNode);
 		}
 	}
+
+
   
 	if (nodes.length === 0) {
 		return undefined;
@@ -114,44 +179,40 @@ export function getRestAPIImageSource(rest) {
 	}
 }
 
-export function getTopicsNodeData(topicEditorData, rootId) {
-	const { produces, consumes } = topicEditorData;
-	if (produces && consumes) {
-		const rootNodeData = {
-			id: rootId,
-			name: rootId,
-			type: 'group',
-			children: []
-		};
-    
-		const nodes = [];
+export function getTopicsNodeData(topicsData, rootId) {
+	const rootNodeData = {
+		id: rootId,
+		name: rootId,
+		type: 'group',
+		children: []
+	};
 
-		for (const produce of produces) {
-			const { name, topics } = produce;
-			const icon = getTopicImageSource(name);
-			for (const topic of topics) {
-				const topicNode = {
-					id: `${rootId}_${name}_${topic.toLowerCase()}`,
-					rootId,
-					description: {
-						value: topic,
-						dx: 0,
-						dy: 0
-					},
-					icon,
-					size: 0
-				};
-				nodes.push(topicNode);
-			}
+	const nodes = [];
+
+	for (const topicData of topicsData) {
+		const { name, topics } = topicData;
+		const icon = getTopicImageSource(name);
+		for (const topic of topics) {
+			const topicNode = {
+				id: `${rootId}_${name}_${topic.toLowerCase()}`,
+				rootId,
+				description: {
+					value: topic,
+					dx: 0,
+					dy: 0
+				},
+				icon,
+				size: 0,
+				belongToMicroserviceId: topicData.belongToMicroserviceId
+			};
+			nodes.push(topicNode);
 		}
-
-		addSizeOfNodes(nodes);
-		rootNodeData.children = nodes;
-    
-		return rootNodeData;
 	}
 
-	return undefined;
+	addSizeOfNodes(nodes);
+	rootNodeData.children = nodes;
+
+	return rootNodeData;
 }
 
 export function getTopicImageSource(serviceName) {
@@ -184,7 +245,8 @@ export function getStoresNodeData(storeEditorData, rootId) {
 					dy: 0
 				},
 				icon,
-				size: 0
+				size: 0,
+				belongToMicroserviceId: store.belongToMicroserviceId
 			};
 			nodes.push(storeNode);
 		}

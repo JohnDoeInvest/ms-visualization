@@ -31,9 +31,8 @@ export function buildFlowChart() {
 		svg
 			.attr('xmlns', 'http://www.w3.org/2000/svg')
 			.attr('version', '1.1')
-			.attr('width', width)
-			.attr('height', height)
-			.classed('highlight', highlight);
+            .attr('preserveAspectRatio', 'xMinYMin meet')
+            .attr('viewBox', `0 0 ${width} ${height}`);
 
 		svg.datum(root.descendants());
 
