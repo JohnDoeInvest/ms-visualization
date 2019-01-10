@@ -1,5 +1,4 @@
-import { ServiceNode } from '../types/node.types';
-import { ServiceTypes } from '../types/service.types';
+import { ServiceTypes, ServiceNode } from '../types/service.types';
 import { getMicroserviceIcon, getRestAPIIcon } from './base.utils';
 
 function parseMicroserviceToServiceNode (microservice) {

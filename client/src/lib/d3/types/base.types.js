@@ -1,3 +1,5 @@
+export const SOURCE_ASSET_BASE_URI = '/assets/d3';
+
 export function createConfigurationBuilder(builder, decorateBuilderFn) {
 	return function (classnameOfBuilderNode) {
 		// eslint-disable-next-line func-style

@@ -1,19 +1,5 @@
-import {  ServiceTypes } from '../types/service.types';
-
-export const SOURCE_ASSET_BASE_URI = '/assets/d3';
-
-export const ServiceIconNames = {
-    Microservice: 'icn-service.svg',
-    RestAPI: {
-        Get: 'icn-get.svg',
-        Post: 'icn-post.svg',
-        Delete: 'icn-delete.svg',
-    },
-    Topic: {
-        Kafka: 'icn-kafka.svg'
-    },
-    Store: 'icn-db.svg'
-}
+import {  ServiceTypes, ServiceIconNames } from '../types/service.types';
+import { SOURCE_ASSET_BASE_URI } from '../types/base.types';
 
 export function getMicroserviceIcon(microservice) {
     return SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.Microservice;
