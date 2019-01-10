@@ -3,6 +3,26 @@ import * as d3 from 'd3';
 import { limitCharacters } from '../utils/string.utils';
 import { buildTooltip } from './tooltip.types';
 
+export class ServiceNode {
+	constructor({ id, name, type, isGroup, metadata: { description, belongToId, icon, isHighlighted } }) {
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.isGroup = isGroup;
+		this.metadata = { description, belongToId, icon, isHighlighted };
+		this.size = 0;
+		this.children = [];
+	}
+
+	setSize(size) {
+		this.size = size || this.size;
+	}
+
+	appendNodesToChildren(nodes) {
+		this.children = [...this.children, ...nodes];
+	}
+}
+
 export function buildNodes() {
 	let context = null;
 	let tooltip = buildTooltip();
