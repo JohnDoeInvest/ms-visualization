@@ -9,9 +9,8 @@ export function getStoreIcon(store) {
     return SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.Store;
 }
 
-export function getTopicIcon(topic) {
-    const name = topic.name.toLowerCase();
-    switch (name) {
+export function getTopicIcon({ name, producerConsumerName }) {
+    switch (name.toLowerCase()) {
 		case 'kafka': return SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.Topic.Kafka;
 		default: return '';
 	}

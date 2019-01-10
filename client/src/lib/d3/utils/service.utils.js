@@ -1,89 +1,59 @@
 import { ServiceTypes, ServiceNode } from '../types/service.types';
-import { getMicroserviceIcon, getRestAPIIcon } from './base.utils';
+import { getMicroserviceIcon, getRestAPIIcon, getTopicIcon } from './base.utils';
 
-function parseMicroserviceToServiceNode (microservice) {
+const withServiceNodeParser = (fn) => (service) => {
+    const { id, name, type, description, icon } = fn(service);
+    return new ServiceNode({
+        id,
+        name,
+        type,
+        isGroup: false,
+        metadata: {
+            description,
+            isHighlighted: false,
+            belongToId: id,
+            icon
+        }
+    });
+}
+
+export const parseMicroserviceToServiceNode = withServiceNodeParser((microservice) => {
     const id = microservice.name;
     const name = microservice.name;
     const type = ServiceTypes.Microservice;
     const description = microservice.description;
     const icon = getMicroserviceIcon(microservice);
+    return { id, name, type, description, icon };
+});
 
-    
-    return new ServiceNode({
-        id,
-        name,
-        type,
-        isGroup: false,
-        metadata: {
-            description,
-            isHighlighted: false,
-            belongToId: id,
-            icon
-        },
-    })
-} 
-
-/**
- * 
- * @param {*} restAPI 
- * {
-        "uri": "/movies",
-        "method": "POST",
-        "parameters": {
-          "ssid": "string with Swedish social security number"
-        }
-    }
- */
-
-function parseRestAPIToServiceNode (restAPI) {
+export const parseRestAPIToServiceNode = withServiceNodeParser((restAPI) => {
     const { uri, method } = restAPI;
     const id = ServiceTypes.RestAPI.toLowerCase() + '_' + method.toLowerCase() + '_' + uri.toLowerCase();
     const name = uri;
     const type = ServiceTypes.RestAPI;
-    const description = microservice.description;
+    const description = uri;
     const icon = getRestAPIIcon(restAPI);
-    
-    return new ServiceNode({
-        id,
-        name,
-        type,
-        isGroup: false,
-        metadata: {
-            description,
-            isHighlighted: false,
-            belongToId: id,
-            icon
-        },
-    })
+    return { id, name, type, description, icon };
+});
+
+export const parseTopicToServiceNode = withServiceNodeParser((topic) => {
+    const { name, producerConsumerName } = topic;
+    const id = name.toLowerCase();
+    const name = name;
+    const type = ServiceTypes.Topic;
+    const description = name;
+    const icon = getTopicIcon(topic);
+    return { id, name, type, description, icon };
+});
+
+
+export function parseProducerConsumerToTopics(producers) {
+    return producers.reducer((accTopics, producer) => {
+        const { name, topics } = producer;
+        const newTopics = topics.map(topic => ({
+            name: topic,  
+            producerConsumerName: name,
+        }));
+        return [..accTopics, ...newTopics];
+    }, []);
 }
-
-/**
- * {
-        "name": "kafka",
-        "topics": ["clientrequests", "authenticate-bankid"]
-    }
- * @param {*} topic 
- */
-
-// function parseTopicToServiceNode (topic) {
-//     const { name,  } = topic;
-//     const id = method.toLowerCase() + '_' + uri.toLowerCase();
-//     const name = uri;
-//     const type = ServiceTypes.RestAPI;
-//     const description = microservice.description;
-//     const icon = getRestAPIIcon(restAPI);
-    
-//     return new ServiceNode({
-//         id,
-//         name,
-//         type,
-//         isGroup: false,
-//         metadata: {
-//             description,
-//             isHighlighted: false,
-//             belongToId: id,
-//             icon
-//         },
-//     })
-// }
-
