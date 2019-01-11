@@ -2,7 +2,7 @@
     "name": "authenticate-bankid",
     "description": "Accepts a Swedish social security number (SSID) and interfaces with the BankID service",
     "envVars": [],
-    "restAPI": [
+    "restAPIs": [
       {
         "uri": "/movies",
         "method": "POST",

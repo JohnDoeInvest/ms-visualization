@@ -27,14 +27,21 @@ export class ServiceNode {
 		this.isGroup = isGroup;
 		this.metadata = { description, belongToId, icon, isHighlighted };
 		this.size = 0;
-		this.children = [];
+        this.children = [];
+        this.belongToIds = new Set();
 	}
 
 	setSize(size) {
-		this.size = size || this.size;
-	}
+        this.size = size || this.size;
+        return this;
+    }
+    
+    addBelongIds(ids) {
+        this.belongToIds = new Set([...this.belongToIds, ...ids]);
+    }
 
-	appendNodesToChildren(nodes) {
-		this.children = [...this.children, ...nodes];
+	addNodesToChildren(nodes) {
+        this.children = [...this.children, ...nodes];
+        return this;
 	}
 }
