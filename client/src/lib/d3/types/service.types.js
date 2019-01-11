@@ -20,15 +20,18 @@ export const ServiceIconNames = {
 }
 
 export class ServiceNode {
-	constructor({ id, name, type, isGroup, metadata: { description, belongToId, icon, isHighlighted } }) {
+	constructor({
+        id, name, type, isGroup, belongToIds,
+        metadata: { description, icon, isHighlighted }
+    }) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
-		this.isGroup = isGroup;
-		this.metadata = { description, belongToId, icon, isHighlighted };
+        this.isGroup = isGroup;
+        this.belongToIds = belongToIds;
+		this.metadata = { description, icon, isHighlighted };
 		this.size = 0;
         this.children = [];
-        this.belongToIds = new Set();
 	}
 
 	setSize(size) {
@@ -36,10 +39,6 @@ export class ServiceNode {
         return this;
     }
     
-    addBelongIds(ids) {
-        this.belongToIds = new Set([...this.belongToIds, ...ids]);
-    }
-
 	addNodesToChildren(nodes) {
         this.children = [...this.children, ...nodes];
         return this;

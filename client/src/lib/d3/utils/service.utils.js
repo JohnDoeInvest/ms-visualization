@@ -1,79 +1,48 @@
 import { ServiceTypes, ServiceNode } from '../types/service.types';
 import { getMicroserviceIcon, getRestAPIIcon, getTopicIcon } from './base.utils';
 
-const withServiceNodeParser = (fn) => (service) => {
-    const { id, name, type, description, icon } = fn(service);
-    return new ServiceNode({
-        id,
-        name,
-        type,
-        isGroup: false,
-        metadata: {
+/**
+ * @return {Array<{belongToIds: Array<string>; type: ServiceTypes; originData}>} seviceDescriptionORM 
+ */
+export function createServiceDescriptionORM(serviceDescriptions) {
+    const flattenServiceDescriptions = flatServiceDescriptions(serviceDescriptions);
+    const serviceDescriptionORM = mapServiceDescriptionsToORM(flattenServiceDescriptions);
+    return serviceDescriptionORM;
+}
+
+/**
+ * 
+ * @param {ServiceDescription} serviceDescriptions 
+ * @returns {Array<{name, description, restAPIs, sharedServices, topics, stores}>}
+ */
+export function flatServiceDescriptions(serviceDescriptions) {
+    return serviceDescriptions.map((serviceDescription) => {
+        const { name, description } = serviceDescription;
+        const topics = ServiceNodeFlatterFactory(ServiceTypes.Topic)(serviceDescription.produces);
+        const stores = ServiceNodeFlatterFactory(ServiceTypes.Store)(serviceDescription.stores);
+        const sharedServices = serviceDescription.sharedServices;
+        const restAPIs = serviceDescription.restAPIs;
+    
+        return {
+            name,
             description,
-            isHighlighted: false,
-            belongToId: id,
-            icon
-        }
+            restAPIs,
+            sharedServices,
+            topics,
+            stores
+        };
     });
 }
 
-export const parseMicroserviceToServiceNode = withServiceNodeParser((microservice) => {
-    const id = microservice.name;
-    const name = microservice.name;
-    const type = ServiceTypes.Microservice;
-    const description = microservice.description;
-    const icon = getMicroserviceIcon(microservice);
-    return { id, name, type, description, icon };
-});
-
-export const parseRestAPIToServiceNode = withServiceNodeParser((restAPI) => {
-    const { uri, method } = restAPI;
-    const id = method.toLowerCase() + '_' + uri.toLowerCase();
-    const name = uri;
-    const type = ServiceTypes.RestAPI;
-    const description = uri;
-    const icon = getRestAPIIcon(restAPI);
-    return { id, name, type, description, icon };
-});
-
-export const parseTopicToServiceNode = withServiceNodeParser((topic) => {
-    const { name, producerConsumerName } = topic;
-    const id = name.toLowerCase();
-    const type = ServiceTypes.Topic;
-    const description = name;
-    const icon = getTopicIcon(topic);
-    return { id, name, type, description, icon };
-});
-
-export const parseStoreToServiceNode = withServiceNodeParser((store) => {
-
-});
-
 /**
  * 
- * @param {*} producers 
- * @returns {Array<{name: string; producerConsumerName: string}>} topics
+ * @return {Array<{belongToIds: Array<string>; type: ServiceTypes; originData}>} seviceDescriptionORM 
  */
-export function parseProducerConsumerToTopics(producers) {
-    return producers.reducer((accTopics, producer) => {
-        const { name, topics } = producer;
-        const newTopics = topics.map(topic => ({
-            name: topic,  
-            producerConsumerName: name,
-        }));
-        return [...accTopics, ...newTopics];
-    }, []);
-}
-
-/**
- * 
- * @return {Array<{belongToIds: Array<string>; type: ServiceTypes; originData}>} seviceDescriptionObj 
- */
-export function mergeServiceDescriptions(seviceDescriptions) {
+export function mapServiceDescriptionsToORM(seviceDescriptions) {
     const serviceDescriptionDic = new Map();
 
     for (const serviceDescription of seviceDescriptions) {
-        const { name: microserviceName, restAPIs, sharedServices, produces, stores } = serviceDescription;
+        const { name: microserviceName, restAPIs, sharedServices, topics, stores } = serviceDescription;
 
         const withAddServiceToDic = (createIdFn) => (services, type) => {
             for (const service of services) {
@@ -110,14 +79,109 @@ export function mergeServiceDescriptions(seviceDescriptions) {
         const addSharedServiceToDic  = withAddServiceToDic(sharedService => sharedService.name);
         addSharedServiceToDic(sharedServices, ServiceTypes.SharedService);
 
-        // produces
-        const addProduceToDic  = withAddServiceToDic(produce => produce.name);
-        addProduceToDic(produces, ServiceTypes.Topic);
+        // topics
+        const addTopicsToDic  = withAddServiceToDic(topic => topic.name);
+        addTopicsToDic(topics, ServiceTypes.Topic);
 
-        // produces
+        // stores
         const addStoreToDic  = withAddServiceToDic(store => store.name);
         addStoreToDic(stores, ServiceTypes.Store);
     }
 
     return Array.from(serviceDescriptionDic.values());
+}
+
+export const ServiceNodeFlatterFactory = (type) => {
+    /**
+     * @param {*} producers 
+     * @returns {Array<{name: string; producerConsumerName: string}>} topics
+     */
+    const flatProducerConsumerToTopics = (producers) => {
+        return producers.reduce((accTopics, producer) => {
+            const { name, topics } = producer;
+            const newTopics = topics.map(topic => ({
+                name: topic,  
+                producerConsumerName: name,
+            }));
+            return [...accTopics, ...newTopics];
+        }, []);
+    }
+    /**
+     * @param {*} stores 
+     * @returns {Array<{name: string; storeName: string}>} stores
+     */
+    const flatStores = (stores) => {
+        return stores.reduce((accStores, store) => {
+            const { name, dbs } = store;
+            const newStores = dbs.map(db => ({
+                name: db.name,  
+                storeName: name,
+            }));
+            return [...accStores, ...newStores];
+        }, []);
+    }
+
+    switch (type) {
+        case ServiceTypes.Topic: return flatProducerConsumerToTopics;
+        case ServiceTypes.Store: return flatStores;
+    }
+}
+
+export const ServiceNodeParserFactory = (type) => {
+    const withServiceNodeParser = (fn) => (serviceORM) => {
+        const { type, belongToIds, originData } = serviceORM;
+        const { id, name, description, icon } = fn(originData);
+        return new ServiceNode({
+            id,
+            name,
+            type,
+            belongToIds,
+            isGroup: false,
+            metadata: {
+                description,
+                isHighlighted: false,
+                icon
+            }
+        });
+    };
+
+    const parseMicroserviceToServiceNode = withServiceNodeParser((microservice) => {
+        const id = microservice.name;
+        const name = microservice.name;
+        const description = microservice.description;
+        const icon = getMicroserviceIcon(microservice);
+        return { id, name, description, icon };
+    });
+    
+    const parseRestAPIToServiceNode = withServiceNodeParser((restAPI) => {
+        const { uri, method } = restAPI;
+        const id = method.toLowerCase() + '_' + uri.toLowerCase();
+        const name = uri;
+        const description = uri;
+        const icon = getRestAPIIcon(restAPI);
+        return { id, name, description, icon };
+    });
+    
+    const parseTopicToServiceNode = withServiceNodeParser((topic) => {
+        const { name, producerConsumerName } = topic;
+        const id = name.toLowerCase();
+        const description = name;
+        const icon = getTopicIcon(topic);
+        return { id, name, description, icon };
+    });
+    
+    const parseStoreToServiceNode = withServiceNodeParser((store) => {
+    
+    });
+    const parseSharedServiceToServiceNode = withServiceNodeParser((sharedService) => {
+    
+    });
+
+    switch (type) {
+        case ServiceTypes.Microservice: return parseMicroserviceToServiceNode;
+        case ServiceTypes.RestAPI: return parseRestAPIToServiceNode;
+        case ServiceTypes.Topic: return parseTopicToServiceNode;
+        case ServiceTypes.Store: return parseStoreToServiceNode;
+        case ServiceTypes.SharedService: return parseSharedServiceToServiceNode;
+    }
 }
