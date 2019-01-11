@@ -29,28 +29,28 @@ export function buildNodes() {
 
 		image
 			.attr('class', 'node-img')
-			.attr('xlink:href', d => d.data.icon)
+			.attr('xlink:href', d => d.data.metadata.icon)
 			.attr('width', d => d.x1 - d.x0)
 			.attr('height', d => d.y1 - d.y0)
 			.attr('viewBox', d => `0 0 ${d.x1 - d.x0} ${d.y1 - d.y0}`);
 
 		descriptionTxt
 			.attr('class', 'node-description')
-			.attr('x', d => alignText(d))
+			.attr('x', d => 0)
 			.attr('y', d => (d.y1 - d.y0) / 2)
 			// .attr('dx', d => d.data.description ? d.data.description.dx : 0)
 			// .attr('dy', d => d.data.description ? d.data.description.dy : 0)
 			.attr('text-anchor', 'middle')
-			.text(d => d.data.description ? limitCharacters(d.data.description.value, 7) : '')
-			.on('mouseover', function (d) {
-				tooltip.renderContent(
-					`<span>${d.data.description ? d.data.description.value : ''}</span>`, 
-					{ top: d3.event.pageY, left: d3.event.pageX }
-				);
-			})
-			.on('mouseout', function () {
-				tooltip.hide();
-			});
+			.text(d => d.data.name ? limitCharacters(d.data.name, 7) : '')
+			// .on('mouseover', function (d) {
+			// 	tooltip.renderContent(
+			// 		`<span>${d.data.description ? d.data.description.value : ''}</span>`, 
+			// 		{ top: d3.event.pageY, left: d3.event.pageX }
+			// 	);
+			// })
+			// .on('mouseout', function () {
+			// 	tooltip.hide();
+			// });
 
 		nodes.exit().remove();
 	};

@@ -16,7 +16,8 @@ export const ServiceIconNames = {
     Topic: {
         Kafka: 'icn-kafka.svg'
     },
-    Store: 'icn-db.svg'
+    Store: 'icn-db.svg',
+    SharedService: 'icn-db.svg'
 }
 
 export class ServiceNode {
@@ -30,7 +31,7 @@ export class ServiceNode {
         this.isGroup = isGroup;
         this.belongToIds = belongToIds;
 		this.metadata = { description, icon, isHighlighted };
-		this.size = 0;
+		this.size = undefined;
         this.children = [];
 	}
 

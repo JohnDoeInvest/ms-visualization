@@ -1,5 +1,5 @@
 import { ServiceTypes, ServiceNode } from '../types/service.types';
-import { getMicroserviceIcon, getRestAPIIcon, getTopicIcon } from './base.utils';
+import { getMicroserviceIcon, getRestAPIIcon, getTopicIcon, getStoreIcon, getSharedServiceIcon } from './base.utils';
 
 /**
  * @return {Array<{belongToIds: Array<string>; type: ServiceTypes; originData}>} seviceDescriptionORM 
@@ -154,6 +154,7 @@ export const ServiceNodeParserFactory = (type) => {
     });
     
     const parseRestAPIToServiceNode = withServiceNodeParser((restAPI) => {
+        console.log('parseRestAPIToServiceNode', restAPI);
         const { uri, method } = restAPI;
         const id = method.toLowerCase() + '_' + uri.toLowerCase();
         const name = uri;
@@ -163,6 +164,7 @@ export const ServiceNodeParserFactory = (type) => {
     });
     
     const parseTopicToServiceNode = withServiceNodeParser((topic) => {
+        console.log('parseTopicToServiceNode', topic);
         const { name, producerConsumerName } = topic;
         const id = name.toLowerCase();
         const description = name;
@@ -171,10 +173,20 @@ export const ServiceNodeParserFactory = (type) => {
     });
     
     const parseStoreToServiceNode = withServiceNodeParser((store) => {
-    
+        console.log('parseStoreToServiceNode', store);
+        const { name } = store;
+        const id = name.toLowerCase();
+        const description = name;
+        const icon = getStoreIcon(store);
+        return { id, name, description, icon };
     });
     const parseSharedServiceToServiceNode = withServiceNodeParser((sharedService) => {
-    
+        console.log('parseSharedServiceToServiceNode', sharedService);
+        const { name } = sharedService;
+        const id = name.toLowerCase();
+        const description = name;
+        const icon = getSharedServiceIcon(sharedService);
+        return { id, name, description, icon };
     });
 
     switch (type) {

@@ -4,7 +4,7 @@ import { connect } from 'preact-redux';
 import Editor from '../../components/editor';
 import style from './style';
 import { FlowChart } from '../../lib/d3/components';
-import { getPercentOfNodeValue, getNodeDataOnEditor } from '../../lib/d3/utils/node.utils';
+import { getPercentOfNodeValue, getNodeDataOnEditor, createServiceNode } from '../../lib/d3/utils/node.utils';
 import { getLinksDataOnNodeData } from '../../lib/d3/utils/link.utils';
 import ServiceDescriptionSearchContainer from '../../components/searchServiceDescription';
 import ServiceDescriptionTableContainer from '../../components/serviceDescriptionTable';
@@ -42,10 +42,7 @@ class Home extends Component {
 			null,
 			'\t'
 		);
-		const serviceDescriptionORM = createServiceDescriptionORM(props.selectedServiceDescriptions);
-		console.log('servicedDescriptioDic', serviceDescriptionORM);
-		// const nodesData = getNodeDataOnEditor(props.selectedServiceDescriptions);
-		// const linksData = getLinksDataOnNodeData(nodesData);
+		const serviceNodes = createServiceNode(props.selectedServiceDescriptions);
 
 		return (
 			<div class="ui container">
@@ -93,7 +90,7 @@ class Home extends Component {
 						height={800}
 						margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
 						linksData={[]}
-						nodesData={[]}
+						nodesData={serviceNodes}
 					/>
 				</div>
 			</div>
