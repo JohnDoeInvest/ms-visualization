@@ -3,7 +3,7 @@ import fetch from 'unfetch';
 const GITHUB_TOKEN = '2c3a7450d1b62d95e57ea716f77ffff013b9f3f9';
 const AUTHORIZATION_HEADER = `token ${GITHUB_TOKEN}`;
 const defaultHeaders = {
-    'Authorization': AUTHORIZATION_HEADER
+   //  'Authorization': AUTHORIZATION_HEADER
 }
 
 export async function fetchServiceDescriptionAPI(url) {

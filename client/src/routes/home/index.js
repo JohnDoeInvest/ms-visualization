@@ -9,7 +9,7 @@ import { getLinksDataOnNodeData } from '../../lib/d3/utils/link.utils';
 import ServiceDescriptionSearchContainer from '../../components/searchServiceDescription';
 import ServiceDescriptionTableContainer from '../../components/serviceDescriptionTable';
 import { fetchServiceDescriptionRequest, loadServiceDescriptionSuccess } from '../../actions/serviceDescription.action'
-
+import {  mergeServiceDescriptions } from '../../lib/d3/utils/service.utils';
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -42,8 +42,10 @@ class Home extends Component {
 			null,
 			'\t'
 		);
-		const nodesData = getNodeDataOnEditor(props.selectedServiceDescriptions);
-		const linksData = getLinksDataOnNodeData(nodesData);
+		const serviceDescriptionObj = mergeServiceDescriptions(props.selectedServiceDescriptions);
+		console.log('servicedDescriptioDic', serviceDescriptionObj);
+		// const nodesData = getNodeDataOnEditor(props.selectedServiceDescriptions);
+		// const linksData = getLinksDataOnNodeData(nodesData);
 
 		return (
 			<div class="ui container">
@@ -90,8 +92,8 @@ class Home extends Component {
 						width="auto"
 						height={800}
 						margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-						linksData={linksData}
-						nodesData={nodesData}
+						linksData={[]}
+						nodesData={[]}
 					/>
 				</div>
 			</div>

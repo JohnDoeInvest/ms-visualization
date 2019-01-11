@@ -39,7 +39,6 @@ export const parseRestAPIToServiceNode = withServiceNodeParser((restAPI) => {
 export const parseTopicToServiceNode = withServiceNodeParser((topic) => {
     const { name, producerConsumerName } = topic;
     const id = name.toLowerCase();
-    const name = name;
     const type = ServiceTypes.Topic;
     const description = name;
     const icon = getTopicIcon(topic);
@@ -62,7 +61,7 @@ export function parseProducerConsumerToTopics(producers) {
             name: topic,  
             producerConsumerName: name,
         }));
-        return [..accTopics, ...newTopics];
+        return [...accTopics, ...newTopics];
     }, []);
 }
 
@@ -70,7 +69,7 @@ export function parseProducerConsumerToTopics(producers) {
  * 
  * @return {Array<{belongToIds: Array<string>; type: ServiceTypes; originData}>} seviceDescriptionObj 
  */
-function mergeServiceDescriptions(seviceDescriptions) {
+export function mergeServiceDescriptions(seviceDescriptions) {
     const serviceDescriptionDic = new Map();
 
     for (const serviceDescription of seviceDescriptions) {
@@ -120,5 +119,5 @@ function mergeServiceDescriptions(seviceDescriptions) {
         addStoreToDic(stores, ServiceTypes.Store);
     }
 
-    return serviceDescriptionDic.values();
+    return Array.from(serviceDescriptionDic.values());
 }
