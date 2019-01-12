@@ -5,7 +5,7 @@ import Editor from '../../components/editor';
 import style from './style';
 import { FlowChart } from '../../lib/d3/components';
 import { getPercentOfNodeValue, getNodeDataOnEditor, createServiceNode } from '../../lib/d3/utils/node.utils';
-import { getLinksDataOnNodeData } from '../../lib/d3/utils/link.utils';
+import { getLinksDataOnNodeData, createServiceLinks } from '../../lib/d3/utils/link.utils';
 import ServiceDescriptionSearchContainer from '../../components/searchServiceDescription';
 import ServiceDescriptionTableContainer from '../../components/serviceDescriptionTable';
 import { fetchServiceDescriptionRequest, loadServiceDescriptionSuccess } from '../../actions/serviceDescription.action'
@@ -42,7 +42,9 @@ class Home extends Component {
 			null,
 			'\t'
 		);
-		const serviceNodes = createServiceNode(props.selectedServiceDescriptions);
+		const serviceORMs = createServiceDescriptionORM(props.selectedServiceDescriptions);
+		const serviceNodes = createServiceNode(serviceORMs);
+		const serviceLinks = createServiceLinks(serviceORMs);
 
 		return (
 			<div class="ui container">

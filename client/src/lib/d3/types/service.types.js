@@ -39,9 +39,29 @@ export class ServiceNode {
         this.size = size || this.size;
         return this;
     }
+
+    setHighlight(isHighlighted) {
+        this.metadata.isHighlighted = isHighlighted;
+        return this;
+    }
     
 	addNodesToChildren(nodes) {
         this.children = [...this.children, ...nodes];
         return this;
 	}
+}
+
+/**
+ * 
+ */
+export class ServiceLink {
+    /**
+     * @constructor
+     * @param {{source: ServiceNode, target: ServiceNode, belongToId: string }} 
+     */
+    constructor({ source, target, belongToId }) {
+        this.source = source;
+        this.target = target;
+        this.belongToId = belongToId;
+    }
 }

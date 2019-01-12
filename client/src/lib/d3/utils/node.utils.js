@@ -1,5 +1,5 @@
 import { ServiceNode, ServiceTypes } from '../types/service.types';
-import { ServiceNodeParserFactory, createServiceDescriptionORM } from './service.utils';
+import { ServiceNodeParserFactory } from './service.utils';
 
 export const getSizeOfSeriviceNode = (len) => 1000 / len;
 
@@ -8,8 +8,7 @@ export const getSizeOfSeriviceNode = (len) => 1000 / len;
  * @param {*} serviceDescriptions 
  * @returns {ServiceNode} serivceNode
  */
-export function createServiceNode(serviceDescriptions) {
-	const serviceORMs = createServiceDescriptionORM(serviceDescriptions);
+export function createServiceNode(serviceORMs) {
 	const createServiceNodeGroup = (id) => {
 		return new ServiceNode({
 			id,

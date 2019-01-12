@@ -1,3 +1,6 @@
+import { ServiceLink, ServiceTypes } from '../types/service.types';
+import { ServiceNodeParserFactory } from './service.utils';
+
 export function diagonal({ source, target }) {
 	const path = `M ${source.x} ${source.y}
     C ${(source.x + target.x)/2} ${source.y},
@@ -73,3 +76,56 @@ function getNodeMap(nodes) {
 
 	return nodeMap;
 }
+
+/**
+ * @returns {Array<ServiceLink>}
+ */
+export function createServiceLinks(serviceORMs) {
+	let serviceLinks = [];
+	const serviceNodesDic = new Map();
+
+	for (const serviceORM of serviceORMs) {
+		const serviceNode = ServiceNodeParserFactory(serviceORM.type)(serviceORM);
+		serviceNodesDic.set(serviceNode.id, serviceNode);
+	}
+
+	const getServiceLinks = (serviceORM) => {
+		const { type, belongToIds } = serviceORM;
+		const sourceServiceNode = ServiceNodeParserFactory(type)(serviceORM);
+		
+		if (type === ServiceTypes.Microservice) {
+			const microserviceLinks = [];
+			serviceNodesDic.forEach((serviceNode) => {
+				if (serviceNode.type === ServiceTypes.Topic
+					|| serviceNode.type === ServiceTypes.Store
+					|| serviceNode.type === ServiceTypes.SharedService
+				) {
+					const targetId = serviceNode.belongToIds.find(id => id === sourceServiceNode.id);
+					if (targetId) {
+						const serviceLink = new ServiceLink({
+							source: sourceServiceNode,
+							target: serviceNode,
+							belongToId: sourceServiceNode.id
+						});
+						microserviceLinks.push(serviceLink);
+					}
+				}
+			});
+			return microserviceLinks;
+		}
+		
+		if (type === ServiceTypes.RestAPI || type === ServiceTypes.Topic) {
+			return belongToIds.map((id) => {
+				const targetNode = serviceNodesDic.get(id);
+				return new ServiceLink({ source: sourceServiceNode, target: targetNode, belongToId: id });
+			});
+		}
+	}
+
+	for (const serviceORM of serviceORMs) {
+		serviceLinks = serviceLinks.concat(getServiceLinks(serviceORM));
+	}
+
+	return serviceLinks;
+}
+
