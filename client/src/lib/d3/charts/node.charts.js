@@ -6,7 +6,8 @@ import { buildTooltip } from './tooltip.charts';
 export function buildNodes() {
 	let context = null;
 	let tooltip = buildTooltip();
-	let selectionRef = null
+	let selectionRef = null;
+	let selectedServiceId = null;
 	// eslint-disable-next-line func-style
 	const builder = function (selection) {
 		selectionRef = selection;
@@ -59,6 +60,11 @@ export function buildNodes() {
 		context = value;
 		return builder;
 	};
+
+	builder.selectedServiceId = function (value) {
+		selectedServiceId = value;
+		return builder;
+	}
 
 	builder.destroy = function () {
 		tooltip.destroy();

@@ -46,6 +46,8 @@ class Home extends Component {
 		const serviceNodes = createServiceNode(serviceORMs);
 		const serviceLinks = createServiceLinks(serviceORMs);
 
+		let selectedService = props.selectedServiceDescriptions[props.selectedServiceDescriptionIndex];
+
 		console.log('serviceNodes', serviceNodes);
 
 		return (
@@ -95,6 +97,7 @@ class Home extends Component {
 						margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
 						serviceLinks={serviceLinks}
 						serviceNodes={serviceNodes}
+						selectedServiceId={selectedService ? selectedService.name : undefined}
 					/>
 				</div>
 			</div>

@@ -1,7 +1,8 @@
-import { diagonal, getLinkCoordinateData } from '../utils/link.utils';
+import { diagonal, getLinkCoordinateData, getPathData } from '../utils/link.utils';
 
 export function buildLinks() {
 	let context = null;
+	let selectedServiceId = null;
 	let serviceLinks = [];
 	// eslint-disable-next-line func-style
 	const builder = function (selection) {
@@ -9,13 +10,14 @@ export function buildLinks() {
 		const nodesData = rootNodesData.filter((nodeData) => !nodeData.data.isGroup);
 		const linkCooridinatesData = getLinkCoordinateData(serviceLinks, nodesData);
         
-		const links = selection.selectAll('path.link').data([]);
+		const links = selection.selectAll('path.link').data(linkCooridinatesData);
 		const linksEnter = links.enter().append('svg:path');
 		const linksMerge = links.merge(linksEnter);
 
 		linksMerge
 			.attr('class', 'link')
-			.attr('d', d => diagonal(d))
+			.classed('highlight', d => d.data.belongToId === selectedServiceId)
+			.attr('d', d => getPathData(d))
 			.attr('marker-end', 'url(#arrow-marker)');
 
 		links.exit().remove();
@@ -25,6 +27,11 @@ export function buildLinks() {
 		serviceLinks = value;
 		return builder;
 	};
+
+	builder.selectedServiceId = function (value) {
+		selectedServiceId = value;
+		return builder;
+	}
   
 	builder.context = function (value) {
 		context = value;

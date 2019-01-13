@@ -8,7 +8,6 @@ export function buildFlowChart() {
 	let margin = { top: 0, right: 0, bottom: 0, left: 0 };
 	let childComponents = [];
 	let serviceNodes = null;
-	let highlight = false;
 
 	// eslint-disable-next-line func-style
 	const chart = function (selection) {
@@ -74,10 +73,6 @@ export function buildFlowChart() {
 		serviceNodes = value;
 		return chart;
 	};
-	chart.highlight = function (value) {
-		highlight = value;
-		return chart;
-	}
 	chart.destroy = function () {
 		for (const component of childComponents) {
 			if (component.destroy) {

@@ -11,6 +11,7 @@
     fill: none;
 }
 
-.chart-flow .highlight path.link {
+.chart-flow path.link.highlight {
     stroke-width: 3px;
+    stroke: #7bc90e;
 }
