@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { buildDefs, getPattern } from '../types/defs.types';
+import { buildDefs, getPattern } from './defs.charts';
 
 export function buildFlowChart() {
 	let svg = null;

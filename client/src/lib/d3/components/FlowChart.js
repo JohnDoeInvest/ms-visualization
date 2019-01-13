@@ -2,10 +2,10 @@
 import { h, Component } from 'preact';
 import * as d3 from 'd3';
 import { buildFlowChart } from '../charts/flow.charts';
-import { createConfigurationBuilder } from '../types/base.types';
-import { buildNodes } from '../types/node.types';
-import { buildLinks } from '../types/link.types';
-import { buildDefs, getPattern } from '../types/defs.types';
+import { createConfigurationBuilder } from '../charts/base.charts';
+import { buildNodes } from '../charts/node.charts';
+import { buildLinks } from '../charts/link.charts';
+import { buildDefs, getPattern } from '../charts/defs.charts';
 
 class FlowChart extends Component {
     containerEl = null;

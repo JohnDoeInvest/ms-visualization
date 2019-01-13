@@ -46,6 +46,8 @@ class Home extends Component {
 		const serviceNodes = createServiceNode(serviceORMs);
 		const serviceLinks = createServiceLinks(serviceORMs);
 
+		console.log('serviceNodes', serviceNodes);
+
 		return (
 			<div class="ui container">
 				<div class="ui grid">

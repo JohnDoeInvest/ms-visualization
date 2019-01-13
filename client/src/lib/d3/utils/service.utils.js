@@ -1,6 +1,6 @@
 import { ServiceTypes } from '../types/service.types';
 import { ServiceNode } from '../types/node.types';
-import { getMicroserviceIcon, getRestAPIIcon, getTopicIcon, getStoreIcon, getSharedServiceIcon } from './base.utils';
+import { ServiceIconFactory } from './base.utils';
 
 /**
  * @return {Array<{belongToIds: Array<string>; type: ServiceTypes; originData}>} seviceDescriptionORM 
@@ -146,7 +146,7 @@ export const ServiceNodeParserFactory = (type) => {
         const id = createServiceId(microservice, ServiceTypes.Microservice);
         const name = microservice.name;
         const description = microservice.description;
-        const icon = getMicroserviceIcon(microservice);
+        const icon = ServiceIconFactory(ServiceTypes.Microservice)(microservice);
         return { id, name, description, icon };
     });
     
@@ -155,7 +155,7 @@ export const ServiceNodeParserFactory = (type) => {
         const id = createServiceId(restAPI, ServiceTypes.RestAPI);
         const name = uri;
         const description = uri;
-        const icon = getRestAPIIcon(restAPI);
+        const icon = ServiceIconFactory(ServiceTypes.RestAPI)(restAPI);
         return { id, name, description, icon };
     });
     
@@ -163,7 +163,7 @@ export const ServiceNodeParserFactory = (type) => {
         const { name, producerConsumerName } = topic;
         const id = createServiceId(topic, ServiceTypes.Topic);
         const description = name;
-        const icon = getTopicIcon(topic);
+        const icon = ServiceIconFactory(ServiceTypes.Topic)(topic);
         return { id, name, description, icon };
     });
     
@@ -171,14 +171,14 @@ export const ServiceNodeParserFactory = (type) => {
         const { name } = store;
         const id = createServiceId(store, ServiceTypes.Store);
         const description = name;
-        const icon = getStoreIcon(store);
+        const icon = ServiceIconFactory(ServiceTypes.Store)(store);
         return { id, name, description, icon };
     });
     const parseSharedServiceToServiceNode = withServiceNodeParser((sharedService) => {
         const { name } = sharedService;
         const id = createServiceId(sharedService, ServiceTypes.SharedService);
         const description = name;
-        const icon = getSharedServiceIcon(sharedService);
+        const icon = ServiceIconFactory(ServiceTypes.SharedService)(sharedService);
         return { id, name, description, icon };
     });
 
@@ -187,7 +187,7 @@ export const ServiceNodeParserFactory = (type) => {
         case ServiceTypes.RestAPI: return parseRestAPIToServiceNode;
         case ServiceTypes.Topic: return parseTopicToServiceNode;
         case ServiceTypes.Store: return parseStoreToServiceNode;
-        case ServiceTypes.SharedService: return parseSharedServiceToServiceNode;
+        default: return parseSharedServiceToServiceNode;
     }
 }
 
