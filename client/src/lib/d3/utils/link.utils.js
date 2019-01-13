@@ -1,81 +1,6 @@
-import { ServiceLink, ServiceTypes } from '../types/service.types';
+import { ServiceTypes } from '../types/service.types';
 import { ServiceNodeParserFactory } from './service.utils';
-
-export function diagonal({ source, target }) {
-	const path = `M ${source.x} ${source.y}
-    C ${(source.x + target.x)/2} ${source.y},
-      ${(source.x + target.x) / 2} ${target.y},
-      ${target.x} ${target.y}`;
-
-	return path;
-}
-
-// { source: { x, y }, target: { x, y }}
-export function getLinksCoordinateByNodes(links, nodes) {
-	const linkCoordiantes = [];
-	const nodeMap = getNodeMap(nodes);
-
-	for (const link of links) {
-		const sourceId = link.source;
-		const targetId = link.target;
-
-		if (nodeMap.has(sourceId) && nodeMap.has(targetId)) {
-			const sourceData = nodeMap.get(sourceId);
-			const targetData = nodeMap.get(targetId);
-			linkCoordiantes.push({
-				source: {
-					x: sourceData.x1,
-					y: (sourceData.y0 + sourceData.y1) / 2
-				},
-				target: {
-					x: targetData.x0,
-					y: (targetData.y0 + targetData.y1) / 2
-				}
-			});
-		}
-	}
-
-	return linkCoordiantes;
-}
-
-export function getLinksDataOnNodeData(nodesData) {
-	if (nodesData) {
-		const linksData = [];
-		const { children } = nodesData;
-		const flatChildren = children.reduce((accFlatChildren, child) => [...accFlatChildren, ...child.children], []);
-        
-		const mircroserviceNodes = flatChildren.filter(c => c.type === 'microservice');
-
-		for (const microservice of mircroserviceNodes) {
-			const microserviceId = microservice.id;
-			for (const node of flatChildren) {
-				if (node.rootId === 'restAPIs') {
-					linksData.push({ source: node.id, target: node.belongToMicroserviceId });
-					// eslint-disable-next-line brace-style
-				} else if (node.rootId === 'topics') {
-					linksData.push({ source: node.id, target: node.belongToMicroserviceId });
-					linksData.push({ source: node.belongToMicroserviceId, target: node.id });
-					// eslint-disable-next-line brace-style
-				} else if (node.rootId === 'stores') {
-					linksData.push({ source: node.belongToMicroserviceId, target: node.id });
-				}
-			}
-		}
-
-		return linksData;
-	}
-}
-
-function getNodeMap(nodes) {
-	const nodeMap = new Map();
-    
-	for (const node of nodes) {
-		const id = node.data.id;
-		nodeMap.set(id, node);
-	}
-
-	return nodeMap;
-}
+import { ServiceLink } from '../types/link.types';
 
 /**
  * @returns {Array<ServiceLink>}
@@ -120,6 +45,7 @@ export function createServiceLinks(serviceORMs) {
 				return new ServiceLink({ source: sourceServiceNode, target: targetNode, belongToId: id });
 			});
 		}
+		return [];
 	}
 
 	for (const serviceORM of serviceORMs) {
@@ -129,3 +55,50 @@ export function createServiceLinks(serviceORMs) {
 	return serviceLinks;
 }
 
+/**
+ * interface LinkCoordinate {
+ * 	source: { x0: number; y0: number; x1: number; y1: number; };
+ * 	target: { x: number; y: number; x1: number; y1: number; };
+ *  data: ServiceLink;
+ * }
+ * @param {Array<ServiceLink>} serviceLinks 
+ * @param {Array<{x0: number; y0: number; x1: number; y1: number; data: ServiceNode}>} nodesData 
+ */
+
+export function getLinkCoordinateData(serviceLinks, nodesData) {
+	const nodesDataDic = new Map();
+	for (const nodeData of nodesData) {
+		const id = nodeData.data.id;
+		nodesDataDic.set(id, nodeData);
+	}
+
+	return serviceLinks.map((serviceLink) => {
+		const { source, target, belongToId } = serviceLink;
+		const sourceCoordinate = nodesDataDic.get(source.id);
+		const targetCoordinate = nodesDataDic.get(target.id);
+		return {
+			source: {
+				x0: sourceCoordinate.x0,
+				y0: sourceCoordinate.y0,
+				x1: sourceCoordinate.x1,
+				y1: sourceCoordinate.y1,
+			},
+			target: {
+				x0: targetCoordinate.x0,
+				y0: targetCoordinate.y0,
+				x1: targetCoordinate.x1,
+				y1: targetCoordinate.y1,
+			},
+			data: serviceLink
+		}
+	});
+}
+
+export function diagonal({ source, target }) {
+	const path = `M ${source.x} ${source.y}
+    C ${(source.x + target.x)/2} ${source.y},
+      ${(source.x + target.x) / 2} ${target.y},
+      ${target.x} ${target.y}`;
+
+	return path;
+}

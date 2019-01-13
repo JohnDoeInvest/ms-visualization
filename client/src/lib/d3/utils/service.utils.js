@@ -1,4 +1,5 @@
-import { ServiceTypes, ServiceNode } from '../types/service.types';
+import { ServiceTypes } from '../types/service.types';
+import { ServiceNode } from '../types/node.types';
 import { getMicroserviceIcon, getRestAPIIcon, getTopicIcon, getStoreIcon, getSharedServiceIcon } from './base.utils';
 
 /**
@@ -46,7 +47,7 @@ export function mapServiceDescriptionsToORM(seviceDescriptions) {
 
         const addServiceToDic = (services, type) => {
             for (const service of services) {
-                const serviceId = createServiceId(type, service);
+                const serviceId = createServiceId(service, type);
                 if (serviceDescriptionDic.has(serviceId)) {
                     const serviceObj = serviceDescriptionDic.get(serviceId);
                     serviceObj.belongToIds.push(microserviceName)
@@ -142,7 +143,7 @@ export const ServiceNodeParserFactory = (type) => {
     };
 
     const parseMicroserviceToServiceNode = withServiceNodeParser((microservice) => {
-        const id = createServiceId(ServiceTypes.Microservice, microservice);
+        const id = createServiceId(microservice, ServiceTypes.Microservice);
         const name = microservice.name;
         const description = microservice.description;
         const icon = getMicroserviceIcon(microservice);
@@ -151,7 +152,7 @@ export const ServiceNodeParserFactory = (type) => {
     
     const parseRestAPIToServiceNode = withServiceNodeParser((restAPI) => {
         const { uri, method } = restAPI;
-        const id = createServiceId(ServiceTypes.RestAPI, restAPI);
+        const id = createServiceId(restAPI, ServiceTypes.RestAPI);
         const name = uri;
         const description = uri;
         const icon = getRestAPIIcon(restAPI);
@@ -160,7 +161,7 @@ export const ServiceNodeParserFactory = (type) => {
     
     const parseTopicToServiceNode = withServiceNodeParser((topic) => {
         const { name, producerConsumerName } = topic;
-        const id = createServiceId(ServiceTypes.Topic, topic);
+        const id = createServiceId(topic, ServiceTypes.Topic);
         const description = name;
         const icon = getTopicIcon(topic);
         return { id, name, description, icon };
@@ -168,14 +169,14 @@ export const ServiceNodeParserFactory = (type) => {
     
     const parseStoreToServiceNode = withServiceNodeParser((store) => {
         const { name } = store;
-        const id = createServiceId(ServiceTypes.Store, store);
+        const id = createServiceId(store, ServiceTypes.Store);
         const description = name;
         const icon = getStoreIcon(store);
         return { id, name, description, icon };
     });
     const parseSharedServiceToServiceNode = withServiceNodeParser((sharedService) => {
         const { name } = sharedService;
-        const id = createServiceId(ServiceTypes.SharedService, sharedService);
+        const id = createServiceId(sharedService, ServiceTypes.SharedService);
         const description = name;
         const icon = getSharedServiceIcon(sharedService);
         return { id, name, description, icon };
@@ -190,7 +191,7 @@ export const ServiceNodeParserFactory = (type) => {
     }
 }
 
-export function createServiceId(type, service) {
+export function createServiceId(service, type) {
     switch (type) {
         case ServiceTypes.Microservice: return service.name;
         case ServiceTypes.RestAPI: return 'rest_api_' + service.method.toLowerCase() + '_' + service.uri.toLowerCase();

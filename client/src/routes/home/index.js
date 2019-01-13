@@ -91,8 +91,8 @@ class Home extends Component {
 						width="auto"
 						height={800}
 						margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-						linksData={[]}
-						nodesData={serviceNodes}
+						serviceLinks={serviceLinks}
+						serviceNodes={serviceNodes}
 					/>
 				</div>
 			</div>

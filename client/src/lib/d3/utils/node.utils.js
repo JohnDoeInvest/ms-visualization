@@ -1,5 +1,6 @@
-import { ServiceNode, ServiceTypes } from '../types/service.types';
+import { ServiceTypes } from '../types/service.types';
 import { ServiceNodeParserFactory } from './service.utils';
+import { ServiceNode } from '../types/node.types';
 
 export const getSizeOfSeriviceNode = (len) => 1000 / len;
 

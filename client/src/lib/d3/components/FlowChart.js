@@ -40,7 +40,7 @@ class FlowChart extends Component {
         const linksBuilder = buildLinks();
         const links = createConfigurationBuilder(
             linksBuilder, 
-            builder => builder.data(this.props.linksData))
+            builder => builder.serviceLinks(this.props.serviceLinks))
         ('links-root-group');
 
         const chart = buildFlowChart();
@@ -49,7 +49,7 @@ class FlowChart extends Component {
             .height(dimension.containerHeight)
             .margin(this.props.margin)
             .childComponents([links, nodes])
-            .nodesData(this.props.nodesData)
+            .serviceNodes(this.props.serviceNodes)
             .highlight(this.props.highlight);
         
         svg.call(chart);

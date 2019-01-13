@@ -7,7 +7,7 @@ export function buildFlowChart() {
 	let height = 0;
 	let margin = { top: 0, right: 0, bottom: 0, left: 0 };
 	let childComponents = [];
-	let nodesData = null;
+	let serviceNodes = null;
 	let highlight = false;
 
 	// eslint-disable-next-line func-style
@@ -20,11 +20,11 @@ export function buildFlowChart() {
 			.size([innerWidth, innerHeight])
 			.padding(40);
 
-		const root = d3.hierarchy(nodesData);
-		root.sum(d => d.size);
+		const rootNodesData = d3.hierarchy(serviceNodes);
+		rootNodesData.sum(d => d.size);
 
 		treemapLayout.tile(d3.treemapSliceDice);
-		treemapLayout(root);
+		treemapLayout(rootNodesData);
 
 		// ref to destroy
 		svg = selection;
@@ -34,7 +34,7 @@ export function buildFlowChart() {
             .attr('preserveAspectRatio', 'xMinYMin meet')
             .attr('viewBox', `0 0 ${width} ${height}`);
 
-		svg.datum(root.descendants());
+		svg.datum(rootNodesData.descendants());
 
 		const defsBuilder = buildDefs().patterns(getPattern('arrow')('arrow-marker'));
 		svg.call(defsBuilder);
@@ -70,8 +70,8 @@ export function buildFlowChart() {
 		childComponents = value;
 		return chart;
 	};
-	chart.nodesData = function (value) {
-		nodesData = value;
+	chart.serviceNodes = function (value) {
+		serviceNodes = value;
 		return chart;
 	};
 	chart.highlight = function (value) {

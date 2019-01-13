@@ -1,13 +1,26 @@
-import { getLinksCoordinateByNodes, diagonal } from '../utils/link.utils';
+import { diagonal, getLinkCoordinateData } from '../utils/link.utils';
+export class ServiceLink {
+    /**
+     * @constructor
+     * @param {{source: ServiceNode, target: ServiceNode, belongToId: string }} 
+     */
+    constructor({ source, target, belongToId }) {
+        this.source = source;
+        this.target = target;
+        this.belongToId = belongToId;
+    }
+}
+
 export function buildLinks() {
 	let context = null;
-	let data = [];
+	let serviceLinks = [];
 	// eslint-disable-next-line func-style
 	const builder = function (selection) {
-		const rootData = context.svg.datum();
-		const linkCoordinatesData = getLinksCoordinateByNodes(data, rootData);
+		const rootNodesData = context.svg.datum();
+		const nodesData = rootNodesData.filter((nodeData) => !nodeData.data.isGroup);
+		const linkCooridinatesData = getLinkCoordinateData(serviceLinks, nodesData);
         
-		const links = selection.selectAll('path.link').data(linkCoordinatesData);
+		const links = selection.selectAll('path.link').data([]);
 		const linksEnter = links.enter().append('svg:path');
 		const linksMerge = links.merge(linksEnter);
 
@@ -19,8 +32,8 @@ export function buildLinks() {
 		links.exit().remove();
 	};
     
-	builder.data = function (value) {
-		data = value;
+	builder.serviceLinks = function (value) {
+		serviceLinks = value;
 		return builder;
 	};
   
