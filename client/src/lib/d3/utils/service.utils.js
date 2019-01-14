@@ -202,15 +202,15 @@ export function createServiceId(service, type, prefixId) {
     switch (type) {
         case ServiceTypes.Microservice: return service.name;
         case ServiceTypes.RestAPI: return prefixId + '_rest_api_' + service.method.toLowerCase() + '_' + service.uri.toLowerCase();
-        case ServiceTypes.Topic: return prefixId + '_topic_' + service.name.toLowerCase();
-        case ServiceTypes.Store: return 'store_' + service.name.toLowerCase();
+        case ServiceTypes.Store: return prefixId + '_store_' + service.name.toLowerCase();
+        case ServiceTypes.Topic: return 'topic_' + service.name.toLowerCase();
         default: return 'shared_service_' + service.name.toLowerCase();
     }
 }
 
 export function getPrefixId(serviceORM) {
     const { type, belongToIds, originData } = serviceORM;
-    if (type === ServiceTypes.RestAPI || type === ServiceTypes.Topic) {
+    if (type === ServiceTypes.RestAPI || type === ServiceTypes.Store) {
         return belongToIds[0];
     }
     return undefined;

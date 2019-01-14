@@ -46,9 +46,9 @@ export function createServiceNode(serviceORMs) {
 	rootGroup.addNodesToChildren([
 		restAPIGroup,
 		microserviceGroup,
+		storeGroup,
 		topicGroup,
 		sharedServiceGroup,
-		storeGroup
 	]);
 
 	return rootGroup;
