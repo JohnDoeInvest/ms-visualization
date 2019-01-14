@@ -48,8 +48,6 @@ class Home extends Component {
 
 		let selectedService = props.selectedServiceDescriptions[props.selectedServiceDescriptionIndex];
 
-		console.log('serviceNodes', serviceNodes);
-
 		return (
 			<div class="ui container">
 				<div class="ui grid">
