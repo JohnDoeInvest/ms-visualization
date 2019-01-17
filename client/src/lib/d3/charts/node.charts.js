@@ -25,6 +25,7 @@ export function buildNodes() {
 		const descriptionTxt = nodesMerge.select('text.node-description');
 
 		nodesMerge
+			.attr('id', d => d.data.id)
 			.attr('class', 'node')
 			.attr('transform', (d) => 'translate(' + [d.x0, d.y0] + ')');
 
@@ -33,11 +34,12 @@ export function buildNodes() {
 			.attr('xlink:href', d => d.data.metadata.icon)
 			.attr('width', d => d.x1 - d.x0)
 			.attr('height', d => d.y1 - d.y0)
-			.attr('viewBox', d => `0 0 ${d.x1 - d.x0} ${d.y1 - d.y0}`);
+			.attr('preserveAspectRatio', 'xMinYMin slice')
+			// .attr('viewBox', d => `0 0 ${d.x1 - d.x0} ${d.y1 - d.y0}`);
 
 		descriptionTxt
 			.attr('class', 'node-description')
-			.attr('x', d => 0)
+			.attr('x', d => (d.x1 - d.x0) / 2)
 			.attr('y', d => (d.y1 - d.y0) / 2)
 			// .attr('dx', d => d.data.description ? d.data.description.dx : 0)
 			// .attr('dy', d => d.data.description ? d.data.description.dy : 0)

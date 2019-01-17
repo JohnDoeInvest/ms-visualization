@@ -17,5 +17,5 @@ export const ServiceIconNames = {
         Kafka: 'icn-kafka.svg'
     },
     Store: 'icn-db.svg',
-    SharedService: 'icn-db-shared.svg'
+    SharedService: 'icn-db.svg'
 }

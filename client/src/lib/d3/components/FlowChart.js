@@ -50,7 +50,7 @@ class FlowChart extends Component {
             .width(dimension.containerWidth)
             .height(dimension.containerHeight)
             .margin(this.props.margin)
-            .childComponents([links, nodes])
+            .childComponents([nodes, links])
             .serviceNodes(this.props.serviceNodes);
         
         svg.call(chart);

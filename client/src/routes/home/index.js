@@ -10,6 +10,7 @@ import ServiceDescriptionSearchContainer from '../../components/searchServiceDes
 import ServiceDescriptionTableContainer from '../../components/serviceDescriptionTable';
 import { fetchServiceDescriptionRequest, loadServiceDescriptionSuccess } from '../../actions/serviceDescription.action'
 import { createServiceDescriptionORM } from '../../lib/d3/utils/service.utils';
+import { validId } from '../../lib/d3/utils/string.utils';
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -95,7 +96,7 @@ class Home extends Component {
 						margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
 						serviceLinks={serviceLinks}
 						serviceNodes={serviceNodes}
-						selectedServiceId={selectedService ? selectedService.name : undefined}
+						selectedServiceId={selectedService ? validId(selectedService.name) : undefined}
 					/>
 				</div>
 			</div>

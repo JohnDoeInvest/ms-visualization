@@ -1,6 +1,7 @@
 import { ServiceTypes } from '../types/service.types';
 import { ServiceNode } from '../types/node.types';
 import { ServiceIconFactory } from './base.utils';
+import { validId } from './string.utils';
 
 /**
  * @return {Array<{belongToIds: Array<string>; type: ServiceTypes; originData}>} seviceDescriptionORM 
@@ -50,12 +51,12 @@ export function mapServiceDescriptionsToORM(seviceDescriptions) {
                 const serviceId = createServiceId(service, type, microserviceName);
                 if (serviceDescriptionDic.has(serviceId)) {
                     const serviceObj = serviceDescriptionDic.get(serviceId);
-                    serviceObj.belongToIds.push(microserviceName)
+                    serviceObj.belongToIds.push(validId(microserviceName))
                     serviceDescriptionDic.set(serviceId, serviceObj);
                 } else {
                     serviceDescriptionDic.set(serviceId, {
                         type,
-                        belongToIds: [microserviceName],
+                        belongToIds: [validId(microserviceName)],
                         originData: {...service}
                     });
                 }
@@ -65,7 +66,7 @@ export function mapServiceDescriptionsToORM(seviceDescriptions) {
         // microservice
         serviceDescriptionDic.set(microserviceName, {
             type: ServiceTypes.Microservice,
-            belongToIds: [microserviceName],
+            belongToIds: [validId(microserviceName)],
             originData: {
                 name: microserviceName,
                 description: serviceDescription.description
@@ -200,11 +201,11 @@ export const ServiceNodeParserFactory = (type) => {
  */
 export function createServiceId(service, type, prefixId) {
     switch (type) {
-        case ServiceTypes.Microservice: return service.name;
-        case ServiceTypes.RestAPI: return prefixId + '_rest_api_' + service.method.toLowerCase() + '_' + service.uri.toLowerCase();
-        case ServiceTypes.Store: return prefixId + '_store_' + service.name.toLowerCase();
-        case ServiceTypes.Topic: return 'topic_' + service.name.toLowerCase();
-        default: return 'shared_service_' + service.name.toLowerCase();
+        case ServiceTypes.Microservice: return validId(service.name);
+        case ServiceTypes.RestAPI: return validId(prefixId + '_rest_api_' + service.method.toLowerCase() + '_' + service.uri.toLowerCase());
+        case ServiceTypes.Store: return validId(prefixId + '_store_' + service.name.toLowerCase());
+        case ServiceTypes.Topic: return validId('topic_' + service.name.toLowerCase());
+        default: return validId('shared_service_' + service.name.toLowerCase());
     }
 }
 
