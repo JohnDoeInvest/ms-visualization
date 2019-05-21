@@ -52,7 +52,7 @@ class Home extends Component {
 		return (
 			<div class="ui container">
 				<div class="ui grid">
-					<div class="four column row mg mg-top">
+					<div class="four column row mg mg-top" style={{alignItems: 'baseline'}}>
 						<div class="left floated column ">
 							<div class="ui action input">
 								<input

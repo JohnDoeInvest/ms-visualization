@@ -18,10 +18,10 @@ export const loadServiceDescriptionSuccess = (selectedServiceDescriptions) => ({
     payload: { selectedServiceDescriptions }
 });
 
-export const searchServiceDescriptionRequest = (text) => {
+export const searchServiceDescriptionRequest = ({ repo, token }) => {
     return {
         type: SERVICE_DESCRIPTION_SEARCH_REQUESTED,
-        payload: { text }
+        payload: { repo, token }
     }
 };
 
@@ -30,10 +30,10 @@ export const searchServiceDescriptionSuccess = (searchedServiceDescriptions) => 
     payload: { searchedServiceDescriptions }
 });
 
-export const loadAllCodeContentRequest = (codes) => {
+export const loadAllCodeContentRequest = ({codes, token}) => {
     return {
         type: SERVICE_DESCRIPTION_LOAD_CONTENT_REQUESTED,
-        payload: { codes }
+        payload: { codes, token }
     }
 };
 

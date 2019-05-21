@@ -1,10 +1,11 @@
 import fetch from 'unfetch';
 
-const GITHUB_TOKEN = '2c3a7450d1b62d95e57ea716f77ffff013b9f3f9';
+const GITHUB_TOKEN = '7d654565e18e027f023514dc0f8fd2e6308edbda';
 const AUTHORIZATION_HEADER = `token ${GITHUB_TOKEN}`;
-const defaultHeaders = {
-   //  'Authorization': AUTHORIZATION_HEADER
-}
+
+const createHeaders = ({ token }) => ({
+    'Authorization': `token ${token}`
+})
 
 export async function fetchServiceDescriptionAPI(url) {
     try {
@@ -20,15 +21,14 @@ export async function fetchServiceDescriptionAPI(url) {
     }
 }
 
-export async function searchServiceDescriptionAPI(repo) {
+export async function searchServiceDescriptionAPI({ repo, token }) {
     try {
         const url = `https://api.github.com/search/code?q=name+filename:serviceDescription+extension:json+repo:${repo}`;
         const response = await fetch(url, {
-            headers: {...defaultHeaders}
+            headers: createHeaders({ token })
         });
         if (response.ok) {
             const data = await response.json();
-            console.log('data', data);
             return data.items;
         }
         return [];
@@ -37,13 +37,13 @@ export async function searchServiceDescriptionAPI(repo) {
         throw new Error('Cannot search service description');
     }
 }
-export async function loaddAllCodeContentsAPI(codes) {
+export async function loaddAllCodeContentsAPI({codes, token}) {
     try {
         let responses = await Promise.all(codes.map(async (code) => {
             const { path, repository: { full_name }} = code;
             const url = `https://api.github.com/repos/${full_name}/contents/${path}`;
             return fetch(url, {
-                headers: {...defaultHeaders}
+                headers: createHeaders({ token })
             });
         }));
 

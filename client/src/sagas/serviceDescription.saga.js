@@ -23,7 +23,7 @@ function* fetchServiceDescription(action) {
 
 function* searchServiceDescription(action) {
     try {
-        const data = yield call(serviceAPI.searchServiceDescriptionAPI, action.payload.text);
+        const data = yield call(serviceAPI.searchServiceDescriptionAPI, { repo: action.payload.repo, token: action.payload.token });
         yield put(searchServiceDescriptionSuccess(data));
     } catch (error) {
         // yield put(fetchFailed(err.message));
@@ -33,7 +33,7 @@ function* searchServiceDescription(action) {
 function* loadAllCodeContents(action) {
     try {
         yield put(fetchRequest());
-        const data = yield call(serviceAPI.loaddAllCodeContentsAPI, action.payload.codes);
+        const data = yield call(serviceAPI.loaddAllCodeContentsAPI, { codes: action.payload.codes, token: action.payload.token });
         yield put(fetchSuccess());
         yield put(loadServiceDescriptionSuccess(data));
         yield put(searchServiceDescriptionSuccess([]));

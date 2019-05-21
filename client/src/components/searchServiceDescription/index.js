@@ -16,6 +16,7 @@ class SearchServiceDescription extends Component {
             value: null,
             checkboxes: {},
             checkAll: false,
+            token: undefined
         };
     }
 
@@ -23,6 +24,10 @@ class SearchServiceDescription extends Component {
         if (nextProps.searchedServiceDescriptions !== this.props.searchedServiceDescriptions) {
             this.setState({ checkboxes: {} });
         }
+    }
+
+    handleChangeToken = (event) => {
+        this.setState({ token: event.target.value });
     }
 
     handleChangeCheckbox = (item) => (event) => {
@@ -36,7 +41,7 @@ class SearchServiceDescription extends Component {
 
     handleSearch = (event) => {
         const { target: { value } } = event;
-        this.props.searchServiceDescriptionRequest(value);
+        this.props.searchServiceDescriptionRequest({ repo: value, token: this.state.token });
     }
 
     handleLoadServiceDescriptions = () => {
@@ -47,7 +52,7 @@ class SearchServiceDescription extends Component {
                 selectedCodes.push(checkbox.value);
             }
         }
-        this.props.loadAllCodeContentRequest(selectedCodes);
+        this.props.loadAllCodeContentRequest({ codes: selectedCodes, token: this.state.token });
     }
 
     handleCheckAllServiceDescriptions = () => {
@@ -64,53 +69,63 @@ class SearchServiceDescription extends Component {
 
     render(props, state) {
         return (
-            <div class={`ui category search ${props.isSearching ? 'loading': ''}`}>
-                <div class="ui icon input">
-                    <input
-                        class="prompt"
-                        type="text"
-                        placeholder="Search service description..."
-                        onInput={this.handleSearch}
-                    />
-                    <i class="search icon" />
+            <div class="search-container">
+                <div class="ui input">
+                    <input type="text" placeholder="Github personal token" value={state.token} onInput={this.handleChangeToken} />
                 </div>
-                <div class={`results transition ${props.searchedServiceDescriptions && props.searchedServiceDescriptions.length > 0 ? 'visible': ''}`}>
-                    {props.searchedServiceDescriptions && (
-                        <div class="ui middle aligned selection list">
-                            {props.searchedServiceDescriptions.map((serviceDescription) => (
-                                <div class="item">
-                                    <div class="right floated content">
-                                        <div class="ui checkbox">
-                                            <input
-                                                type="checkbox"
-                                                onInput={this.handleChangeCheckbox(serviceDescription)}
-                                                checked={state.checkboxes[serviceDescription.path] ? state.checkboxes[serviceDescription.path].checked : false}
-                                            />
-                                            <label />
-                                        </div>
-                                    </div>
-                                    <i class="large github middle aligned icon" />
-                                    <div class="content">
-                                        <a class="header">{serviceDescription.path}</a>
-                                        <div class="description">{serviceDescription.name}</div>
-                                    </div>
-                                </div>))}
-                        </div>)}
-                        <div style={{margin: '16px', float: 'right'}}>
-                            <button
-                                class="ui button primary"
-                                onClick={this.handleLoadServiceDescriptions}
-                            >
-                                Load
-                            </button>
-                            <button
-                                class="ui button primary"
-                                onClick={this.handleCheckAllServiceDescriptions}
-                            >
-                                Check all
-                            </button>
+                {!state.token && (
+                    <div class="ui red message">Please enter your Github personal token!</div>
+                )}
+                {state.token && (
+                    <div class={`ui category search ${props.isSearching ? 'loading': ''}`} style={{marginTop: '8px'}}>
+                        <div class="ui icon input">
+                            <input
+                                type="text"
+                                placeholder="Search service description..."
+                                onInput={this.handleSearch}
+                            />
+                            <i class="search icon" />
                         </div>
-                </div>
+                        <div class={`results transition ${props.searchedServiceDescriptions && props.searchedServiceDescriptions.length > 0 ? 'visible': ''}`}>
+                            {props.searchedServiceDescriptions && (
+                                <div class="ui middle aligned selection list">
+                                    {props.searchedServiceDescriptions.map((serviceDescription) => (
+                                        <div class="item">
+                                            <div class="right floated content">
+                                                <div class="ui checkbox">
+                                                    <input
+                                                        type="checkbox"
+                                                        onInput={this.handleChangeCheckbox(serviceDescription)}
+                                                        checked={state.checkboxes[serviceDescription.path] ? state.checkboxes[serviceDescription.path].checked : false}
+                                                    />
+                                                    <label />
+                                                </div>
+                                            </div>
+                                            <i class="large github middle aligned icon" />
+                                            <div class="content">
+                                                <a class="header">{serviceDescription.path}</a>
+                                                <div class="description">{serviceDescription.name}</div>
+                                            </div>
+                                        </div>))}
+                                </div>)}
+                                <div style={{margin: '16px', float: 'right'}}>
+                                    <button
+                                        class="ui button primary"
+                                        onClick={this.handleLoadServiceDescriptions}
+                                    >
+                                        Load
+                                    </button>
+                                    <button
+                                        class="ui button primary"
+                                        onClick={this.handleCheckAllServiceDescriptions}
+                                    >
+                                        Check all
+                                    </button>
+                                </div>
+                        </div>
+                    </div>
+                )}
+                
             </div>
         );
     }
