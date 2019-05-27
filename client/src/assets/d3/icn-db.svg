@@ -1,36 +1,134 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-	 x="0px" y="0px" viewBox="0 0 184.39 96.49" xml:space="preserve">
-<g>
-	<path fill="#B2B2B2" d="M170.41,24.45c4.52,0,8.22,3.7,8.22,8.22v30.51c0,4.52-3.7,8.22-8.22,8.22H68.92
-		c-4.52,0-8.22-3.7-8.22-8.22V32.67c0-4.52,3.7-8.22,8.22-8.22H170.41 M170.41,18.69H68.92c-7.71,0-13.98,6.27-13.98,13.98v30.51
-		c0,7.71,6.27,13.98,13.98,13.98h101.49c7.71,0,13.98-6.27,13.98-13.98V32.67C184.39,24.97,178.12,18.69,170.41,18.69L170.41,18.69z
-		"/>
-	<path fill="#FFFFFF" d="M71.52,39.95H24.45c-3.41,0-6.2-2.79-6.2-6.2v-5.29c0-3.41,2.79-6.2,6.2-6.2h47.07c3.41,0,6.2,2.79,6.2,6.2
-		v5.29C77.72,37.16,74.93,39.95,71.52,39.95z"/>
-	<path fill="#FFFFFF" d="M71.52,74.48H24.45c-3.41,0-6.2-2.79-6.2-6.2V63c0-3.41,2.79-6.2,6.2-6.2h47.07c3.41,0,6.2,2.79,6.2,6.2
-		v5.29C77.72,71.7,74.93,74.48,71.52,74.48z"/>
-	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="95.9696" y1="14.2673" x2="-1.818989e-12" y2="14.2673">
-		<stop  offset="0" style="stop-color:#989797"/>
-		<stop  offset="0.486" style="stop-color:#EBEBEB"/>
-		<stop  offset="1" style="stop-color:#999898"/>
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.2"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 184.39 96.49"
+   xml:space="preserve"
+   sodipodi:docname="icn-db.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"><metadata
+   id="metadata3795"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+   id="defs3793" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1375"
+   inkscape:window-height="1043"
+   id="namedview3791"
+   showgrid="false"
+   inkscape:zoom="3.5956397"
+   inkscape:cx="100.81655"
+   inkscape:cy="48.244999"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="Layer_1" />
+<g
+   id="g3788">
+	<path
+   fill="#B2B2B2"
+   d="M170.41,24.45c4.52,0,8.22,3.7,8.22,8.22v30.51c0,4.52-3.7,8.22-8.22,8.22H68.92   c-4.52,0-8.22-3.7-8.22-8.22V32.67c0-4.52,3.7-8.22,8.22-8.22H170.41 M170.41,18.69H68.92c-7.71,0-13.98,6.27-13.98,13.98v30.51   c0,7.71,6.27,13.98,13.98,13.98h101.49c7.71,0,13.98-6.27,13.98-13.98V32.67C184.39,24.97,178.12,18.69,170.41,18.69L170.41,18.69z   "
+   id="path3755" />
+	<path
+   fill="#FFFFFF"
+   d="M71.52,39.95H24.45c-3.41,0-6.2-2.79-6.2-6.2v-5.29c0-3.41,2.79-6.2,6.2-6.2h47.07c3.41,0,6.2,2.79,6.2,6.2   v5.29C77.72,37.16,74.93,39.95,71.52,39.95z"
+   id="path3757" />
+	<path
+   fill="#FFFFFF"
+   d="M71.52,74.48H24.45c-3.41,0-6.2-2.79-6.2-6.2V63c0-3.41,2.79-6.2,6.2-6.2h47.07c3.41,0,6.2,2.79,6.2,6.2   v5.29C77.72,71.7,74.93,74.48,71.52,74.48z"
+   id="path3759" />
+	<linearGradient
+   id="SVGID_1_"
+   gradientUnits="userSpaceOnUse"
+   x1="95.9696"
+   y1="14.2673"
+   x2="-1.818989e-12"
+   y2="14.2673">
+		<stop
+   offset="0"
+   style="stop-color:#989797"
+   id="stop3761" />
+		<stop
+   offset="0.486"
+   style="stop-color:#EBEBEB"
+   id="stop3763" />
+		<stop
+   offset="1"
+   style="stop-color:#999898"
+   id="stop3765" />
 	</linearGradient>
-	<path fill="url(#SVGID_1_)" d="M85.97,28.53H10c-5.5,0-10-4.5-10-10V10C0,4.5,4.5,0,10,0h75.97c5.5,0,10,4.5,10,10v8.53
-		C95.97,24.03,91.47,28.53,85.97,28.53z"/>
-	<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="95.9696" y1="82.2268" x2="0" y2="82.2268">
-		<stop  offset="0" style="stop-color:#989797"/>
-		<stop  offset="0.486" style="stop-color:#EBEBEB"/>
-		<stop  offset="1" style="stop-color:#999898"/>
+	<path
+   fill="url(#SVGID_1_)"
+   d="M85.97,28.53H10c-5.5,0-10-4.5-10-10V10C0,4.5,4.5,0,10,0h75.97c5.5,0,10,4.5,10,10v8.53   C95.97,24.03,91.47,28.53,85.97,28.53z"
+   id="path3768" />
+	<linearGradient
+   id="SVGID_2_"
+   gradientUnits="userSpaceOnUse"
+   x1="95.9696"
+   y1="82.2268"
+   x2="0"
+   y2="82.2268">
+		<stop
+   offset="0"
+   style="stop-color:#989797"
+   id="stop3770" />
+		<stop
+   offset="0.486"
+   style="stop-color:#EBEBEB"
+   id="stop3772" />
+		<stop
+   offset="1"
+   style="stop-color:#999898"
+   id="stop3774" />
 	</linearGradient>
-	<path fill="url(#SVGID_2_)" d="M85.97,96.49H10c-5.5,0-10-4.5-10-10v-8.53c0-5.5,4.5-10,10-10h75.97c5.5,0,10,4.5,10,10v8.53
-		C95.97,91.99,91.47,96.49,85.97,96.49z"/>
-	<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="95.9696" y1="48.2471" x2="0" y2="48.2471">
-		<stop  offset="0" style="stop-color:#989797"/>
-		<stop  offset="0.486" style="stop-color:#EBEBEB"/>
-		<stop  offset="1" style="stop-color:#999898"/>
+	<path
+   fill="url(#SVGID_2_)"
+   d="M85.97,96.49H10c-5.5,0-10-4.5-10-10v-8.53c0-5.5,4.5-10,10-10h75.97c5.5,0,10,4.5,10,10v8.53   C95.97,91.99,91.47,96.49,85.97,96.49z"
+   id="path3777" />
+	<linearGradient
+   id="SVGID_3_"
+   gradientUnits="userSpaceOnUse"
+   x1="95.9696"
+   y1="48.2471"
+   x2="0"
+   y2="48.2471">
+		<stop
+   offset="0"
+   style="stop-color:#989797"
+   id="stop3779" />
+		<stop
+   offset="0.486"
+   style="stop-color:#EBEBEB"
+   id="stop3781" />
+		<stop
+   offset="1"
+   style="stop-color:#999898"
+   id="stop3783" />
 	</linearGradient>
-	<path fill="url(#SVGID_3_)" d="M85.97,62.51H10c-5.5,0-10-4.5-10-10v-8.53c0-5.5,4.5-10,10-10h75.97c5.5,0,10,4.5,10,10v8.53
-		C95.97,58.01,91.47,62.51,85.97,62.51z"/>
+	<path
+   fill="url(#SVGID_3_)"
+   d="M85.97,62.51H10c-5.5,0-10-4.5-10-10v-8.53c0-5.5,4.5-10,10-10h75.97c5.5,0,10,4.5,10,10v8.53   C95.97,58.01,91.47,62.51,85.97,62.51z"
+   id="path3786" />
 </g>
-</svg>
+<path
+   style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+   d="m 0,48.376167 c 6.1185219,0 6.1185219,0 6.1185219,0"
+   id="toMS"
+   inkscape:connector-curvature="0" /></svg>
