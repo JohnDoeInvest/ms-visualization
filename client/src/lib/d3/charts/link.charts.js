@@ -15,6 +15,7 @@ export function buildLinks() {
 		const linksMerge = links.merge(linksEnter);
 
 		linksMerge
+			.attr('id', d => `${d.data.source.id}_${d.data.target.id}`)
 			.attr('class', 'link')
 			.classed('highlight', d => d.data.belongToId === selectedServiceId)
 			.attr('d', d => getPathData(d))
