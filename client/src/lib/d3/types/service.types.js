@@ -3,7 +3,7 @@ export const ServiceTypes = {
 	Topic: 'Topic',
 	Store: 'Store',
 	RestAPI: 'RestAPI',
-	SharedService: 'SharedService'
+    SharedService: 'SharedService',
 }
 
 export const ServiceIconNames = {
@@ -17,5 +17,5 @@ export const ServiceIconNames = {
         Kafka: 'icn-kafka.svg'
     },
     Store: 'icn-db.svg',
-    SharedService: 'icn-db.svg'
+    SharedService: 'icn-db-shared.svg',
 }

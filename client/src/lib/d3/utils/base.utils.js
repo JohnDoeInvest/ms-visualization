@@ -1,21 +1,22 @@
 import {  ServiceTypes, ServiceIconNames } from '../types/service.types';
 import { SOURCE_ASSET_BASE_URI } from '../types/base.types';
+import * as IconResources from '../types/icon.types';
 
-const getMicroserviceIcon = (microservice) => SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.Microservice;
-const getStoreIcon = (store) => SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.Store;
-const getSharedServiceIcon = (sharedSerice) => SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.SharedService;
+const getMicroserviceIcon = (microservice) => IconResources.SERVICE_ICON;
+const getStoreIcon = (store) => IconResources.DB_ICON;
+const getSharedServiceIcon = (sharedSerice) => IconResources.DB_SHARED_ICON;
 const getTopicIcon = ({ name, producerConsumerName }) => {
     switch (producerConsumerName.toLowerCase()) {
-		case 'kafka': return SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.Topic.Kafka;
+		case 'kafka': return IconResources.KAFKA_ICON;
 		default: return '';
 	}
 };
 const getRestAPIIcon = (restAPI) => {
     const { method } = restAPI;
 	switch (method.toLowerCase()) {
-		case 'post': return SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.RestAPI.Post;
-		case 'get': return SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.RestAPI.Get;
-		case 'delete': return SOURCE_ASSET_BASE_URI + '/' + ServiceIconNames.RestAPI.Delete;
+		case 'post': return IconResources.POST_API_ICON;
+		case 'get': return IconResources.GET_API_ICON;
+		case 'delete': return IconResources.DELETE_API_ICON;
 		default: return '';
 	}
 };

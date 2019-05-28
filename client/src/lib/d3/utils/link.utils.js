@@ -106,12 +106,12 @@ export function diagonal({ source, target }) {
 
 export function getPathData(linkCoordinate) {
 	const { source, target, data } = linkCoordinate;
-	const sourceCoordinate = getSourceCoordinate(source, data);
-	const targetCoordinate = getTargetCoordinate(target, data);
-	const path = `M ${sourceCoordinate.x} ${sourceCoordinate.y} ` + 
-		`C ${(sourceCoordinate.x + targetCoordinate.x)/2} ${sourceCoordinate.y}, ` + 
-		`${(sourceCoordinate.x + targetCoordinate.x) / 2} ${targetCoordinate.y}, ` +
-		`${targetCoordinate.x} ${targetCoordinate.y}`;
+	// const sourceCoordinate = getSourceCoordinate(source, data);
+	// const targetCoordinate = getTargetCoordinate(target, data);
+	const path = `M ${source.x} ${source.y} ` + 
+		`C ${(source.x + target.x)/2} ${source.y}, ` + 
+		`${(source.x + target.x) / 2} ${target.y}, ` +
+		`${target.x} ${target.y}`;
 
 	return path;
 }

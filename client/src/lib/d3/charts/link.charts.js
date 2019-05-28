@@ -1,4 +1,7 @@
+import * as d3 from 'd3';
 import { diagonal, getLinkCoordinateData, getPathData } from '../utils/link.utils';
+import { ServiceTypes } from '../types/service.types';
+import { ConnectorIdDics } from '../types/icon.types';
 
 export function buildLinks() {
 	let context = null;
@@ -8,14 +11,16 @@ export function buildLinks() {
 	const builder = function (selection) {
 		const rootNodesData = context.svg.datum();
 		const nodesData = rootNodesData.filter((nodeData) => !nodeData.data.isGroup);
-		const linkCooridinatesData = getLinkCoordinateData(serviceLinks, nodesData);
+		// const linkCooridinatesData = getLinkCoordinateData(serviceLinks, nodesData);
+
+		// console.log('linkCooridinatesData', serviceLinks, linkCooridinatesData)
+		const linkCooridinatesData = parseServiceLinks(serviceLinks);
         
 		const links = selection.selectAll('path.link').data(linkCooridinatesData);
 		const linksEnter = links.enter().append('svg:path');
 		const linksMerge = links.merge(linksEnter);
 
 		linksMerge
-			.attr('id', d => `${d.data.source.id}_${d.data.target.id}`)
 			.attr('class', 'link')
 			.classed('highlight', d => d.data.belongToId === selectedServiceId)
 			.attr('d', d => getPathData(d))
@@ -40,4 +45,52 @@ export function buildLinks() {
 	};
 
 	return builder;
+}
+
+function parseServiceLinks(serviceLinks) {
+	let linkCoordinates = [];
+	for (const serviceLink of serviceLinks) {
+		const { source, target, belongToId } = serviceLink;
+		const pathIds = getPathIds(serviceLink);
+		if (pathIds && pathIds.length === 2) {
+			const [sourcePahtId, targetPathId] = pathIds;
+			const bboxOfSourcePath = getBBoxOfPath(source.id, sourcePahtId);
+			const bboxOfTargetPath = getBBoxOfPath(target.id, targetPathId);
+			
+			if (bboxOfSourcePath && bboxOfTargetPath) {
+				linkCoordinates.push({
+					source: {x: bboxOfSourcePath.left, y: bboxOfSourcePath.top },
+					target: {x: bboxOfTargetPath.left, y: bboxOfTargetPath.y },
+					data: serviceLink
+				});
+			}
+		}
+	}
+	return linkCoordinates;
+}
+
+function getPathIds(serviceLink) {
+	const { source, target } = serviceLink;
+	if (source.type === ServiceTypes.RestAPI && target.type === ServiceTypes.Microservice) {
+		return [ConnectorIdDics.GET_API.right, ConnectorIdDics.MICROSERVICE.left];
+	}
+	if (source.type === ServiceTypes.Microservice && target.type === ServiceTypes.Store) {
+		return [ConnectorIdDics.MICROSERVICE.right, ConnectorIdDics.DB.left];
+	}
+	if (source.type === ServiceTypes.Microservice && target.type === ServiceTypes.SharedService) {
+		return [ConnectorIdDics.MICROSERVICE.bottom, ConnectorIdDics.DB_SHARED.left];
+	}
+	if (source.type === ServiceTypes.Microservice && target.type === ServiceTypes.Topic) {
+		return [ConnectorIdDics.MICROSERVICE.bottomRight, ConnectorIdDics.KAFKA.left];
+	}
+	if (source.type === ServiceTypes.Topic && target.type === ServiceTypes.Microservice) {
+		return [ConnectorIdDics.KAFKA.right, ConnectorIdDics.MICROSERVICE.topRight];
+	}
+}
+
+function getBBoxOfPath(parentId, pathId) {
+	const pathEl = d3.select(`#${parentId}`).select(`#${pathId}`);
+	if (!pathEl.empty()) {
+		return pathEl.node().getBoundingClientRect();
+	}
 }

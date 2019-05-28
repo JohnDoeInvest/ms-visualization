@@ -17,11 +17,11 @@ export function buildNodes() {
 		const nodes = selection.selectAll('g.node').data(rootData);
 		const nodesEnter = nodes.enter().append('g');
 
-		nodesEnter.append('svg:image').attr('class', 'node-img');
+		nodesEnter.append('svg:g').attr('class', 'node-img');
 		nodesEnter.append('svg:text').attr('class', 'node-description');
 
 		const nodesMerge = nodes.merge(nodesEnter);
-		const image = nodesMerge.select('image.node-img');
+		const image = nodesMerge.select('g.node-img');
 		const descriptionTxt = nodesMerge.select('text.node-description');
 
 		nodesMerge
@@ -30,12 +30,17 @@ export function buildNodes() {
 			.attr('transform', (d) => 'translate(' + [d.x0, d.y0] + ')');
 
 		image
-			.attr('class', 'node-img')
-			.attr('xlink:href', d => d.data.metadata.icon)
-			.attr('width', d => d.x1 - d.x0)
-			.attr('height', d => d.y1 - d.y0)
-			.attr('preserveAspectRatio', 'xMinYMin slice')
+			.html(d => d.data.metadata.icon);
+			// .attr('class', 'node-img')
+			// .attr('xlink:href', d => d.data.metadata.icon)
+			// .attr('width', d => d.x1 - d.x0)
+			// .attr('height', d => d.y1 - d.y0)
+			// .attr('preserveAspectRatio', 'xMinYMin slice')
 			// .attr('viewBox', d => `0 0 ${d.x1 - d.x0} ${d.y1 - d.y0}`);
+		
+		image.select('svg')
+			.attr('height', d => d.y1 - d.y0)
+			.attr('width', d => d.x1 - d.x0);
 
 		descriptionTxt
 			.attr('class', 'node-description')
