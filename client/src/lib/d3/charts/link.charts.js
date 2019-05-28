@@ -15,7 +15,7 @@ export function buildLinks() {
 
 		// console.log('linkCooridinatesData', serviceLinks, linkCooridinatesData)
 		const linkCooridinatesData = parseServiceLinks(serviceLinks);
-        
+        console.log('linkCoordinates', linkCooridinatesData);
 		const links = selection.selectAll('path.link').data(linkCooridinatesData);
 		const linksEnter = links.enter().append('svg:path');
 		const linksMerge = links.merge(linksEnter);
@@ -59,8 +59,8 @@ function parseServiceLinks(serviceLinks) {
 			
 			if (bboxOfSourcePath && bboxOfTargetPath) {
 				linkCoordinates.push({
-					source: {x: bboxOfSourcePath.left, y: bboxOfSourcePath.top },
-					target: {x: bboxOfTargetPath.left, y: bboxOfTargetPath.y },
+					source: {x: bboxOfSourcePath.x, y: bboxOfSourcePath.y },
+					target: {x: bboxOfTargetPath.x, y: bboxOfTargetPath.y },
 					data: serviceLink
 				});
 			}
@@ -91,6 +91,6 @@ function getPathIds(serviceLink) {
 function getBBoxOfPath(parentId, pathId) {
 	const pathEl = d3.select(`#${parentId}`).select(`#${pathId}`);
 	if (!pathEl.empty()) {
-		return pathEl.node().getBoundingClientRect();
+		return pathEl.node().getBBox();
 	}
 }
