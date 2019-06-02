@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import d3Transform from 'd3-transform';
 import { diagonal, getLinkCoordinateData, getPathData } from '../utils/link.utils';
 import { ServiceTypes } from '../types/service.types';
 import { ConnectorIdDics } from '../types/icon.types';
@@ -11,11 +12,8 @@ export function buildLinks() {
 	const builder = function (selection) {
 		const rootNodesData = context.svg.datum();
 		const nodesData = rootNodesData.filter((nodeData) => !nodeData.data.isGroup);
-		// const linkCooridinatesData = getLinkCoordinateData(serviceLinks, nodesData);
-
-		// console.log('linkCooridinatesData', serviceLinks, linkCooridinatesData)
 		const linkCooridinatesData = parseServiceLinks(serviceLinks);
-        console.log('linkCoordinates', linkCooridinatesData);
+
 		const links = selection.selectAll('path.link').data(linkCooridinatesData);
 		const linksEnter = links.enter().append('svg:path');
 		const linksMerge = links.merge(linksEnter);
@@ -59,8 +57,8 @@ function parseServiceLinks(serviceLinks) {
 			
 			if (bboxOfSourcePath && bboxOfTargetPath) {
 				linkCoordinates.push({
-					source: {x: bboxOfSourcePath.x, y: bboxOfSourcePath.y },
-					target: {x: bboxOfTargetPath.x, y: bboxOfTargetPath.y },
+					source: {...bboxOfSourcePath},
+					target: {...bboxOfTargetPath},
 					data: serviceLink
 				});
 			}
@@ -89,8 +87,33 @@ function getPathIds(serviceLink) {
 }
 
 function getBBoxOfPath(parentId, pathId) {
-	const pathEl = d3.select(`#${parentId}`).select(`#${pathId}`);
-	if (!pathEl.empty()) {
-		return pathEl.node().getBBox();
-	}
+	const parent = d3.select(`#${parentId}`);
+	const nodeImg = parent.select('.node-img');
+	const svg = parent.select('svg');
+	const path = svg.select(`#${pathId}`);
+
+	const svgCoord = getScreenCoords(svg.node());
+	const imgBBox = nodeImg.node().getBBox();
+	const svgBBox = svg.node().getBBox();
+	const pathBBox = path.node().getBBox();
+	const scale = svgBBox.width / svgBBox.height;
+	const width = imgBBox.width;
+	const height = width / scale;
+	const dx = pathBBox.x * width / svgBBox.width;
+	const dy = pathBBox.y * height / svgBBox.height;
+	const x = svgCoord.x + dx;
+	const y = svgCoord.y + dy;
+
+	return { x, y };
 }
+
+function getScreenCoords(node) {
+	const ctm = node.getCTM();
+	const x = node.getAttribute('cx');
+	const y = node.getAttribute('cy');
+    const xn = ctm.e + x * ctm.a + y * ctm.c;
+	const yn = ctm.f + x * ctm.b + y * ctm.d;
+	
+    return { x: xn, y: yn };
+}
+

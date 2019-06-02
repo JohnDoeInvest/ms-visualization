@@ -27,9 +27,10 @@ export function buildNodes() {
 		nodesMerge
 			.attr('id', d => d.data.id)
 			.attr('class', 'node')
-			.attr('transform', (d) => 'translate(' + [d.x0, d.y0] + ')');
+			.attr('transform', (d) => `translate(${d.x0}, ${d.y0})`);
 
 		image
+			.attr('class', 'node-img')
 			.html(d => d.data.metadata.icon);
 			// .attr('class', 'node-img')
 			// .attr('xlink:href', d => d.data.metadata.icon)
@@ -46,6 +47,7 @@ export function buildNodes() {
 			.attr('class', 'node-description')
 			.attr('x', d => (d.x1 - d.x0) / 2)
 			.attr('y', d => (d.y1 - d.y0) / 2)
+			.attr('dy', 3)
 			// .attr('dx', d => d.data.description ? d.data.description.dx : 0)
 			// .attr('dy', d => d.data.description ? d.data.description.dy : 0)
 			.attr('text-anchor', 'middle')

@@ -46,6 +46,7 @@ class FlowChart extends Component {
         )('links-root-group');
 
         const chart = buildFlowChart();
+
         chart
             .width(dimension.containerWidth)
             .height(dimension.containerHeight)
@@ -71,7 +72,7 @@ class FlowChart extends Component {
                 id={props.id}
                 className="chart chart-flow"
             >
-                <svg />
+                <svg className="svg-container" />
             </div>
         )
     }

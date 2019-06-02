@@ -1,5 +1,8 @@
+.chart-flow  svg {
+    position: relative;
+}
 .chart-flow .node > .node-description {
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 700;
     stroke: #fff;
     stroke-width: 0.5px;
@@ -12,6 +15,6 @@
 }
 
 .chart-flow path.link.highlight {
-    stroke-width: 3px;
-    stroke: #7bc90e;
+    stroke-width: 1.5px;
+    stroke: #ff01a7;
 }
