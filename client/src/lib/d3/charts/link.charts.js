@@ -22,7 +22,7 @@ export function buildLinks() {
 			.attr('class', 'link')
 			.classed('highlight', d => d.data.belongToId === selectedServiceId)
 			.attr('d', d => getPathData(d))
-			.attr('marker-end', 'url(#arrow-marker)');
+			.attr('marker-end', d => d.data.belongToId === selectedServiceId ? 'url(#arrow-marker-highlight)' : 'url(#arrow-marker)');
 
 		links.exit().remove();
 	};

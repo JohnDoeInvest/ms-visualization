@@ -35,7 +35,7 @@ export function buildFlowChart() {
 
 		svg.datum(rootNodesData.descendants());
 
-		const defsBuilder = buildDefs().patterns(getPattern('arrow')('arrow-marker'));
+		const defsBuilder = buildDefs().patterns(getPattern('arrow')('arrow-marker') + '\n' + getPattern('arrow')('arrow-marker-highlight'));
 		svg.call(defsBuilder);
 
 		let rootGroup = svg.select('g.root');

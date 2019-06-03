@@ -9,7 +9,7 @@
 }
 
 .chart-flow path.link {
-    stroke: #9E9E9E;
+    stroke: #b6c2c5;
     stroke-width: 1px;
     fill: none;
 }
@@ -17,4 +17,11 @@
 .chart-flow path.link.highlight {
     stroke-width: 1.5px;
     stroke: #ff01a7;
+}
+
+.chart-flow .arrow {
+    fill: #b6c2c5;
+}
+#arrow-marker-highlight.arrow {
+    fill: #ff01a7;
 }
