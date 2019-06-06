@@ -47,12 +47,14 @@ export function buildNodes() {
 
 		textsGroup
 			.attr('class', 'node-description')
-			.attr('x', 0)
-			.attr('y', 0)
-			.attr('dx', NODE_SIZE / 2)
-			.attr('dy', NODE_SIZE / 4)
+			.attr('x', NODE_SIZE / 2)
+			.attr('y', function () {
+				const bbox = d3.select(this.parentNode).node().getBBox();
+				return bbox.height / 2;
+			})
+			.attr('dy', 4)
 			.attr('text-anchor', 'middle')
-			.text(d => d.name);
+			.text(d => limitCharacters(d.name, 12));
 
 		nodeGroups.exit().remove();
 
