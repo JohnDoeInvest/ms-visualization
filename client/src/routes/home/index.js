@@ -4,13 +4,12 @@ import { connect } from 'preact-redux';
 import Editor from '../../components/editor';
 import style from './style';
 import { FlowChart } from '../../lib/d3/components';
-import { getPercentOfNodeValue, getNodeDataOnEditor, createServiceNode } from '../../lib/d3/utils/node.utils';
-import { getLinksDataOnNodeData, createServiceLinks } from '../../lib/d3/utils/link.utils';
 import ServiceDescriptionSearchContainer from '../../components/searchServiceDescription';
 import ServiceDescriptionTableContainer from '../../components/serviceDescriptionTable';
 import { fetchServiceDescriptionRequest, loadServiceDescriptionSuccess } from '../../actions/serviceDescription.action'
-import { createServiceDescriptionORM } from '../../lib/d3/utils/service.utils';
 import { validId } from '../../lib/d3/utils/string.utils';
+import { getNodes } from '../../lib/d3/types/node.types';
+import { getLinks } from '../../lib/d3/types/link.types';
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -43,9 +42,9 @@ class Home extends Component {
 			null,
 			'\t'
 		);
-		const serviceORMs = createServiceDescriptionORM(props.selectedServiceDescriptions);
-		const serviceNodes = createServiceNode(serviceORMs);
-		const serviceLinks = createServiceLinks(serviceORMs);
+
+		let nodes = getNodes(props.selectedServiceDescriptions);
+		let links = getLinks(nodes);
 
 		let selectedService = props.selectedServiceDescriptions[props.selectedServiceDescriptionIndex];
 
@@ -92,10 +91,10 @@ class Home extends Component {
 					<FlowChart
 						id={`flow-chart`}
 						width="auto"
-						height={800}
+						height={1200}
 						margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-						serviceLinks={serviceLinks}
-						serviceNodes={serviceNodes}
+						links={links}
+						nodes={nodes}
 						selectedServiceId={selectedService ? validId(selectedService.name) : undefined}
 					/>
 				</div>

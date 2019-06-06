@@ -8,20 +8,20 @@
     stroke-width: 0.5px;
 }
 
-.chart-flow path.link {
-    stroke: #b6c2c5;
+.chart-flow .arrow {
+    fill: #000000;
+}
+#arrow-marker-highlight.arrow {
+    fill: #ff01a7;
+}
+
+.chart-flow .link path {
+    stroke: #c5c5c5;
     stroke-width: 1px;
     fill: none;
 }
 
-.chart-flow path.link.highlight {
+.chart-flow .link.highlight path {
     stroke-width: 1.5px;
     stroke: #ff01a7;
-}
-
-.chart-flow .arrow {
-    fill: #b6c2c5;
-}
-#arrow-marker-highlight.arrow {
-    fill: #ff01a7;
 }

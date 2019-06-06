@@ -2,6 +2,9 @@
 import * as d3 from 'd3';
 import { limitCharacters } from '../utils/string.utils';
 import { buildTooltip } from './tooltip.charts';
+import { GET_API_ICON } from '../types/icon.types';
+import { NODE_SIZE } from '../types/node.types';
+import { getIconByNode } from '../utils/icon.utils';
 
 export function buildNodes() {
 	let context = null;
@@ -13,56 +16,66 @@ export function buildNodes() {
 		selectionRef = selection;
 		selection.call(tooltip);
 
-		const rootData = context.svg.datum();
-		const nodes = selection.selectAll('g.node').data(rootData);
-		const nodesEnter = nodes.enter().append('g');
+		const { nodes } = context.svg.datum();
 
-		nodesEnter.append('svg:g').attr('class', 'node-img');
-		nodesEnter.append('svg:text').attr('class', 'node-description');
+		const nodeGroups = selection.selectAll('.node').data(nodes);
+		const nodeGroupsEnter = nodeGroups.enter().append('g');
+		const nodeGroupMerge = nodeGroups.merge(nodeGroupsEnter).attr('class', 'node');
 
-		const nodesMerge = nodes.merge(nodesEnter);
-		const image = nodesMerge.select('g.node-img');
-		const descriptionTxt = nodesMerge.select('text.node-description');
+		nodeGroupsEnter.append('svg:g');
+		nodeGroupsEnter.append('svg:text');
 
-		nodesMerge
-			.attr('id', d => d.data.id)
+		nodeGroupMerge
+			.attr('id', d => d.id)
 			.attr('class', 'node')
-			.attr('transform', (d) => `translate(${d.x0}, ${d.y0})`);
+			.attr('transform', d => `translate(${d.x}, ${d.y})`)
 
-		image
-			.attr('class', 'node-img')
-			.html(d => d.data.metadata.icon);
-			// .attr('class', 'node-img')
-			// .attr('xlink:href', d => d.data.metadata.icon)
-			// .attr('width', d => d.x1 - d.x0)
-			// .attr('height', d => d.y1 - d.y0)
-			// .attr('preserveAspectRatio', 'xMinYMin slice')
-			// .attr('viewBox', d => `0 0 ${d.x1 - d.x0} ${d.y1 - d.y0}`);
-		
-		image.select('svg')
-			.attr('height', d => d.y1 - d.y0)
-			.attr('width', d => d.x1 - d.x0);
+		const iconsGroup = nodeGroupMerge.select('g');
+		const textsGroup = nodeGroupMerge.select('text');
 
-		descriptionTxt
+		iconsGroup
+			.attr('class', 'node-icon')
+			.html(d => getIconByNode(d))
+
+		iconsGroup.select('svg')
+			.attr('width', NODE_SIZE)
+			.attr('height', function () {
+				const bbox = d3.select(this).node().getBBox();
+				const scale = bbox.width / bbox.height;
+				return NODE_SIZE / scale;
+			});
+
+		textsGroup
 			.attr('class', 'node-description')
-			.attr('x', d => (d.x1 - d.x0) / 2)
-			.attr('y', d => (d.y1 - d.y0) / 2)
-			.attr('dy', 3)
-			// .attr('dx', d => d.data.description ? d.data.description.dx : 0)
-			// .attr('dy', d => d.data.description ? d.data.description.dy : 0)
+			.attr('x', 0)
+			.attr('y', 0)
+			.attr('dx', NODE_SIZE / 2)
+			.attr('dy', NODE_SIZE / 4)
 			.attr('text-anchor', 'middle')
-			.text(d => d.data.name ? limitCharacters(d.data.name, 7) : '')
-			// .on('mouseover', function (d) {
-			// 	tooltip.renderContent(
-			// 		`<span>${d.data.description ? d.data.description.value : ''}</span>`, 
-			// 		{ top: d3.event.pageY, left: d3.event.pageX }
-			// 	);
-			// })
-			// .on('mouseout', function () {
-			// 	tooltip.hide();
-			// });
+			.text(d => d.name);
 
-		nodes.exit().remove();
+		nodeGroups.exit().remove();
+
+		// descriptionTxt
+		// 	.attr('class', 'node-description')
+		// 	.attr('x', d => (d.x1 - d.x0) / 2)
+		// 	.attr('y', d => (d.y1 - d.y0) / 2)
+		// 	.attr('dy', 3)
+		// 	// .attr('dx', d => d.data.description ? d.data.description.dx : 0)
+		// 	// .attr('dy', d => d.data.description ? d.data.description.dy : 0)
+		// 	.attr('text-anchor', 'middle')
+		// 	.text(d => d.data.name ? limitCharacters(d.data.name, 7) : '')
+		// 	// .on('mouseover', function (d) {
+		// 	// 	tooltip.renderContent(
+		// 	// 		`<span>${d.data.description ? d.data.description.value : ''}</span>`, 
+		// 	// 		{ top: d3.event.pageY, left: d3.event.pageX }
+		// 	// 	);
+		// 	// })
+		// 	// .on('mouseout', function () {
+		// 	// 	tooltip.hide();
+		// 	// });
+
+		// nodes.exit().remove();
 	};
   
 	builder.context = function (value) {
@@ -96,3 +109,4 @@ export function buildNodes() {
 
 	return builder;
 }
+
