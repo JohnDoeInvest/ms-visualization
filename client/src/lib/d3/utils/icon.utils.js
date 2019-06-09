@@ -9,7 +9,7 @@ export const getIconByNode = (node) => {
         case ServiceTypes.DB: return DB_ICON;
         case ServiceTypes.SharedDB: return DB_SHARED_ICON;
         case ServiceTypes.Topic: return KAFKA_ICON;
-        case ServiceTypes.RestAPI: return getRestAPIIcon(node.service);
+        case ServiceTypes.RestAPI: return getRestAPIIcon(node.data);
         default: return '';
     }
 }
