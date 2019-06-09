@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import { buildDefs, getPattern } from './defs.charts';
 import { NODE_SIZE } from '../types/node.types';
+import { getLinkDistance } from '../types/link.types';
 
 export function buildFlowChart() {
 	let svg = null;
@@ -41,7 +42,7 @@ export function buildFlowChart() {
 		let simulation = d3.forceSimulation(nodes)
 			.force('charge', d3.forceManyBody())
 			.force('center', d3.forceCenter(innerWidth / 2, innerHeight / 2))
-			.force('link', d3.forceLink().links(links).id(d => d.id))
+			.force('link', d3.forceLink().links(links).id(d => d.id).distance(d => getLinkDistance(d)).strength(0.1))
 			.force('collision', d3.forceCollide().radius(d => NODE_SIZE))
 			.on('tick', buildGraph);
 

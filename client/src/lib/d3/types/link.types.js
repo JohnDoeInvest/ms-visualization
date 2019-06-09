@@ -77,3 +77,31 @@ export const getLinks = (nodes) => {
         ...topicLinks
     ];
 }
+
+export const LinkDistances = {
+    RestAPI: 10,
+    DB: 20,
+    SharedDB: 30,
+    KAFKA: 20
+};
+
+export const getLinkDistance = (link) => {
+    const { sourceNode, targetNode } = link;
+    const sourceType = sourceNode.type;
+    const targetType = targetNode.type;
+
+    if (sourceType === ServiceTypes.RestAPI || targetType === ServiceTypes.RestAPI) {
+        return LinkDistances.RestAPI;
+    }
+    if (sourceType === ServiceTypes.Topic || targetType === ServiceTypes.Topic) {
+        return LinkDistances.KAFKA;
+    }
+    if (sourceType === ServiceTypes.DB || targetType === ServiceTypes.DB) {
+        return LinkDistances.DB;
+    }
+    if (sourceType === ServiceTypes.SharedDB || targetType === ServiceTypes.SharedDB) {
+        return LinkDistances.SharedDB;
+    }
+
+    return 20;
+};
