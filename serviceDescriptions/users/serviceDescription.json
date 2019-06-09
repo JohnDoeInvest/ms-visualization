@@ -1,0 +1,81 @@
+{
+  "name": "users",
+  "description": "Maintains the user database based on data from other topics and requests made directly to it",
+  "envVars": [],
+  "incoming": {
+    "restAPI": {
+      "pathPrefix": "/users",
+      "endpoints": {
+        "/register": [
+          {
+            "method": "POST",
+            "type": "CLIENT",
+            "handlingFunction": "handleRegister",
+            "description": "Complete the registration of an account",
+            "parameters": {
+              "userName": "The userName that the user wants to be associated with - unique across all users",
+              "email": "The users email to be validated",
+              "cellCountry": "The country code of the cell phone in ISO 3166 ALPHA-3",
+              "cell": "The mobile phone of the user to be validated",
+              "smsResults": "If the user wants results via SMS or not",
+              "emailNewsletter": "If the user wants newsletters via email or not",
+              "currencyCode": "ISO 4217 i.e. SEK",
+              "limitDepositWeekly": "The max deposit amount per week expressed as a whole integer in currencyCode",
+              "validateUsingCell": "True, we send a flash SMS. False, we send an email."
+            }
+          }
+        ],
+        "/checkUserName": [
+          {
+            "method": "GET",
+            "type": "CLIENT",
+            "handlingFunction": "handleCheckUserName",
+            "description": "Check if a username is available or not in the registration form",
+            "parameters": {
+              "userName": "The userName that the user wants to be associated with - unique across all users"
+            }
+          }
+        ],
+        "/logout": [
+          {
+            "method": "POST",
+            "type": "CLIENT",
+            "handlingFunction": "handleLogout",
+            "description": "Client initiated logout"
+          }
+        ]
+      }
+    }
+  },
+  "outgoing": {},
+  "services": {
+    "shared": {
+      "redis": {},
+      "kafka": {
+        "consumes": [
+          "authenticate-bankid",
+          "communication-email",
+          "communication-sms",
+          "selfexclusion-spelpaus",
+          "users"
+        ],
+        "produces": [
+          "communication-email",
+          "communication-sms",
+          "users"
+        ]
+      }
+    },
+    "local": {
+      "sqllite": {
+        "db": {
+          "users": {
+            "tables": [
+              "users"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

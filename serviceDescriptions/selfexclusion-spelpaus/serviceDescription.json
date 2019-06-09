@@ -1,0 +1,30 @@
+{
+  "name": "selfexclusion-spelpaus",
+  "description": "Checks a Swedish social security number (SSID) against the national registry Spelpaus",
+  "envVars": [],
+  "incoming": {
+    "restAPI": {
+      "pathPrefix": "/selfexclusion/spelpaus",
+      "endpoints": {}
+    }
+  },
+  "outgoing": {
+    "spelpaus": {
+      "description": "REST API as presented at https://testapi.spelpaus.se/Documentation"
+    }
+  },
+  "services": {
+    "shared": {
+      "kafka": {
+        "consumes": [
+          "authenticate-bankid",
+          "selfexclusion-spelpaus"
+        ],
+        "produces": [
+          "selfexclusion-spelpaus"
+        ]
+      }
+    },
+    "local": {}
+  }
+}

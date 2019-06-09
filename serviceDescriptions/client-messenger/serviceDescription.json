@@ -1,0 +1,52 @@
+{
+  "name": "client-messenger",
+  "description": "Acts as backend to the nginx nchan service and deals with when someone subscribes or un-subscribes.",
+  "envVars": [],
+  "incoming": {
+    "restAPI": {
+      "pathPrefix": "/messenger",
+      "endpoints": {
+        "/sub": [
+          {
+            "method": "GET",
+            "type": "EXTERNAL",
+            "handlingFunction": "handleSubscribe",
+            "description": "Called when someone subscribes to Nchan",
+            "parameters": {}
+          }
+        ],
+        "/unsub": [
+          {
+            "method": "GET",
+            "type": "EXTERNAL",
+            "handlingFunction": "handleUnSubscribe",
+            "description": "Called when someone un-subscribes to Nchan",
+            "parameters": {}
+          }
+        ],
+        "/sub_auth": [
+          {
+            "method": "GET",
+            "type": "EXTERNAL",
+            "handlingFunction": "handleSubscribeAuth",
+            "description": "Authenticate the subscription",
+            "parameters": {}
+          }
+        ]
+      }
+    }
+  },
+  "outgoing": {},
+  "services": {
+    "shared": {
+      "redis": {},
+      "kafka": {
+        "consumes": [],
+        "produces": [
+          "clientrequests"
+        ]
+      }
+    },
+    "local": {}
+  }
+}

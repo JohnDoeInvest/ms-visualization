@@ -1,0 +1,47 @@
+{
+  "name": "communication-email",
+  "description": "Whenever any part of the application requires an email to be sent this service will do that",
+  "envVars": [],
+  "incoming": {
+    "restAPI": {
+      "pathPrefix": "/communication-email",
+      "endpoints": {
+        "/activate": [
+          {
+            "method": "POST",
+            "type": "CLIENT",
+            "handlingFunction": "handleEmailActivation",
+            "description": "Activates an acccount via a emailed token",
+            "parameters": {
+              "token": "String containing token"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "outgoing": {},
+  "services": {
+    "shared": {
+      "kafka": {
+        "consumes": [
+          "communication-email"
+        ],
+        "produces": [
+          "communication-email"
+        ]
+      }
+    },
+    "local": {
+      "sqllite": {
+        "db": {
+          "communication-email": {
+            "tables": [
+              "tokens"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

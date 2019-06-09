@@ -1,0 +1,47 @@
+{
+  "name": "communication-sms",
+  "description": "Whenever any part of the application requires an SMS to be sent this service will do that",
+  "envVars": [],
+  "incoming": {
+    "restAPI": {
+      "pathPrefix": "/communication-sms",
+      "endpoints": {
+        "/activate": [
+          {
+            "method": "POST",
+            "type": "CLIENT",
+            "handlingFunction": "handleSMSActivation",
+            "description": "Activates an acccount via a token from SMS",
+            "parameters": {
+              "token": "String containing pin"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "outgoing": {},
+  "services": {
+    "shared": {
+      "kafka": {
+        "consumes": [
+          "communication-sms"
+        ],
+        "produces": [
+          "communication-sms"
+        ]
+      }
+    },
+    "local": {
+      "sqllite": {
+        "db": {
+          "communication-sms": {
+            "tables": [
+              "tokens"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

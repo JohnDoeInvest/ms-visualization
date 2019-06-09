@@ -1,0 +1,20 @@
+{
+  "name": "push-response",
+  "description": "Listens to kafka topic pushresponses and forwards this to the nchan server",
+  "envVars": [],
+  "incoming": {
+    "restAPI": {}
+  },
+  "outgoing": {},
+  "services": {
+    "shared": {
+      "kafka": {
+        "consumes": [
+          "pushresponses"
+        ],
+        "produces": []
+      }
+    },
+    "local": {}
+  }
+}
