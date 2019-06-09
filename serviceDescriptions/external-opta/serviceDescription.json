@@ -1,0 +1,116 @@
+{
+  "name": "external-opta",
+  "description": "Opta provides the sport events information. This service accepts the push feed and queries the pull feed as needed.",
+  "envVars": [],
+  "incoming": {
+    "restAPI": {
+      "pathPrefix": "/opta",
+      "endpoints": {
+        "/": [
+          {
+            "method": "POST",
+            "type": "EXTERNAL",
+            "handlingFunction": "handleOpta",
+            "description": "The Opta service of sport events and details pushes HTTP POST requests with a number of additional headers at certain intervals as well as live during games",
+            "parameters": {}
+          }
+        ],
+        "/sports": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "sportsGetAll",
+            "description": "Get all known sports"
+          }
+        ],
+        "/sports/:sportId": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "sportsGet",
+            "description": "Get sport by id"
+          }
+        ],
+        "/competitions/:sportId": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "competitionsGetAllBySport",
+            "description": "Get all known competitions in a sport"
+          }
+        ],
+        "/seasons/:sportId/:competitionId": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "seasonsGetAllBySportCompetition",
+            "description": "Get all known seasons in a sport and competition"
+          }
+        ],
+        "/teams/:sportId/:competitionId/:seasonId": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "teamsGetAllBySportCompetitionSeason",
+            "description": "Get all known teams in a sport, competition and season"
+          }
+        ],
+        "/matches/:sportId/:competitionId/:seasonId": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "matchesGetAllBySportCompetitionSeason",
+            "description": "Get all known matches in a sport, competition and season"
+          }
+        ],
+        "/matchesByDate/:date": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "matchesGetAllByDate",
+            "description": "Get all known matches for a specific date"
+          }
+        ],
+        "/events/:hash": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "eventsGetByHash",
+            "description": "Get the full event details for the provided hash. Used internally by gamelists."
+          }
+        ]
+      }
+    }
+  },
+  "outgoing": {},
+  "services": {
+    "shared": {
+      "kafka": {
+        "consumes": [
+          "external-opta"
+        ],
+        "produces": [
+          "external-opta",
+          "gameprovider-updates"
+        ]
+      }
+    },
+    "local": {
+      "sqllite": {
+        "db": {
+          "external-opta": {
+            "tables": [
+              "sports",
+              "competitions",
+              "seasons",
+              "teams",
+              "matches",
+              "previousMeetings",
+              "facts"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

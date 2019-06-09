@@ -1,0 +1,84 @@
+{
+  "name": "gamelists",
+  "description": "Based on content providers such as Opta we build lists of games per date in this service",
+  "envVars": [],
+  "incoming": {
+    "restAPI": {
+      "pathPrefix": "/gamelists",
+      "endpoints": {
+        "/": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "handleGetAll",
+            "description": "Get all lists with their dates"
+          },
+          {
+            "method": "POST",
+            "type": "ADMIN",
+            "handlingFunction": "handleCreate",
+            "description": "Create a new list for a specific date",
+            "parameters": {
+              "date": "Date for the new list",
+              "finalBetTime": "The specific time when we close for bets"
+            }
+          }
+        ],
+        "/:date": [
+          {
+            "method": "GET",
+            "type": "ADMIN",
+            "handlingFunction": "handleGetByDate",
+            "description": "Get list for a specific date with its current slots"
+          },
+          {
+            "method": "DELETE",
+            "type": "ADMIN",
+            "handlingFunction": "handleDeleteByDate",
+            "description": "Deletes list for a specific date"
+          }
+        ],
+        "/:date/:slot": [
+          {
+            "method": "PUT",
+            "type": "ADMIN",
+            "handlingFunction": "handleUpdateByDateSlot",
+            "description": "Update a position in a specific list",
+            "parameters": {
+              "gameProvider": "Provider for the game - currently only opta is supported",
+              "gameHash": "The hash for a specific event as provided by the provider service i.e. opta matches"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "outgoing": {
+  },
+  "services": {
+    "shared": {
+      "kafka": {
+        "consumes": [
+          "clientrequests",
+          "gamelists",
+          "gameprovider-updates"
+        ],
+        "produces": [
+          "gamelists"
+        ]
+      }
+    },
+    "local": {
+      "sqllite": {
+        "db": {
+          "gamelists": {
+            "tables": [
+              "gamelists",
+              "slots"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

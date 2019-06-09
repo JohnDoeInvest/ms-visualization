@@ -1,0 +1,54 @@
+{
+  "name": "authenticate-bankid",
+  "description": "Accepts a Swedish social security number (SSID) and interfaces with the BankID service",
+  "envVars": [],
+  "incoming": {
+    "restAPI": {
+      "pathPrefix": "/authenticate/bankid",
+      "endpoints": {
+        "/": [
+          {
+            "method": "POST",
+            "type": "CLIENT",
+            "handlingFunction": "handleAuthenticate",
+            "description": "Checks the SSID and then starts an authentication",
+            "parameters": {
+              "ssid": "string with Swedish social security number"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "outgoing": {
+    "bankid": {
+      "description": "Communication is done by https://github.com/anyfin/bankid"
+    }
+  },
+  "services": {
+    "shared": {
+      "redis": {},
+      "kafka": {
+        "consumes": [
+          "clientrequests",
+          "authenticate-bankid"
+        ],
+        "produces": [
+          "clientrequests",
+          "authenticate-bankid"
+        ]
+      }
+    },
+    "local": {
+      "sqllite": {
+        "db": {
+          "authenticate-bankid": {
+            "tables": [
+              "authenticate-bankid"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
