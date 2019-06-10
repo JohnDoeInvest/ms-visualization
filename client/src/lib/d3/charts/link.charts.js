@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import d3Transform from 'd3-transform';
-import { diagonal, getLinkCoordinateData, getPathData } from '../utils/link.utils';
+import { diagonal, getLinkCoordinateData, getPathData, getLinkPath } from '../utils/link.utils';
 import { ServiceTypes } from '../types/service.types';
 import { ConnectorIdDics } from '../types/icon.types';
 
@@ -65,7 +65,7 @@ function getPath(link) {
 		const bboxOfTargetPath = getBBoxOfPath(target.id, targetPathId);
 
 		if (bboxOfSourcePath && bboxOfTargetPath) {
-			return getPathData({
+			return getLinkPath({
 				source: bboxOfSourcePath,
 				target: bboxOfTargetPath,
 			});

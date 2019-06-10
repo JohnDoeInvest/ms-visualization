@@ -84,32 +84,20 @@ function mergeSimilarRestAPINodes(restAPINodes) {
     const nodeMap = new Map();
 
     for (const node of restAPINodes) {
-        const { name, belongToIds, data } = node;
-        const key = validId(`${data.method}_${name}_${data.handlingFunction}`);
+        const { id, belongToIds } = node;
+        const key = id;
 
-        if (nodeMap.has(key)) {
-            const oldNode = nodeMap.get(key);
-            oldNode.belongToIds = [...oldNode.belongToIds, ...belongToIds];
-            oldNode.node = {...node};
-            nodeMap.set(key, oldNode);
-        } else {
+        if (!nodeMap.has(key)) {
             nodeMap.set(key, {
                 belongToIds,
                 node: {...node}
             });
-        }
+        } 
     }
 
     for (const value of nodeMap.values()) {
-        const { belongToIds, node } = value;
-        const key = validId(`${node.data.method}_${node.name}`);
-        const id = validId(`${belongToIds.join('_')}_${key}`);
-
-        mergedNodes.push({
-            ...node,
-            id,
-            belongToIds
-        })
+        const { node } = value;
+        mergedNodes.push(node);
     }
 
     return mergedNodes;

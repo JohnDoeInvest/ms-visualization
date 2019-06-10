@@ -13,3 +13,22 @@ export function getPathData({ source, target }) {
 	const path = `M ${source.x} ${source.y} L ${target.x} ${target.y}`;
 	return path;
 }
+
+export function getLinkPath({ source, target }) {
+	const offset = 30;
+
+	const midpoint_x = (source.x + target.x) / 2;
+	const midpoint_y = (source.y + target.y) / 2;
+
+	const dx = (target.x - source.x);
+	const dy = (target.y - source.y);
+
+	const normalise = Math.sqrt((dx * dx) + (dy * dy));
+
+	const offSetX = midpoint_x + offset*(dy/normalise);
+	const offSetY = midpoint_y - offset*(dx/normalise);
+
+	return "M" + source.x + "," + source.y +
+		"S" + offSetX + "," + offSetY +
+		" " + target.x + "," + target.y;
+}
