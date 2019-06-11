@@ -21,9 +21,9 @@ export const getLinks = (nodes) => {
     }
 
     for (const node of nodes) {
-        const { id, type, belongToIds } = node;
+        const { id, type, toIds, fromIds } = node;
         if (type === ServiceTypes.RestAPI) {
-            let newRestLinks = belongToIds.map((parentId) => ({
+            let newRestLinks = toIds.map((parentId) => ({
                 source: id,
                 target: parentId,
                 belongToId: parentId,
@@ -34,7 +34,7 @@ export const getLinks = (nodes) => {
             restAPILinks = restAPILinks.concat(newRestLinks);
 
         } else if (type === ServiceTypes.SharedDB || type === ServiceTypes.DB) {
-            let newLinks = belongToIds.map((parentId) => ({
+            let newLinks = fromIds.map((parentId) => ({
                 source: parentId,
                 target: id,
                 belongToId: parentId,
@@ -45,29 +45,26 @@ export const getLinks = (nodes) => {
             dbLinks = dbLinks.concat(newLinks);
 
         } else if (type === ServiceTypes.Topic) {
-            let newTopicLinks = [];
-            for (const parentId of belongToIds) {
-                const outIncLinks = [
-                    {
-                        source: parentId,
-                        target: id,
-                        belongToId: parentId,
-                        sourceNode: nodesMap.get(parentId),
-                        targetNode: node
-                    },
-                    {
-                        source: id,
-                        target: parentId,
-                        belongToId: parentId,
-                        sourceNode: node,
-                        targetNode: nodesMap.get(parentId)
-                    }
-                ];
-
-                newTopicLinks = newTopicLinks.concat(outIncLinks);
+            if (fromIds) {
+                const incLinks = fromIds.map((fromId) => ({
+                    source: fromId,
+                    target: id,
+                    belongToId: fromId,
+                    sourceNode: nodesMap.get(fromId),
+                    targetNode: node
+                }));
+                topicLinks = topicLinks.concat(incLinks);
             }
-
-            topicLinks = topicLinks.concat(newTopicLinks);
+            if (toIds) {
+                const outLinks = toIds.map((toId) => ({
+                    source: id,
+                    target: toId,
+                    belongToId: toId,
+                    sourceNode: node,
+                    targetNode: nodesMap.get(toId)
+                }));
+                topicLinks = topicLinks.concat(outLinks);
+            }
         }
     }
 

@@ -11,8 +11,7 @@ import { validId } from '../../lib/d3/utils/string.utils';
 import { getNodes } from '../../lib/d3/types/node.types';
 import { getLinks } from '../../lib/d3/types/link.types';
 
-/// import serviceDescriptions from '../../serviceDescriptions.json';
-import { parseServiceDescriptions } from '../../lib/d3/utils/service.utils';
+// import serviceDescriptions from '../../serviceDescriptions.json';
 class Home extends Component {
 	constructor(props) {
 		super(props);

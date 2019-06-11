@@ -3,7 +3,7 @@ import { ServiceTypes, ServiceDirectionTypes } from "./service.types";
 
 export const NODE_SIZE = 50;
 
-export const createNode = ({id, name, type, belongToIds, service, metadata, data, direction }) => {
+export const createNode = ({id, name, type, belongToIds, service, metadata, data, direction, fromIds, toIds }) => {
     return {
         id,
         name,
@@ -12,7 +12,9 @@ export const createNode = ({id, name, type, belongToIds, service, metadata, data
         metadata,
         service,
         data,
-        direction
+        direction,
+        fromIds,
+        toIds,
     };
 }
 
@@ -117,6 +119,7 @@ function getRestAPINodes(restAPI, parentId) {
                         name,
                         type: ServiceTypes.RestAPI,
                         belongToIds: [parentId],
+                        toIds: [parentId],
                         metadata: {
                             description: api.description
                         },
@@ -142,6 +145,7 @@ function getDBNodes(services, parentId) {
                 type: ServiceTypes.DB,
                 name: key,
                 belongToIds: [parentId],
+                fromIds: [parentId],
                 metadata: {
                     description: key
                 },
@@ -163,6 +167,7 @@ function getSharedDBNodes(services, parentId) {
             type: ServiceTypes.SharedDB,
             name: 'redis',
             belongToIds: [parentId],
+            fromIds: [parentId],
             metadata: {
                 description: 'Redis'
             },
@@ -186,6 +191,7 @@ function getTopicNodes(services, parentId) {
                 type: ServiceTypes.Topic,
                 name: consume,
                 belongToIds: [parentId],
+                fromIds: [parentId],
                 metadata: {
                     description: consume
                 },
@@ -199,6 +205,7 @@ function getTopicNodes(services, parentId) {
                 type: ServiceTypes.Topic,
                 name: produce,
                 belongToIds: [parentId],
+                toIds: [parentId],
                 metadata: {
                     description: produce
                 },
@@ -211,6 +218,7 @@ function getTopicNodes(services, parentId) {
 
             if (idx > -1) {
                 consumeNode.direction = ServiceDirectionTypes.Both;
+                consumeNode.toIds = [...producesNodes[idx].toIds];
                 producesNodes.splice(idx, 1);
             }
 
@@ -228,28 +236,39 @@ function mergeNodes(nodes) {
     const nodeMap = new Map();
 
     for (const node of nodes) {
-        const { name, belongToIds, type } = node;
+        const { name, belongToIds, type, fromIds, toIds } = node;
         if (nodeMap.has(name)) {
             const oldNode = nodeMap.get(name);
             oldNode.belongToIds = [...oldNode.belongToIds, ...belongToIds];
+            if (fromIds) {
+                oldNode.fromIds = [...(oldNode.fromIds || []), ...fromIds];
+            }
+            if (toIds) {
+                oldNode.toIds = [...(oldNode.toIds || []), ...toIds];
+            }
+
             oldNode.node = {...node};
             nodeMap.set(name, oldNode);
         } else {
             nodeMap.set(name, {
                 belongToIds,
+                fromIds,
+                toIds,
                 node: {...node}
             });
         }
     }
 
     for (const value of nodeMap.values()) {
-        const { belongToIds, node } = value;
+        const { belongToIds, node, fromIds, toIds } = value;
         const id = validId(`${belongToIds.join('_')}_${node.type}_${node.name}`);
 
         mergedNodes.push({
             ...node,
             id,
-            belongToIds
+            belongToIds,
+            fromIds,
+            toIds
         })
     }
 
