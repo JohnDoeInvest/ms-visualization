@@ -6,6 +6,7 @@ import EditorContainer from '../../components/editor';
 import ServiceDescriptionSearchContainer from '../../components/searchServiceDescription';
 import ServiceDescriptionTableContainer from '../../components/serviceDescriptionTable';
 import ServiceDescriptionLoader from '../../components/loadServiceDescription';
+import PDFExporter from '../../components/pdfExporter';
 
 export default class Home extends Component {
 	render(props, state) {
@@ -28,6 +29,11 @@ export default class Home extends Component {
 					<div class="row">
 						<div class="column">
 							<ServiceDescriptionTableContainer />
+						</div>
+					</div>
+					<div class="row">
+						<div class="column">
+							<PDFExporter />
 						</div>
 					</div>
 				</div>
