@@ -7,6 +7,7 @@ import ServiceDescriptionSearchContainer from '../../components/searchServiceDes
 import ServiceDescriptionTableContainer from '../../components/serviceDescriptionTable';
 import ServiceDescriptionLoader from '../../components/loadServiceDescription';
 import PDFExporter from '../../components/pdfExporter';
+import ENVTable from '../../components/envTable';
 
 export default class Home extends Component {
 	render(props, state) {
@@ -36,9 +37,16 @@ export default class Home extends Component {
 							<PDFExporter />
 						</div>
 					</div>
-				</div>
-				<div class="ui orange tall stacked segment">
-					<ChartContainer />
+					<div class="row">
+						<div class="column">
+							<ChartContainer />
+						</div>
+					</div>
+					<div class="row">
+						<div class="column">
+						<ENVTable />
+						</div>
+					</div>
 				</div>
 			</div>
 		);

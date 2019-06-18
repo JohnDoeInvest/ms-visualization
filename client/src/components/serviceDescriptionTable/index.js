@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import * as serviceDescriptionActions from '../../actions/serviceDescription.action';
+import style from './style.css';
 
 class ServiceDescriptionTable extends Component {
     constructor(props) {
@@ -19,30 +20,33 @@ class ServiceDescriptionTable extends Component {
     }
 
     render(props, state) {
+        if (props.selectedServiceDescriptions.length === 0) {
+            return null;
+        }
         return (
-            <table class="ui selectable celled table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {props.selectedServiceDescriptions.map((serviceDescription, i) => (
-                        <tr
-                            key={i}
-                            onClick={this.handleSelectServiceDescription(i)}
-                        >
-                            <td>{serviceDescription.name}</td>
-                            <td>{serviceDescription.description}</td>
-                            <td class={this.isHighlight(i) ? 'positive' : 'warning'}>
-                                {this.isHighlight(i) ? 'Selected' : ''}
-                            </td>
+            <div class={style.container}>
+                <h1 class="ui header">Service Descriptions</h1>
+                <table class="ui selectable celled table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {props.selectedServiceDescriptions.map((serviceDescription, i) => (
+                            <tr
+                                key={i}
+                                onClick={this.handleSelectServiceDescription(i)}
+                                class={this.isHighlight(i) ? style.active : style.inactive}
+                            >
+                                <td>{serviceDescription.name}</td>
+                                <td>{serviceDescription.description}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }

@@ -44,24 +44,30 @@ class ENVTable extends Component {
 
     render(props, state) {
         const envs = this.getEnvs();
+        if (envs.length === 0) {
+            return null;
+        }
 
         return (
-            <table class="ui selectable celled table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {envs.map((env, i) => (
-                        <tr class={this.isHighlight(env) ? style.active : style.inactive} key={i}>
-                            <td>{env.name}</td>
-                            <td>{env.description}</td>
+            <div class={style.container}>
+                <h1 class="ui header">ENV Vars</h1>
+                <table class="ui selectable celled table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {envs.map((env, i) => (
+                            <tr class={this.isHighlight(env) ? style.active : style.inactive} key={i}>
+                                <td>{env.name}</td>
+                                <td>{env.description}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }
