@@ -5,7 +5,7 @@ export function createConfigurationBuilder(builder, decorateBuilderFn) {
 			let nodeRootGroup = rootSelection.select(`g.${classnameOfBuilderNode}`);
 
 			if (nodeRootGroup.empty()) {
-				nodeRootGroup = rootSelection.append('svg:g').attr('class', classnameOfBuilderNode);
+				nodeRootGroup = rootSelection.insert('svg:g', 'g').attr('class', classnameOfBuilderNode);
 			}
 			decorateBuilderFn(builder);
 			builder.context(context);

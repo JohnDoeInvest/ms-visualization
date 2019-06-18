@@ -1,59 +1,40 @@
 /* eslint-disable */
 import { h, Component } from 'preact';
-import * as ace from 'brace';
-import 'brace/mode/json';
-import 'brace/theme/monokai';
-import style from './style';
+import { connect } from 'preact-redux';
+import Editor from './components/Editor';
+import { loadServiceDescriptionSuccess } from '../../actions/serviceDescription.action'
 
-class Editor extends Component {
-    editor = null;
-    error = null;
+class EditorContainer extends Component {
+	constructor(props) {
+		super(props);
+	}
 
-    componentDidMount() {
-        this.editor = ace.edit('editor', {
-            enableBasicAutocompletion: true
-        });
-        this.editor.getSession().setMode('ace/mode/json');
-        this.editor.setTheme('ace/theme/monokai');
-    }
+	handleGetEditorData = (serviceDescriptions) => {
+		this.props.loadServiceDescriptionSuccess(serviceDescriptions || []);
+	}
 
-    componentDidUpdate() {
-        if (this.editor) {
-            this.editor.setValue(this.props.value || '');
-        }
-    }
+	render(props, state) {
+		const editorValue = JSON.stringify(
+			props.selectedServiceDescriptions.reduce((acc, serviceDes) => [...acc, serviceDes], []),
+			null,
+			'\t'
+		);
 
-    handleVisualize = () => {
-        try {
-            const jsonStr = this.editor.getSession().getValue();
-            const jsonObj = JSON.parse(jsonStr);
-            this.props.onData(jsonObj);
-            this.setState({ error: null });
-        } catch (err) {
-            console.error(err);
-            this.setState({ error: 'Invlaid input' });
-        }
-    }
-
-    render(props, state) {
-    	return (
-            <div class={style.container}>
-                <div id="editor" class={style.editor} />
-                <button
-                    class="ui button primary"
-                    style={{marginTop: '16px'}}
-                    onClick={this.handleVisualize}
-                >
-                    <i class="chart area icon" />
-                    Visualize
-                </button>
-                {state.error && (
-                    <p class={style.error}>{state.error}</p>
-                )}
-            </div>
-    	);
-    }
+		return (
+			<Editor onData={this.handleGetEditorData} value={editorValue} />
+		);
+	}
 }
 
-export default Editor;
+const mapStateToProps = (state, ownProps) => ({
+	selectedServiceDescriptions: state.serviceDescription.selectedServiceDescriptions,
+});
 
+const mapDispatchToProps = {
+	loadServiceDescriptionSuccess
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(EditorContainer);

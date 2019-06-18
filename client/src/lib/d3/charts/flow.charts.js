@@ -1,5 +1,7 @@
 import * as d3 from 'd3';
 import { buildDefs, getPattern } from './defs.charts';
+import { NODE_SIZE } from '../types/node.types';
+import { getLinkDistance } from '../types/link.types';
 
 export function buildFlowChart() {
 	let svg = null;
@@ -7,23 +9,14 @@ export function buildFlowChart() {
 	let height = 0;
 	let margin = { top: 0, right: 0, bottom: 0, left: 0 };
 	let childComponents = [];
-	let serviceNodes = null;
+	let nodes = [];
+	let links = []
 
 	// eslint-disable-next-line func-style
 	const chart = function (selection) {
 		const { top, right, bottom, left } = margin;
 		const innerWidth = width - left - right;
 		const innerHeight = height - top - bottom;
-
-		const treemapLayout = d3.treemap()
-			.size([innerWidth, innerHeight])
-			.padding(40);
-
-		const rootNodesData = d3.hierarchy(serviceNodes);
-		rootNodesData.sum(d => d.size);
-
-		treemapLayout.tile(d3.treemapSliceDice);
-		treemapLayout(rootNodesData);
 
 		// ref to destroy
 		svg = selection;
@@ -33,8 +26,6 @@ export function buildFlowChart() {
             .attr('preserveAspectRatio', 'xMinYMin meet')
             .attr('viewBox', `0 0 ${width} ${height}`);
 
-		svg.datum(rootNodesData.descendants());
-
 		const defsBuilder = buildDefs().patterns(getPattern('arrow')('arrow-marker') + '\n' + getPattern('arrow')('arrow-marker-highlight'));
 		svg.call(defsBuilder);
 
@@ -43,14 +34,29 @@ export function buildFlowChart() {
 			rootGroup = svg.append('svg:g').attr('class', 'root');
 		}
 		rootGroup.attr('transform', `translate(${left}, ${top})`);
+		
+		svg.datum({ nodes, links });
 
 		const context = getContext();
 
-		for (const component of childComponents) {
-			rootGroup.call(component, context);
+		let simulation = d3.forceSimulation(nodes)
+			.force('charge', d3.forceManyBody().strength(-50))
+			.force('center', d3.forceCenter(innerWidth / 2, innerHeight / 2))
+			.force('link', d3.forceLink().links(links).id(d => d.id).distance(d => getLinkDistance(d)).strength(0.025))
+			.force('collision', d3.forceCollide().radius(d => NODE_SIZE))
+			.stop();
+
+		for (let i = 0, n = Math.ceil(Math.log(simulation.alphaMin()) / Math.log(1 - simulation.alphaDecay())); i < n; ++i) {
+			simulation.tick();
 		}
 
-        
+		buildGraph();
+
+		function buildGraph() {
+			for (const component of childComponents) {
+				rootGroup.call(component, context);
+			}
+		}
 	};
 
 	chart.width = function (value) {
@@ -69,8 +75,12 @@ export function buildFlowChart() {
 		childComponents = value;
 		return chart;
 	};
-	chart.serviceNodes = function (value) {
-		serviceNodes = value;
+	chart.nodes = function (value) {
+		nodes = value;
+		return chart;
+	};
+	chart.links = function (value) {
+		links = value;
 		return chart;
 	};
 	chart.destroy = function () {

@@ -1,9 +1,15 @@
 export const ServiceTypes = {
 	Microservice: 'Microservice',
 	Topic: 'Topic',
-	Store: 'Store',
+	DB: 'DB',
 	RestAPI: 'RestAPI',
-    SharedService: 'SharedService',
+    SharedDB: 'SharedDB',
+}
+
+export const ServiceDirectionTypes = {
+    Income: 'Income',
+    Outcome: 'Outcome',
+    Both: 'Both'
 }
 
 export const ServiceIconNames = {
@@ -16,6 +22,6 @@ export const ServiceIconNames = {
     Topic: {
         Kafka: 'icn-kafka.svg'
     },
-    Store: 'icn-db.svg',
-    SharedService: 'icn-db-shared.svg',
+    DB: 'icn-db.svg',
+    SharedDB: 'icn-db-shared.svg',
 }
