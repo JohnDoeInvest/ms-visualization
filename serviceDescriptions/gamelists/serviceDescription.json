@@ -1,7 +1,7 @@
 {
   "name": "gamelists",
   "description": "Based on content providers such as Opta we build lists of games per date in this service",
-  "envVars": [],
+  "envVars": {},
   "incoming": {
     "restAPI": {
       "pathPrefix": "/gamelists",
@@ -64,7 +64,8 @@
           "gameprovider-updates"
         ],
         "produces": [
-          "gamelists"
+          "gamelists",
+          "pushresponses"
         ]
       }
     },

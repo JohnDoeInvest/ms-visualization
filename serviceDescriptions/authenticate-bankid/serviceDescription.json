@@ -1,7 +1,7 @@
 {
   "name": "authenticate-bankid",
   "description": "Accepts a Swedish social security number (SSID) and interfaces with the BankID service",
-  "envVars": [],
+  "envVars": {},
   "incoming": {
     "restAPI": {
       "pathPrefix": "/authenticate/bankid",
@@ -30,12 +30,11 @@
       "redis": {},
       "kafka": {
         "consumes": [
-          "clientrequests",
           "authenticate-bankid"
         ],
         "produces": [
-          "clientrequests",
-          "authenticate-bankid"
+          "authenticate-bankid",
+          "pushresponses"
         ]
       }
     },

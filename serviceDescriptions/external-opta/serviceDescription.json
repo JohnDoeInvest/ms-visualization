@@ -1,7 +1,7 @@
 {
   "name": "external-opta",
   "description": "Opta provides the sport events information. This service accepts the push feed and queries the pull feed as needed.",
-  "envVars": [],
+  "envVars": {},
   "incoming": {
     "restAPI": {
       "pathPrefix": "/opta",

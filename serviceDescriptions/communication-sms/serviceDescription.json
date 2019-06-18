@@ -1,7 +1,7 @@
 {
   "name": "communication-sms",
   "description": "Whenever any part of the application requires an SMS to be sent this service will do that",
-  "envVars": [],
+  "envVars": {},
   "incoming": {
     "restAPI": {
       "pathPrefix": "/communication-sms",

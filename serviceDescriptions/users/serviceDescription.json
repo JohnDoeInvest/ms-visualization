@@ -1,7 +1,7 @@
 {
   "name": "users",
   "description": "Maintains the user database based on data from other topics and requests made directly to it",
-  "envVars": [],
+  "envVars": {},
   "incoming": {
     "restAPI": {
       "pathPrefix": "/users",
@@ -62,7 +62,8 @@
         "produces": [
           "communication-email",
           "communication-sms",
-          "users"
+          "users",
+          "pushresponses"
         ]
       }
     },

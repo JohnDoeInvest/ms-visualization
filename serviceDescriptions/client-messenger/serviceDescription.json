@@ -1,7 +1,7 @@
 {
   "name": "client-messenger",
   "description": "Acts as backend to the nginx nchan service and deals with when someone subscribes or un-subscribes.",
-  "envVars": [],
+  "envVars": {},
   "incoming": {
     "restAPI": {
       "pathPrefix": "/messenger",

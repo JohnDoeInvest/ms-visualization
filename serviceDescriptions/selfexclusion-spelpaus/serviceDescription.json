@@ -1,7 +1,7 @@
 {
   "name": "selfexclusion-spelpaus",
   "description": "Checks a Swedish social security number (SSID) against the national registry Spelpaus",
-  "envVars": [],
+  "envVars": {},
   "incoming": {
     "restAPI": {
       "pathPrefix": "/selfexclusion/spelpaus",
@@ -21,7 +21,8 @@
           "selfexclusion-spelpaus"
         ],
         "produces": [
-          "selfexclusion-spelpaus"
+          "selfexclusion-spelpaus",
+          "pushresponses"
         ]
       }
     },
