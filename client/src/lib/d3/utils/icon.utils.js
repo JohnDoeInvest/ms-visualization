@@ -15,13 +15,17 @@ export const getIconByNode = (node) => {
 }
 
 function getRestAPIIcon(service) {
-    const method = service.method.toLowerCase();
-    
-    switch (method) {
-        case 'get': return GET_API_ICON;
-        case 'post': return POST_API_ICON;
-        case 'delete': return DELETE_API_ICON;
-        case 'put': return PUT_API_ICON;
-        default: return GET_API_ICON;
+    try {
+        const method = service.method.toLowerCase();
+        
+        switch (method) {
+            case 'get': return GET_API_ICON;
+            case 'post': return POST_API_ICON;
+            case 'delete': return DELETE_API_ICON;
+            case 'put': return PUT_API_ICON;
+            default: return GET_API_ICON;
+        }
+    } catch (err) {
+        return GET_API_ICON;
     }
 }

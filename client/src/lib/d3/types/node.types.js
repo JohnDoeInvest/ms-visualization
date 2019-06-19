@@ -1,20 +1,19 @@
 import { validId } from "../utils/string.utils";
-import { ServiceTypes, ServiceDirectionTypes } from "./service.types";
+import { ServiceTypes } from "./service.types";
 
 export const NODE_SIZE = 50;
 
-export const createNode = ({id, name, type, belongToIds, service, metadata, data, direction, fromIds, toIds }) => {
+export const createNode = ({id, name, type, belongToIds, metadata, data, fromIds, toIds, children }) => {
     return {
         id,
         name,
         type, 
         belongToIds,
         metadata,
-        service,
         data,
-        direction,
         fromIds,
         toIds,
+        children
     };
 }
 
@@ -31,10 +30,10 @@ export const getNodes = (serviceDescriptions) => {
             metadata: {
                 description: serviceDescription.description
             },
-            direction: ServiceDirectionTypes.Both
         });
 
         serviceNodes = serviceNodes.concat([microserviceNode]);
+        
         serviceNodes = serviceNodes.concat(getRestAPINodes(serviceDescription.incoming.restAPI, microserviceId));
         serviceNodes = serviceNodes.concat(getDBNodes(serviceDescription.services, microserviceId));
         serviceNodes = serviceNodes.concat(getSharedDBNodes(serviceDescription.services, microserviceId));
@@ -107,9 +106,23 @@ function mergeSimilarRestAPINodes(restAPINodes) {
 
 function getRestAPINodes(restAPI, parentId) {
     let restAPINodes = [];
+    let childrenAPINodes = [];
     if (restAPI) {
         const { pathPrefix, endpoints } = restAPI;
         if (endpoints) {
+            let groupRestNode = createNode({
+                id: validId(`${parentId}_rest_api_group`),
+                name: 'Rest APIs',
+                type: ServiceTypes.RestAPI,
+                belongToIds: [parentId],
+                metadata: {
+                    description: 'Rest APIs',
+                    canClickable: true,
+                    isCollapsed: false,
+                },
+                toIds: [parentId]
+            });
+
             for (const [key, value] of Object.entries(endpoints)) {
                 const name = pathPrefix + key;
                 const apis = value.map((api) => {
@@ -119,17 +132,25 @@ function getRestAPINodes(restAPI, parentId) {
                         name,
                         type: ServiceTypes.RestAPI,
                         belongToIds: [parentId],
-                        toIds: [parentId],
+                        toIds: [],
                         metadata: {
                             description: api.description
                         },
-                        direction: ServiceDirectionTypes.Outcome,
-                        data: api
+                        data: api,
+                        children: []
                     })
                     
                 });
-                restAPINodes = restAPINodes.concat(apis);
+                childrenAPINodes = childrenAPINodes.concat(apis);
             }
+
+            for (const childNode of childrenAPINodes) {
+                groupRestNode.toIds.push(childNode.id);
+            }
+
+            groupRestNode.children = [...childrenAPINodes];
+
+            restAPINodes = [groupRestNode, ...childrenAPINodes];
         }
     }
     return restAPINodes;
@@ -149,7 +170,6 @@ function getDBNodes(services, parentId) {
                 metadata: {
                     description: key
                 },
-                direction: ServiceDirectionTypes.Income
             });
             dbNodes.push(dbNode);
         }
@@ -171,7 +191,6 @@ function getSharedDBNodes(services, parentId) {
             metadata: {
                 description: 'Redis'
             },
-            direction: ServiceDirectionTypes.Income
         });
         sharedDBNodes.push(node);
     }
@@ -195,7 +214,6 @@ function getTopicNodes(services, parentId) {
                 metadata: {
                     description: consume
                 },
-                direction: ServiceDirectionTypes.Income
             });
         });
 
@@ -209,7 +227,6 @@ function getTopicNodes(services, parentId) {
                 metadata: {
                     description: produce
                 },
-                direction: ServiceDirectionTypes.Outcome
             });
         });
 
@@ -217,7 +234,6 @@ function getTopicNodes(services, parentId) {
             const idx = producesNodes.findIndex((produce) => consumeNode.name === produce.name);
 
             if (idx > -1) {
-                consumeNode.direction = ServiceDirectionTypes.Both;
                 consumeNode.toIds = [...producesNodes[idx].toIds];
                 producesNodes.splice(idx, 1);
             }
@@ -273,4 +289,26 @@ function mergeNodes(nodes) {
     }
 
     return mergedNodes;
+}
+
+export function updateNodes(nodes, updatedNode) {
+    if (updatedNode) {
+        let newNodes = [];
+        const { children, metadata: { canClickable, isCollapsed} } = updatedNode;
+        for (const node of nodes) {
+            if (node.id !== updatedNode.id && !children.find(child => child.id === node.id)) {
+                newNodes.push(node);
+            }
+        }
+        newNodes.push(updatedNode);
+        
+        if (canClickable) {
+            if (!isCollapsed) {
+                newNodes = newNodes.concat(children);
+            }
+        }
+
+        return newNodes;
+    }
+    return nodes;
 }

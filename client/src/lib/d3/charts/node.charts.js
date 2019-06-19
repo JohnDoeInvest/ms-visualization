@@ -5,6 +5,10 @@ import { buildTooltip } from './tooltip.charts';
 import { GET_API_ICON } from '../types/icon.types';
 import { NODE_SIZE } from '../types/node.types';
 import { getIconByNode } from '../utils/icon.utils';
+import { EventManager, EventNames } from '../types/event.types';
+import { ServiceTypes } from '../types/service.types';
+
+const dispatch = d3.dispatch(['event']);
 
 export function buildNodes() {
 	let context = null;
@@ -29,6 +33,25 @@ export function buildNodes() {
 			.attr('id', d => d.id)
 			.attr('class', 'node')
 			.attr('transform', d => `translate(${d.x}, ${d.y})`)
+			.on('click', function (d) {
+				if (d.type === ServiceTypes.RestAPI && d.metadata.canClickable) {
+					const updatedNode = {
+						...d,
+						metadata: {
+							...d.metadata,
+							isCollapsed: !d.metadata.isCollapsed
+						}
+					};
+
+					if (updatedNode.metadata.isCollapsed) {
+						updatedNode.toIds = [...updatedNode.belongToIds];
+					} else {
+						updatedNode.toIds = [...updatedNode.belongToIds, ...updatedNode.children.map(child => child.id)];
+					}
+					
+					EventManager.dispatch.call(EventNames.Collapsable, null, updatedNode);
+				}
+			});
 
 		const iconsGroup = nodeGroupMerge.select('g');
 		const textsGroup = nodeGroupMerge.select('text');

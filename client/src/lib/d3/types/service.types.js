@@ -6,12 +6,6 @@ export const ServiceTypes = {
     SharedDB: 'SharedDB',
 }
 
-export const ServiceDirectionTypes = {
-    Income: 'Income',
-    Outcome: 'Outcome',
-    Both: 'Both'
-}
-
 export const ServiceIconNames = {
     Microservice: 'icn-service.svg',
     RestAPI: {

@@ -1,11 +1,15 @@
 .chart-flow  svg {
     position: relative;
 }
+.chart-flow .node {
+    cursor: pointer;
+}
 .chart-flow .node > .node-description {
     font-size: 12px;
     font-weight: 700;
     stroke: #fff;
     stroke-width: 0.5px;
+    pointer-events: none;
 }
 
 .chart-flow .arrow {

@@ -4,17 +4,41 @@ import { connect } from 'preact-redux';
 import { FlowChart } from '../../lib/d3/components';
 import { loadServiceDescriptionSuccess } from '../../actions/serviceDescription.action'
 import { validId } from '../../lib/d3/utils/string.utils';
-import { getNodes } from '../../lib/d3/types/node.types';
+import { getNodes, updateNodes } from '../../lib/d3/types/node.types';
 import { getLinks } from '../../lib/d3/types/link.types';
-
+import { EventManager, EventNames } from '../../lib/d3/types/event.types';
+import serviceDescriptions from '../../serviceDescriptions.json';
 // import serviceDescriptions from '../../serviceDescriptions.json';
 class ChartContainer extends Component {
 	constructor(props) {
 		super(props);
+		this.state = { 
+			updatedNode: undefined,
+			nodes: [],
+		};
 	}
 
+	componentDidMount() {
+		EventManager.dispatch.on(EventNames.Collapsable, (updatedNode) => {
+			this.setState({ updatedNode });
+		});
+	}
+
+	componentWillUnmount() {
+		EventManager.dispatch.on(EventNames.Collapsable, null );
+	}
+
+	componentWillReceiveProps(nextProps, nextState) {
+		if (this.props.selectedServiceDescriptions !== nextProps.selectedServiceDescriptions) {
+			const nodes = getNodes(nextProps.selectedServiceDescriptions);
+			this.setState({ nodes, updatedNode: undefined });
+		}
+	}
+
+
+
 	render(props, state) {
-		let nodes = getNodes(props.selectedServiceDescriptions);
+		let nodes = updateNodes(this.state.nodes, this.state.updatedNode);
 		let links = getLinks(nodes);
 
 		let selectedService = props.selectedServiceDescriptions[props.selectedServiceDescriptionIndex];

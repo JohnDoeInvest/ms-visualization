@@ -75,6 +75,9 @@ function getPath(link) {
 
 function getPathIds(link) {
 	const { sourceNode, targetNode } = link;
+	if (sourceNode.type === ServiceTypes.RestAPI && targetNode.type === ServiceTypes.RestAPI) {
+		return [ConnectorIdDics.GET_API.right, ConnectorIdDics.GET_API.right];
+	}
 	if (sourceNode.type === ServiceTypes.RestAPI && targetNode.type === ServiceTypes.Microservice) {
 		return [ConnectorIdDics.GET_API.right, ConnectorIdDics.MICROSERVICE.left];
 	}

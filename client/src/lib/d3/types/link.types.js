@@ -21,12 +21,12 @@ export const getLinks = (nodes) => {
     }
 
     for (const node of nodes) {
-        const { id, type, toIds, fromIds } = node;
+        const { id, type, toIds, fromIds, belongToIds } = node;
         if (type === ServiceTypes.RestAPI) {
             let newRestLinks = toIds.map((parentId) => ({
                 source: id,
                 target: parentId,
-                belongToId: parentId,
+                belongToId: belongToIds[0],
                 sourceNode: node,
                 targetNode: nodesMap.get(parentId)
             }));
