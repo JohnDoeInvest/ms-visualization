@@ -44,11 +44,12 @@ export function buildFlowChart() {
 			.force('center', d3.forceCenter(innerWidth / 2, innerHeight / 2))
 			.force('link', d3.forceLink().links(links).id(d => d.id).distance(d => getLinkDistance(d)).strength(0.025))
 			.force('collision', d3.forceCollide().radius(d => NODE_SIZE))
-			.stop();
+			.on('tick', buildGraph)
+			// .stop();
 
-		for (let i = 0, n = Math.ceil(Math.log(simulation.alphaMin()) / Math.log(1 - simulation.alphaDecay())); i < n; ++i) {
-			simulation.tick();
-		}
+		// for (let i = 0, n = Math.ceil(Math.log(simulation.alphaMin()) / Math.log(1 - simulation.alphaDecay())); i < n; ++i) {
+		// 	simulation.tick();
+		// }
 
 		buildGraph();
 
