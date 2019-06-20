@@ -43,16 +43,23 @@ class ChartContainer extends Component {
 
 		let selectedService = props.selectedServiceDescriptions[props.selectedServiceDescriptionIndex];
 
+		if (nodes.length === 0) {
+			return null;
+		}
+
 		return (
-			<FlowChart
-                id={`flow-chart`}
-                width="auto"
-                height={1200}
-                margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-                links={links}
-                nodes={nodes}
-                selectedServiceId={selectedService ? validId(selectedService.name) : undefined}
-            />
+			<div class="break-page">
+				<h1 class="ui header">Visualization</h1>
+				<FlowChart
+					id={`flow-chart`}
+					width="auto"
+					height={1200}
+					margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+					links={links}
+					nodes={nodes}
+					selectedServiceId={selectedService ? validId(selectedService.name) : undefined}
+				/>
+			</div>
 		);
 	}
 }

@@ -1,0 +1,63 @@
+@media print {
+    @page { margin: 2cm ;}
+
+    body {
+        font-family: 'Helvetica Neue', arial, sans-serif !important;
+        font-size: 13pt !important;
+        line-height: 1.3 !important;
+        background: #ffffff !important;
+        color: #000 !important;
+    }
+    .no-print {
+        display: none !important;
+    }
+    
+    h1 {
+        font-size: 24pt !important;
+        page-break-before: always;
+        break-before: always;
+    }
+    
+    h2, h3, h4 {
+        font-size: 14pt !important;
+        margin-top: 25px !important;
+    }    
+     
+    h1, h2, h3, h4, h5, h6 { 
+        page-break-after:avoid; 
+        page-break-inside:avoid; 
+    }
+
+    img, svg { 
+        page-break-inside: avoid !important; 
+    }
+    .break-page {
+        page-break-inside: avoid !important;
+        page-break-after: always !important; 
+    }
+    table { 
+        page-break-inside: avoid !important;
+        page-break-after: always !important; 
+    }
+    
+    .entry:after {
+        content: "\ MS-Visualization, (c) 2019 Super12";
+        color: #999 !important;
+        font-size: 1em;
+        margin-top: 32px;
+        margin-bottom: 32px;
+        text-align: center !important;
+        display: block;
+    }
+
+    .entry:before {
+        content: "\ MS-Visualization";
+        color: #999 !important;
+        font-size: 3em !important;
+        margin-top: 32px !important;
+        margin-bottom: 32px !important;
+        text-align: center !important;   
+        font-weight: 700; 
+        display: block;
+    }
+}

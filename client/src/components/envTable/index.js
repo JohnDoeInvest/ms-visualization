@@ -49,9 +49,9 @@ class ENVTable extends Component {
         }
 
         return (
-            <div class={style.container}>
+            <div class='page-break'>
                 <h1 class="ui header">ENV Vars</h1>
-                <table class="ui selectable celled table">
+                <table class="ui celled table">
                     <thead>
                         <tr>
                             <th>Name</th>

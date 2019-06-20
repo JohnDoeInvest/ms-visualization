@@ -1,6 +1,5 @@
 import { h, Component } from 'preact';
 import jsPDF from 'jspdf';
-import style from './style';
 
 class PDFExporter extends Component {
     handleExport = (event) => {
@@ -27,9 +26,10 @@ class PDFExporter extends Component {
 
     render(props, state) {
         return (
-            <div class={style['pdf-container']}>
-                <a href="#" onClick={this.handleExport}>Export PDF</a>
-            </div>
+            <button class="ui icon primary basic button" onClick={this.handleExport}>
+                <i class="file pdf icon"></i>
+                Export PDF
+            </button>
         )
     }
 }
