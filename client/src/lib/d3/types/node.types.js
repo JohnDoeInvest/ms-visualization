@@ -1,7 +1,7 @@
 import { validId } from "../utils/string.utils";
 import { ServiceTypes } from "./service.types";
 
-export const NODE_SIZE = 50;
+export const NODE_SIZE = 30;
 
 export const createNode = ({id, name, type, belongToIds, metadata, data, fromIds, toIds, children }) => {
     return {

@@ -61,16 +61,16 @@ export function buildNodes() {
 			.html(d => getIconByNode(d))
 
 		iconsGroup.select('svg')
-			.attr('width', NODE_SIZE)
+			.attr('width', NODE_SIZE * 2)
 			.attr('height', function () {
 				const bbox = d3.select(this).node().getBBox();
 				const scale = bbox.width / bbox.height;
-				return NODE_SIZE / scale;
+				return 2 * NODE_SIZE / scale;
 			});
 
 		textsGroup
 			.attr('class', 'node-description')
-			.attr('x', NODE_SIZE / 2)
+			.attr('x', NODE_SIZE)
 			.attr('y', function () {
 				const bbox = d3.select(this.parentNode).node().getBBox();
 				return bbox.height / 2;
