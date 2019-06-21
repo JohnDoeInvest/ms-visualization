@@ -53,7 +53,7 @@ class ChartContainer extends Component {
 				<FlowChart
 					id={`flow-chart`}
 					width="auto"
-					height={1200}
+					height={900}
 					margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
 					links={links}
 					nodes={nodes}

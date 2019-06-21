@@ -23,21 +23,17 @@
         margin-top: 25px !important;
     }    
      
-    h1, h2, h3, h4, h5, h6 { 
-        page-break-after:avoid; 
-        page-break-inside:avoid; 
-    }
-
     img, svg { 
         page-break-inside: avoid !important; 
+        page-break-after: always !important; 
     }
     .break-page {
-        page-break-inside: avoid !important;
-        page-break-after: always !important; 
+        /* page-break-inside: avoid !important;
+        page-break-after: always !important;  */
     }
     table { 
         page-break-inside: avoid !important;
-        page-break-after: always !important; 
+        break-inside: avoid !important;
     }
     
     .entry:after {

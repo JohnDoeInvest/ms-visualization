@@ -9,13 +9,21 @@ import { buildDefs, getPattern } from '../charts/defs.charts';
 
 class FlowChart extends Component {
     containerEl = null;
+    chart;
+    svg;
+    nodesBuilder;
+    linksBuilder;
     constructor(props) {
         super(props);
         this.state = { reload: false };
+        this.chart = buildFlowChart();
+        this.nodesBuilder = buildNodes();
+        this.linksBuilder = buildLinks();
     }
 
     componentDidMount() {
         this.containerEl = document.getElementById(this.props.id);
+        this.svg = d3.select(this.containerEl).select('svg');
         this.setState({ reload: true });
     }
 
@@ -26,27 +34,23 @@ class FlowChart extends Component {
     redraw() {
         if (!this.containerEl) {
             this.containerEl = document.getElementById(this.props.id);
+            this.svg = d3.select(this.containerEl).select('svg');
         }
 
         const dimension = this.getContainerDimension();
-        const svg = d3.select(this.containerEl).select('svg');
 
-        const nodesBuilder = buildNodes();
         const nodes = createConfigurationBuilder(
-            nodesBuilder, 
+            this.nodesBuilder, 
             builder => builder.selectedServiceId(this.props.selectedServiceId))
         ('nodes-root-group');
 
-        const linksBuilder = buildLinks();
         const links = createConfigurationBuilder(
-            linksBuilder, 
+            this.linksBuilder, 
             builder => builder
                 .selectedServiceId(this.props.selectedServiceId)
         )('links-root-group');
 
-        const chart = buildFlowChart();
-
-        chart
+        this.chart
             .width(dimension.containerWidth)
             .height(dimension.containerHeight)
             .margin(this.props.margin)
@@ -54,8 +58,7 @@ class FlowChart extends Component {
             .nodes(this.props.nodes)
             .links(this.props.links);
         
-        svg.call(chart);
-
+        this.svg.call(this.chart);
     }
 
     getContainerDimension() {
