@@ -13,9 +13,9 @@ import Printer from '../../components/printer';
 export default class Home extends Component {
 	render(props, state) {
 		return (
-			<div class="ui container entry">
+			<div class="ui container entry main">
 				<div class="ui grid">
-					<div class="row mg mg-top">
+					<div class="row mg mg-top no-print">
 						<h1 class="ui header">MS-Visualization</h1>
 					</div>
 					<div class="row no-print">
@@ -25,14 +25,14 @@ export default class Home extends Component {
 						<ServiceDescriptionLoader />
 					</div>
 					<div class="row no-print">
+						<Printer />
+						<PDFExporter />
+					</div>
+					<div class="row no-print">
 						<EditorContainer />
 					</div>
 					<div class="row">
 						<ServiceDescriptionTableContainer />
-					</div>
-					<div class="row no-print">
-						<Printer />
-						<PDFExporter />
 					</div>
 					<div class="row">
 						<ChartContainer />

@@ -8,6 +8,10 @@
         background: #ffffff !important;
         color: #000 !important;
     }
+    .main {
+        width: 100% !important;
+        margin: 1rem !important;
+    }
     .no-print {
         display: none !important;
     }
