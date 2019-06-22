@@ -49,8 +49,8 @@ class ENVTable extends Component {
         }
 
         return (
-            <div class='page-break'>
-                <h1 class="ui header">ENV Vars</h1>
+            <div class='page-break full-width'>
+                <h2 class="ui header">ENV Vars</h2>
                 <table class="ui celled table">
                     <thead>
                         <tr>

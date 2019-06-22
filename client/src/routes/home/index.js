@@ -15,39 +15,30 @@ export default class Home extends Component {
 		return (
 			<div class="ui container entry">
 				<div class="ui grid">
-					<div class="four column row mg mg-top no-print" style={{alignItems: 'baseline'}}>
-						<div class="left floated column">
-							<ServiceDescriptionLoader />
-						</div>
-						<div class="right floated column">
-							<ServiceDescriptionSearchContainer />
-						</div>
+					<div class="row mg mg-top">
+						<h1 class="ui header">MS-Visualization</h1>
 					</div>
 					<div class="row no-print">
-						<div class="column">
-							<EditorContainer />
-						</div>
-					</div>
-					<div class="row">
-						<div class="column">
-							<ServiceDescriptionTableContainer />
-						</div>
+						<ServiceDescriptionSearchContainer />
 					</div>
 					<div class="row no-print">
-						<div class="column">
-							<Printer />
-							<PDFExporter />
-						</div>
+						<ServiceDescriptionLoader />
+					</div>
+					<div class="row no-print">
+						<EditorContainer />
 					</div>
 					<div class="row">
-						<div class="column">
-							<ChartContainer />
-						</div>
+						<ServiceDescriptionTableContainer />
+					</div>
+					<div class="row no-print">
+						<Printer />
+						<PDFExporter />
 					</div>
 					<div class="row">
-						<div class="column">
-							<ENVTable />
-						</div>
+						<ChartContainer />
+					</div>
+					<div class="row">
+						<ENVTable />
 					</div>
 				</div>
 			</div>

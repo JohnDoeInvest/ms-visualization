@@ -48,8 +48,8 @@ class ChartContainer extends Component {
 		}
 
 		return (
-			<div class="break-page">
-				<h1 class="ui header">Visualization</h1>
+			<div class="break-page full-width">
+				<h2 class="ui header">Visualization</h2>
 				<FlowChart
 					id={`flow-chart`}
 					width="auto"

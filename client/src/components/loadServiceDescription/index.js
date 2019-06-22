@@ -26,7 +26,7 @@ class ServiceDescriptionLoader extends Component {
 
 	render(props, state) {
 		return (
-			<div class="ui action input">
+			<div class="ui action input full-width">
                 <input
                     type="text"
                     value={state.url}

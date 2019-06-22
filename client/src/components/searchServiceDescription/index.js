@@ -69,63 +69,69 @@ class SearchServiceDescription extends Component {
 
     render(props, state) {
         return (
-            <div class="search-container">
-                <div class="ui input">
-                    <input type="text" placeholder="Github personal token" value={state.token} onInput={this.handleChangeToken} />
-                </div>
-                {!state.token && (
-                    <div class="ui red message">Please enter your Github personal token!</div>
-                )}
-                {state.token && (
-                    <div class={`ui category search ${props.isSearching ? 'loading': ''}`} style={{marginTop: '8px'}}>
-                        <div class="ui icon input">
-                            <input
-                                type="text"
-                                placeholder="Search service description..."
-                                onInput={this.handleSearch}
-                            />
-                            <i class="search icon" />
-                        </div>
-                        <div class={`results transition ${props.searchedServiceDescriptions && props.searchedServiceDescriptions.length > 0 ? 'visible': ''}`}>
-                            {props.searchedServiceDescriptions && (
-                                <div class="ui middle aligned selection list">
-                                    {props.searchedServiceDescriptions.map((serviceDescription) => (
-                                        <div class="item">
-                                            <div class="right floated content">
-                                                <div class="ui checkbox">
-                                                    <input
-                                                        type="checkbox"
-                                                        onInput={this.handleChangeCheckbox(serviceDescription)}
-                                                        checked={state.checkboxes[serviceDescription.path] ? state.checkboxes[serviceDescription.path].checked : false}
-                                                    />
-                                                    <label />
-                                                </div>
-                                            </div>
-                                            <i class="large github middle aligned icon" />
-                                            <div class="content">
-                                                <a class="header">{serviceDescription.path}</a>
-                                                <div class="description">{serviceDescription.name}</div>
-                                            </div>
-                                        </div>))}
-                                </div>)}
-                                <div style={{margin: '16px', float: 'right'}}>
-                                    <button
-                                        class="ui button primary"
-                                        onClick={this.handleLoadServiceDescriptions}
-                                    >
-                                        Load
-                                    </button>
-                                    <button
-                                        class="ui button primary"
-                                        onClick={this.handleCheckAllServiceDescriptions}
-                                    >
-                                        Check all
-                                    </button>
-                                </div>
-                        </div>
+            <div class="search-container full-width">
+                <form class="ui fluid form">
+                    <div class="field">
+                        <input type="text" placeholder="Github personal token" value={state.token} onInput={this.handleChangeToken} />
+                        {!this.state.token && (
+                            <div class="ui pointing red basic label">
+                                Please enter your Github personal token
+                            </div>
+                        )}
                     </div>
-                )}
-                
+                    {state.token && (
+                        <div class={`ui search right aligned  ${props.isSearching ? 'loading': ''}`}>
+                            <div class="ui icon input fluid">
+                                <input
+                                    type="text"
+                                    class="prompt"
+                                    placeholder="service descriptions..."
+                                    onInput={this.handleSearch}
+                                />
+                                <i class="search icon" />
+                            </div>
+                            <div class={`results transition full-width ${props.searchedServiceDescriptions && props.searchedServiceDescriptions.length > 0 ? 'visible': ''}`} style={{padding: '8px', width: '100%'}}>
+                                {props.searchedServiceDescriptions && (
+                                    <div class="ui selection list" style={{maxHeight: '400px', overflowY: 'auto'}}>
+                                        {props.searchedServiceDescriptions.map((serviceDescription) => (
+                                            <div class="item">
+                                                <div class="right floated content">
+                                                    <div class="ui checkbox">
+                                                        <input
+                                                            type="checkbox"
+                                                            onInput={this.handleChangeCheckbox(serviceDescription)}
+                                                            checked={state.checkboxes[serviceDescription.path] ? state.checkboxes[serviceDescription.path].checked : false}
+                                                        />
+                                                        <label />
+                                                    </div>
+                                                </div>
+                                                <i class="large github middle aligned icon" />
+                                                <div class="content">
+                                                    <a class="header">{serviceDescription.path}</a>
+                                                    <div class="description">{serviceDescription.name}</div>
+                                                </div>
+                                            </div>))}
+                                    </div>)}
+                                    <div style={{margin: '8px', float: 'right'}}>
+                                        <button
+                                            type="button"
+                                            class="ui button primary"
+                                            onClick={this.handleLoadServiceDescriptions}
+                                        >
+                                            Load
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="ui button primary"
+                                            onClick={this.handleCheckAllServiceDescriptions}
+                                        >
+                                            Check all
+                                        </button>
+                                    </div>
+                            </div>
+                        </div>
+                    )}
+                </form>
             </div>
         );
     }
