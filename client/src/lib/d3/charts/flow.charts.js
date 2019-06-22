@@ -16,8 +16,8 @@ export function buildFlowChart() {
 	let simulation = d3.forceSimulation(nodes)
 		.force('charge', d3.forceManyBody())
 		.force('center', d3.forceCenter(innerWidth / 2, innerHeight / 2))
-		.force('link', d3.forceLink().links(links).id(d => d.id).distance(d => getLinkDistance(d))
-		.force('collision', d3.forceCollide().radius(d => NODE_SIZE + 8))
+		.force('link', d3.forceLink().links(links).id(d => d.id).distance(d => getLinkDistance(d)))
+		.force('collision', d3.forceCollide().radius(d => NODE_SIZE + 8));
 		// .on('tick', buildGraph);
 
 	// eslint-disable-next-line func-style
