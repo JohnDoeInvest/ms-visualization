@@ -16,38 +16,42 @@
         display: none !important;
     }
     
-    h1 {
+    h1, h2 {
         font-size: 24pt !important;
-        page-break-before: always;
-        break-before: always;
+        page-break-before: always !important;
+        break-before: always !important;
     }
     
     h2, h3, h4 {
-        font-size: 14pt !important;
+        font-size: 16pt !important;
         margin-top: 25px !important;
+        font-weight: 700;
     }    
      
     img, svg { 
         page-break-inside: avoid !important; 
-        page-break-after: always !important; 
+        page-break-after: avoid !important; 
     }
     .break-page {
-        /* page-break-inside: avoid !important;
-        page-break-after: always !important;  */
+        page-break-inside: avoid !important;
+        break-inside: avoid;
+        box-decoration-break: clone;
     }
     table { 
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
+        /* page-break-inside: avoid !important;
+        break-inside: avoid;
+        box-decoration-break: clone; */
     }
     
     .entry:after {
         content: "\ MS-Visualization, (c) 2019 Super12";
         color: #999 !important;
-        font-size: 1em;
-        margin-top: 32px;
-        margin-bottom: 32px;
+        font-size: 0.875em;
+        margin-top: 40px;
+        margin-bottom: 40px;
         text-align: center !important;
         display: block;
+        position: relative;
     }
 
     .entry:before {
