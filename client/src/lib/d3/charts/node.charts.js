@@ -33,6 +33,7 @@ export function buildNodes() {
 			.attr('id', d => d.id)
 			.attr('class', 'node')
 			.attr('transform', d => `translate(${d.x}, ${d.y})`)
+			.style('cursor', d => d.metadata.canClickable ? 'pointer' : 'auto')
 			.on('click', function (d) {
 				if (d.type === ServiceTypes.RestAPI && d.metadata.canClickable) {
 					const updatedNode = {
@@ -43,12 +44,6 @@ export function buildNodes() {
 						}
 					};
 
-					if (updatedNode.metadata.isCollapsed) {
-						updatedNode.toIds = [...updatedNode.belongToIds];
-					} else {
-						updatedNode.toIds = [...updatedNode.belongToIds, ...updatedNode.children.map(child => child.id)];
-					}
-					
 					EventManager.dispatch.collapse.call(EventNames.Collapsable, null, updatedNode);
 				}
 			});
@@ -133,5 +128,35 @@ export function buildNodes() {
 	}
 
 	return builder;
+}
+
+export function toggleNodes(rootNodeClass, collapsedNodesMap) {
+	const rootSelection = d3.select(`.${rootNodeClass}`);
+	if (!rootSelection.empty()) {
+		const nodes = rootSelection.selectAll('.node');
+
+		nodes.each(function (nodeData) {
+			const currentNode = d3.select(this);
+			const isCollasped = checkNodeCollapsed(nodeData, collapsedNodesMap);
+
+			currentNode
+				.transition()
+				.duration(750)
+				.ease(d3.easeLinear)
+				.style('visibility',  isCollasped ? 'hidden' : 'visible');
+		})
+	}
+}
+
+function checkNodeCollapsed(currentNode, collapsedNodesMap) {
+	let flattenChildren = [];
+
+	for (const node of collapsedNodesMap.values()) {
+		flattenChildren = flattenChildren.concat(node.children || []);
+	}
+
+	const isCollasped = flattenChildren.find(child => child.id === currentNode.id);
+
+	return !!isCollasped;
 }
 

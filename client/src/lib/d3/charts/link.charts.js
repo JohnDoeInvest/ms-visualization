@@ -126,3 +126,36 @@ function getScreenCoords(node) {
     return { x: xn, y: yn };
 }
 
+export function toggleLinks(rootLinkClass, collapsedNodesMap) {
+	const rootSelection = d3.select(`.${rootLinkClass}`);
+	if (!rootSelection.empty()) {
+		const links = rootSelection.selectAll('.link');
+
+		links.each(function (linkData) {
+			const currentLink = d3.select(this);
+			const isCollasped = checkLinkCollapsed(linkData, collapsedNodesMap);
+
+			currentLink
+				.transition()
+				.duration(750)
+				.ease(d3.easeLinear)
+				.style('visibility',  isCollasped ? 'hidden' : 'visible');
+		})
+	}
+}
+
+function checkLinkCollapsed(currentLink, collapsedNodesMap) {
+	let flattenChildren = [];
+	const { source, target } = currentLink;
+
+	console.log('sdsdsd', currentLink, collapsedNodesMap);
+
+	for (const node of collapsedNodesMap.values()) {
+		flattenChildren = flattenChildren.concat(node.children || []);
+	}
+
+	const isCollasped = flattenChildren.find(child => child.id === source.id || child.id === target.id);
+
+	return !!isCollasped;
+}
+

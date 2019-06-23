@@ -3,8 +3,8 @@ import { h, Component } from 'preact';
 import * as d3 from 'd3';
 import { buildFlowChart } from '../charts/flow.charts';
 import { createConfigurationBuilder } from '../charts/base.charts';
-import { buildNodes } from '../charts/node.charts';
-import { buildLinks } from '../charts/link.charts';
+import { buildNodes, toggleNodes } from '../charts/node.charts';
+import { buildLinks, toggleLinks } from '../charts/link.charts';
 import { buildDefs, getPattern } from '../charts/defs.charts';
 import { EventManager, EventNames } from '../types/event.types';
 import { validId } from '../utils/string.utils';
@@ -16,8 +16,8 @@ class FlowChart extends Component {
     svg;
     nodesBuilder;
     linksBuilder;
-    nodes = [];
-    links = [];
+    collapsedNodesMap = new Map();
+
     constructor(props) {
         super(props);
         this.chart = buildFlowChart();
@@ -31,9 +31,6 @@ class FlowChart extends Component {
     }
 
     componentDidUpdate() {
-        console.log('dsdsdsd');
-        this.nodes = this.props.nodes;
-        this.links = this.props.links;
         this.redraw();
     }
 
@@ -63,14 +60,21 @@ class FlowChart extends Component {
             .margin(this.props.margin)
             .childComponents([nodes, links]);
 
-        this.nodes = this.props.nodes;
-        this.links = this.props.links;
         this.redraw();
     }
 
     handleEvents() {
         EventManager.dispatch.collapse.on(EventNames.Collapsable, (data) => {
-            console.log('Collapsable', data);
+            if (data.metadata.isCollapsed) {
+                if (this.collapsedNodesMap.has(data.id)) {
+                    this.collapsedNodesMap.delete(data.id);
+                } else {
+                    this.collapsedNodesMap.set(data.id, data);
+                }
+            }
+
+            toggleNodes('nodes-root-group', this.collapsedNodesMap);
+            toggleLinks('links-root-group', this.collapsedNodesMap);
         });
 
         EventManager.dispatch.highlight.on(EventNames.Highlight, (data) => {
@@ -86,8 +90,8 @@ class FlowChart extends Component {
         }
 
         this.chart
-            .nodes(this.nodes)
-            .links(this.links);
+            .nodes(this.props.nodes)
+            .links(this.props.links);
         
         this.svg.call(this.chart);
     }

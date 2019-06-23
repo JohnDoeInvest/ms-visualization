@@ -1,9 +1,6 @@
 .chart-flow  svg {
     position: relative;
 }
-.chart-flow .node {
-    cursor: pointer;
-}
 .chart-flow .node > .node-description {
     font-size: 12px;
     font-weight: 700;
