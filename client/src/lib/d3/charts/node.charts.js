@@ -49,7 +49,7 @@ export function buildNodes() {
 						updatedNode.toIds = [...updatedNode.belongToIds, ...updatedNode.children.map(child => child.id)];
 					}
 					
-					EventManager.dispatch.call(EventNames.Collapsable, null, updatedNode);
+					EventManager.dispatch.collapse.call(EventNames.Collapsable, null, updatedNode);
 				}
 			});
 

@@ -6,6 +6,9 @@ import { createConfigurationBuilder } from '../charts/base.charts';
 import { buildNodes } from '../charts/node.charts';
 import { buildLinks } from '../charts/link.charts';
 import { buildDefs, getPattern } from '../charts/defs.charts';
+import { EventManager, EventNames } from '../types/event.types';
+import { validId } from '../utils/string.utils';
+import { buildHighlight } from '../charts/highlight.charts';
 
 class FlowChart extends Component {
     containerEl = null;
@@ -13,22 +16,67 @@ class FlowChart extends Component {
     svg;
     nodesBuilder;
     linksBuilder;
+    nodes = [];
+    links = [];
     constructor(props) {
         super(props);
-        this.state = { reload: false };
         this.chart = buildFlowChart();
         this.nodesBuilder = buildNodes();
         this.linksBuilder = buildLinks();
     }
 
     componentDidMount() {
-        this.containerEl = document.getElementById(this.props.id);
-        this.svg = d3.select(this.containerEl).select('svg');
-        this.setState({ reload: true });
+        this.initializeChart();
+        this.handleEvents();
     }
 
     componentDidUpdate() {
+        console.log('dsdsdsd');
+        this.nodes = this.props.nodes;
+        this.links = this.props.links;
         this.redraw();
+    }
+
+    componentWillUnmount() {
+        EventManager.dispatch.collapse.on(EventNames.Collapsable, null);
+        EventManager.dispatch.collapse.on(EventNames.Highlight, null);
+    }
+
+    initializeChart() {
+        this.containerEl = document.getElementById(this.props.id);
+        this.svg = d3.select(this.containerEl).select('svg');
+
+        const dimension = this.getContainerDimension();
+        const nodes = createConfigurationBuilder(
+            this.nodesBuilder, 
+            builder => builder)
+        ('nodes-root-group');
+
+        const links = createConfigurationBuilder(
+            this.linksBuilder, 
+            builder => builder)
+        ('links-root-group');
+
+        this.chart
+            .width(dimension.containerWidth)
+            .height(dimension.containerHeight)
+            .margin(this.props.margin)
+            .childComponents([nodes, links]);
+
+        this.nodes = this.props.nodes;
+        this.links = this.props.links;
+        this.redraw();
+    }
+
+    handleEvents() {
+        EventManager.dispatch.collapse.on(EventNames.Collapsable, (data) => {
+            console.log('Collapsable', data);
+        });
+
+        EventManager.dispatch.highlight.on(EventNames.Highlight, (data) => {
+            const microserviceId = data ? validId(data.name) : undefined;
+            buildHighlight('links-root-group', microserviceId);
+        });
     }
 
     redraw() {
@@ -37,26 +85,9 @@ class FlowChart extends Component {
             this.svg = d3.select(this.containerEl).select('svg');
         }
 
-        const dimension = this.getContainerDimension();
-
-        const nodes = createConfigurationBuilder(
-            this.nodesBuilder, 
-            builder => builder.selectedServiceId(this.props.selectedServiceId))
-        ('nodes-root-group');
-
-        const links = createConfigurationBuilder(
-            this.linksBuilder, 
-            builder => builder
-                .selectedServiceId(this.props.selectedServiceId)
-        )('links-root-group');
-
         this.chart
-            .width(dimension.containerWidth)
-            .height(dimension.containerHeight)
-            .margin(this.props.margin)
-            .childComponents([nodes, links])
-            .nodes(this.props.nodes)
-            .links(this.props.links);
+            .nodes(this.nodes)
+            .links(this.links);
         
         this.svg.call(this.chart);
     }

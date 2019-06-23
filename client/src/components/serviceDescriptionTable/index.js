@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import * as serviceDescriptionActions from '../../actions/serviceDescription.action';
+import { EventManager, EventNames } from '../../lib/d3/types/event.types';
 import style from './style.css';
 
 class ServiceDescriptionTable extends Component {
@@ -17,6 +18,7 @@ class ServiceDescriptionTable extends Component {
 
     handleSelectServiceDescription = (index) => () => {
         this.props.selectServiceDescription(index);
+        EventManager.dispatch.highlight.call(EventNames.Highlight, null, this.props.selectedServiceDescriptions[index]);
     }
 
     render(props, state) {

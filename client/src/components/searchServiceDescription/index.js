@@ -85,7 +85,7 @@ class SearchServiceDescription extends Component {
                                 <input
                                     type="text"
                                     class="prompt"
-                                    placeholder="service descriptions..."
+                                    placeholder="Enter service description repo"
                                     onInput={this.handleSearch}
                                 />
                                 <i class="search icon" />

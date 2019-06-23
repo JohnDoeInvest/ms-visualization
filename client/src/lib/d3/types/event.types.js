@@ -1,13 +1,18 @@
 import * as d3 from 'd3';
 
 const EventNames = {
-    Collapsable: 'Collapsable'
+    Collapsable: 'Collapsable',
+    Highlight: 'Highlight'
 }
 
 const collapsableDispatch = d3.dispatch([EventNames.Collapsable]);
+const hightlightDispatch = d3.dispatch([EventNames.Highlight]);
 
 const EventManager = {
-    dispatch: collapsableDispatch
+    dispatch: {
+        collapse: collapsableDispatch,
+        highlight: hightlightDispatch
+    }
 };
 
 Object.freeze(EventManager);
