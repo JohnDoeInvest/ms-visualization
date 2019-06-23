@@ -31,6 +31,7 @@ class FlowChart extends Component {
     }
 
     componentDidUpdate() {
+        this.collapsedNodesMap.clear();
         this.redraw();
     }
 

@@ -34,6 +34,7 @@ export function buildNodes() {
 			.attr('class', 'node')
 			.attr('transform', d => `translate(${d.x}, ${d.y})`)
 			.style('cursor', d => d.metadata.canClickable ? 'pointer' : 'auto')
+			.style('visibility', 'visible')
 			.on('click', function (d) {
 				if (d.type === ServiceTypes.RestAPI && d.metadata.canClickable) {
 					const updatedNode = {

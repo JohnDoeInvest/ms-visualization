@@ -19,6 +19,7 @@ export function buildLinks() {
 		linkGroupsEnter.append('svg:path');
 		linkGroupMerge
 			.classed('highlight', d => d.belongToId === selectedServiceId)
+			.style('visibility', 'visible');
 
 		linkGroupMerge.select('path')
 			.attr('d', d => getPath(d))
