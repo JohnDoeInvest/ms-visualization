@@ -1,5 +1,5 @@
 @media print {
-    @page { margin: 2cm ;}
+    @page { margin: 2cm; }
 
     body {
         font-family: 'Helvetica Neue', arial, sans-serif !important;
