@@ -5,6 +5,7 @@ import { loadServiceDescriptionSuccess } from '../../actions/serviceDescription.
 import { FlowChart } from '../../lib/d3/components';
 import { getNodes } from '../../lib/d3/types/node.types';
 import { getLinks } from '../../lib/d3/types/link.types';
+import './style.css';
 
 class ChartContainer extends Component {
 	constructor(props) {
@@ -20,7 +21,7 @@ class ChartContainer extends Component {
 		}
 
 		return (
-			<div class="break-page full-width">
+			<div class="chart-container break-page full-width">
 				<h2 class="ui header">Visualization</h2>
 				<FlowChart
 					id={`flow-chart`}

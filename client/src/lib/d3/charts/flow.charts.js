@@ -31,7 +31,9 @@ export function buildFlowChart() {
 		svg
 			.attr('xmlns', 'http://www.w3.org/2000/svg')
 			.attr('version', '1.1')
-            .attr('preserveAspectRatio', 'xMinYMin meet')
+			.attr('preserveAspectRatio', 'xMinYMin meet')
+			// .attr('width', width)
+			// .attr('height', height)
             .attr('viewBox', `0 0 ${width} ${height}`);
 
 		const defsBuilder = buildDefs().patterns(getPattern('arrow')('arrow-marker') + '\n' + getPattern('arrow')('arrow-marker-highlight'));

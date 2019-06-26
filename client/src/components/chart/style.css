@@ -1,0 +1,4 @@
+.chart-container {
+    min-width: 900px;
+    overflow: scroll;
+}

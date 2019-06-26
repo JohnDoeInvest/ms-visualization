@@ -36,8 +36,12 @@ class FlowChart extends Component {
     }
 
     componentWillUnmount() {
-        EventManager.dispatch.collapse.on(EventNames.Collapsable, null);
-        EventManager.dispatch.collapse.on(EventNames.Highlight, null);
+        try {
+            EventManager.dispatch.collapse.on(EventNames.Collapsable, null);
+            EventManager.dispatch.collapse.on(EventNames.Highlight, null);
+        } catch (err) {
+            // no need to handle
+        }
     }
 
     initializeChart() {

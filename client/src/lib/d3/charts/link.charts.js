@@ -23,6 +23,7 @@ export function buildLinks() {
 
 		linkGroupMerge.select('path')
 			.attr('d', d => getPath(d))
+			.attr('fill', 'none')
 			.attr('marker-end', d => d.belongToId === selectedServiceId ? 'url(#arrow-marker-highlight)' : 'url(#arrow-marker)');
 
 
@@ -148,8 +149,6 @@ export function toggleLinks(rootLinkClass, collapsedNodesMap) {
 function checkLinkCollapsed(currentLink, collapsedNodesMap) {
 	let flattenChildren = [];
 	const { source, target } = currentLink;
-
-	console.log('sdsdsd', currentLink, collapsedNodesMap);
 
 	for (const node of collapsedNodesMap.values()) {
 		flattenChildren = flattenChildren.concat(node.children || []);
