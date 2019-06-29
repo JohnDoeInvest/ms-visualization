@@ -118,7 +118,7 @@ function getRestAPINodes(restAPI, parentId) {
                 metadata: {
                     description: 'Rest APIs',
                     canClickable: true,
-                    isCollapsed: false,
+                    isCollapsed: true,
                 },
                 toIds: [parentId]
             });

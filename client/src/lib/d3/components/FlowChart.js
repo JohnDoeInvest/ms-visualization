@@ -28,11 +28,12 @@ class FlowChart extends Component {
     componentDidMount() {
         this.initializeChart();
         this.handleEvents();
+        this.initializeCollapsedMap();
     }
 
     componentDidUpdate() {
-        this.collapsedNodesMap.clear();
         this.redraw();
+        this.initializeCollapsedMap();
     }
 
     componentWillUnmount() {
@@ -68,9 +69,22 @@ class FlowChart extends Component {
         this.redraw();
     }
 
+    initializeCollapsedMap() {
+        this.collapsedNodesMap.clear();
+        if (this.props.nodes && Array.isArray(this.props.nodes)) {
+            for (const node of this.props.nodes) {
+                if (node.metadata.isCollapsed) {
+                    this.collapsedNodesMap.set(node.id, node);
+                }
+            }
+        }
+        toggleNodes('nodes-root-group', this.collapsedNodesMap);
+        toggleLinks('links-root-group', this.collapsedNodesMap);
+    }
+
     handleEvents() {
         EventManager.dispatch.collapse.on(EventNames.Collapsable, (data) => {
-            if (data.metadata.isCollapsed) {
+            if (data.metadata.canClickable) {
                 if (this.collapsedNodesMap.has(data.id)) {
                     this.collapsedNodesMap.delete(data.id);
                 } else {

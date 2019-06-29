@@ -30,7 +30,7 @@ div.main {
 section.content-fluid, div.content-fluid {
 	width: 100%;
 	display: block;
-	margin: 24px 0px;
+	padding: 24px 0px;
 }
 
 @import '../lib/d3/stylesheets/';

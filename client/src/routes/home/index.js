@@ -14,13 +14,13 @@ export default class Home extends Component {
 		return (
 			<div class="ui container entry main reset-float">
 				<h1 class="ui header mg mg-top no-print">MS-Visualization</h1>
-				<section class="content-fluid page-break no-print">
+				<section class="mg mg-top no-print">
 					<ServiceDescriptionSearchContainer />
 				</section>
-				<section class="content-fluid page-break no-print">
+				<section class="mg mg-top no-print">
 					<ServiceDescriptionLoader />
 				</section>
-				<section class="content-fluid page-break no-print">
+				<section class="mg mg-top no-print">
 					<Printer />
 				</section>
 				<section class="content-fluid page-break no-print">
