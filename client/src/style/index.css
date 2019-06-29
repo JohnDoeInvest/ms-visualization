@@ -15,7 +15,8 @@ html, body {
 	box-sizing: border-box;
 }
 
-#app {
+div.main {
+	margin: 1em;
 }
 
 .full-width {
@@ -24,6 +25,12 @@ html, body {
 
 .mg.mg-top {
 	margin-top: 24px;
+}
+
+section.content-fluid, div.content-fluid {
+	width: 100%;
+	display: block;
+	margin: 24px 0px;
 }
 
 @import '../lib/d3/stylesheets/';

@@ -26,7 +26,7 @@ class ServiceDescriptionTable extends Component {
             return null;
         }
         return (
-            <div class="page-break full-width">
+            <div class="full-width">
                 <h2 class="ui header">Service Descriptions</h2>
                 <table class="ui selectable celled table">
                     <thead>

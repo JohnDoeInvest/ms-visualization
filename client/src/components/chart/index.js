@@ -21,13 +21,13 @@ class ChartContainer extends Component {
 		}
 
 		return (
-			<div class="chart-container break-page full-width">
+			<div class="chart-container full-width">
 				<h2 class="ui header">Visualization</h2>
 				<FlowChart
 					id={`flow-chart`}
 					width="auto"
 					height={1200}
-					margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+					margin={{ top: 0, right: 0, bottom: 0, left: 10 }}
 					links={links}
 					nodes={nodes}
 				/>

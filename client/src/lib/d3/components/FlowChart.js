@@ -113,7 +113,7 @@ class FlowChart extends Component {
         return (
             <div 
                 id={props.id}
-                className="chart chart-flow"
+                className={`chart chart-flow ${this.props.className || ''}`}
             >
                 <svg className="svg-container" />
             </div>
