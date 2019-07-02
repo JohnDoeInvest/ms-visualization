@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import * as d3 from 'd3'
 
 export function buildHighlight(rootLinkClass, selectedRootId) {
     const rootLink = d3.select(`.${rootLinkClass}`);

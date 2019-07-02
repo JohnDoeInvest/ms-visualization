@@ -1,163 +1,165 @@
 
-import * as d3 from 'd3';
-import { limitCharacters } from '../utils/string.utils';
-import { buildTooltip } from './tooltip.charts';
-import { GET_API_ICON } from '../types/icon.types';
-import { NODE_SIZE } from '../types/node.types';
-import { getIconByNode } from '../utils/icon.utils';
-import { EventManager, EventNames } from '../types/event.types';
-import { ServiceTypes } from '../types/service.types';
+import * as d3 from 'd3'
+import { limitCharacters } from '../utils/string.utils'
+import { buildTooltip } from './tooltip.charts'
+import { NODE_SIZE } from '../types/node.types'
+import { getIconByNode } from '../utils/icon.utils'
+import { EventManager, EventNames } from '../types/event.types'
+import { ServiceTypes } from '../types/service.types'
 
-const dispatch = d3.dispatch(['event']);
+// eslint-disable-next-line no-unused-vars
+const dispatch = d3.dispatch(['event'])
 
-export function buildNodes() {
-	let context = null;
-	let tooltip = buildTooltip();
-	let selectionRef = null;
-	let selectedServiceId = null;
-	// eslint-disable-next-line func-style
-	const builder = function (selection) {
-		selectionRef = selection;
-		selection.call(tooltip);
+export function buildNodes () {
+  let context = null
+  let tooltip = buildTooltip()
+  let selectionRef = null
+  // eslint-disable-next-line no-unused-vars
+  let selectedServiceId = null
 
-		const { nodes } = context.svg.datum();
+  const builder = function (selection) {
+    selectionRef = selection
+    selection.call(tooltip)
 
-		const nodeGroups = selection.selectAll('.node').data(nodes);
-		const nodeGroupsEnter = nodeGroups.enter().append('g');
-		const nodeGroupMerge = nodeGroups.merge(nodeGroupsEnter).attr('class', 'node');
+    const { nodes } = context.svg.datum()
 
-		nodeGroupsEnter.append('svg:g');
-		nodeGroupsEnter.append('svg:text');
+    const nodeGroups = selection.selectAll('.node').data(nodes)
+    const nodeGroupsEnter = nodeGroups.enter().append('g')
+    const nodeGroupMerge = nodeGroups.merge(nodeGroupsEnter).attr('class', 'node')
 
-		nodeGroupMerge
-			.attr('id', d => d.id)
-			.attr('class', 'node')
-			.attr('transform', d => `translate(${d.x}, ${d.y})`)
-			.style('cursor', d => d.metadata.canClickable ? 'pointer' : 'auto')
-			.style('visibility', 'visible')
-			.on('click', function (d) {
-				if (d.type === ServiceTypes.RestAPI && d.metadata.canClickable) {
-					const updatedNode = {
-						...d,
-						metadata: {
-							...d.metadata,
-							isCollapsed: !d.metadata.isCollapsed
-						}
-					};
+    nodeGroupsEnter.append('svg:g')
+    nodeGroupsEnter.append('svg:text')
 
-					EventManager.dispatch.collapse.call(EventNames.Collapsable, null, updatedNode);
-				}
-			});
+    nodeGroupMerge
+      .attr('id', d => d.id)
+      .attr('class', 'node')
+      .attr('transform', d => `translate(${d.x}, ${d.y})`)
+      .style('cursor', d => d.metadata.canClickable ? 'pointer' : 'auto')
+      .style('visibility', 'visible')
+      .on('click', function (d) {
+        if (d.type === ServiceTypes.RestAPI && d.metadata.canClickable) {
+          const updatedNode = {
+            ...d,
+            metadata: {
+              ...d.metadata,
+              isCollapsed: !d.metadata.isCollapsed
+            }
+          }
 
-		const iconsGroup = nodeGroupMerge.select('g');
-		const textsGroup = nodeGroupMerge.select('text');
+          EventManager.dispatch.collapse.call(EventNames.Collapsable, null, updatedNode)
+        }
+      })
 
-		iconsGroup
-			.attr('class', 'node-icon')
-			.html(d => getIconByNode(d))
+    const iconsGroup = nodeGroupMerge.select('g')
+    const textsGroup = nodeGroupMerge.select('text')
 
-		iconsGroup.select('svg')
-			.attr('width', NODE_SIZE * 2)
-			.attr('height', function () {
-				const bbox = d3.select(this).node().getBBox();
-				const scale = bbox.width / bbox.height;
-				return 2 * NODE_SIZE / scale;
-			});
+    iconsGroup
+      .attr('class', 'node-icon')
+      .html(d => getIconByNode(d))
 
-		textsGroup
-			.attr('class', 'node-description')
-			.attr('x', NODE_SIZE)
-			.attr('y', function () {
-				const bbox = d3.select(this.parentNode).node().getBBox();
-				return bbox.height / 2;
-			})
-			.attr('dy', 4)
-			.attr('text-anchor', 'middle')
-			.text(d => limitCharacters(d.name, 12));
+    iconsGroup.select('svg')
+      .attr('width', NODE_SIZE * 2)
+      .attr('height', function () {
+        const bbox = d3.select(this).node().getBBox()
+        const scale = bbox.width / bbox.height
+        return 2 * NODE_SIZE / scale
+      })
 
-		nodeGroups.exit().remove();
+    textsGroup
+      .attr('class', 'node-description')
+      .attr('x', NODE_SIZE)
+      .attr('y', function () {
+        const bbox = d3.select(this.parentNode).node().getBBox()
+        return bbox.height / 2
+      })
+      .attr('dy', 4)
+      .attr('text-anchor', 'middle')
+      .text(d => limitCharacters(d.name, 12))
 
-		// descriptionTxt
-		// 	.attr('class', 'node-description')
-		// 	.attr('x', d => (d.x1 - d.x0) / 2)
-		// 	.attr('y', d => (d.y1 - d.y0) / 2)
-		// 	.attr('dy', 3)
-		// 	// .attr('dx', d => d.data.description ? d.data.description.dx : 0)
-		// 	// .attr('dy', d => d.data.description ? d.data.description.dy : 0)
-		// 	.attr('text-anchor', 'middle')
-		// 	.text(d => d.data.name ? limitCharacters(d.data.name, 7) : '')
-		// 	// .on('mouseover', function (d) {
-		// 	// 	tooltip.renderContent(
-		// 	// 		`<span>${d.data.description ? d.data.description.value : ''}</span>`, 
-		// 	// 		{ top: d3.event.pageY, left: d3.event.pageX }
-		// 	// 	);
-		// 	// })
-		// 	// .on('mouseout', function () {
-		// 	// 	tooltip.hide();
-		// 	// });
+    nodeGroups.exit().remove()
 
-		// nodes.exit().remove();
-	};
-  
-	builder.context = function (value) {
-		context = value;
-		return builder;
-	};
+    // descriptionTxt
+    //   .attr('class', 'node-description')
+    //   .attr('x', d => (d.x1 - d.x0) / 2)
+    //   .attr('y', d => (d.y1 - d.y0) / 2)
+    //   .attr('dy', 3)
+    //   // .attr('dx', d => d.data.description ? d.data.description.dx : 0)
+    //   // .attr('dy', d => d.data.description ? d.data.description.dy : 0)
+    //   .attr('text-anchor', 'middle')
+    //   .text(d => d.data.name ? limitCharacters(d.data.name, 7) : '')
+    //   // .on('mouseover', function (d) {
+    //   //   tooltip.renderContent(
+    //   //     `<span>${d.data.description ? d.data.description.value : ''}</span>`,
+    //   //     { top: d3.event.pageY, left: d3.event.pageX }
+    //   //   );
+    //   // })
+    //   // .on('mouseout', function () {
+    //   //   tooltip.hide();
+    //   // });
 
-	builder.selectedServiceId = function (value) {
-		selectedServiceId = value;
-		return builder;
-	}
+    // nodes.exit().remove();
+  }
 
-	builder.destroy = function () {
-		tooltip.destroy();
-		d3.select(selectionRef).remove();
-	}
+  builder.context = function (value) {
+    context = value
+    return builder
+  }
 
-	function alignText(d) {
-		const { data, x0, x1, y0, y1 } = d;
-		const width = x1 - x0;
-		const { rootId } = data;
+  builder.selectedServiceId = function (value) {
+    selectedServiceId = value
+    return builder
+  }
 
-		switch (rootId) {
-			case 'microservices': return width / 2;
-			case 'restAPI': return (width * 2) / 3;
-			case 'stores': return (width * 2) / 3;
-			case 'topics': return (width * 3) / 4;
-			default: return width / 2;
-		}
-	}
+  builder.destroy = function () {
+    tooltip.destroy()
+    d3.select(selectionRef).remove()
+  }
 
-	return builder;
+  // eslint-disable-next-line no-unused-vars
+  function alignText (d) {
+    // eslint-disable-next-line no-unused-vars
+    const { data, x0, x1, y0, y1 } = d
+    const width = x1 - x0
+    const { rootId } = data
+
+    switch (rootId) {
+      case 'microservices': return width / 2
+      case 'restAPI': return (width * 2) / 3
+      case 'stores': return (width * 2) / 3
+      case 'topics': return (width * 3) / 4
+      default: return width / 2
+    }
+  }
+
+  return builder
 }
 
-export function toggleNodes(rootNodeClass, collapsedNodesMap) {
-	const rootSelection = d3.select(`.${rootNodeClass}`);
-	if (!rootSelection.empty()) {
-		const nodes = rootSelection.selectAll('.node');
+export function toggleNodes (rootNodeClass, collapsedNodesMap) {
+  const rootSelection = d3.select(`.${rootNodeClass}`)
+  if (!rootSelection.empty()) {
+    const nodes = rootSelection.selectAll('.node')
 
-		nodes.each(function (nodeData) {
-			const currentNode = d3.select(this);
-			const isCollasped = checkNodeCollapsed(nodeData, collapsedNodesMap);
+    nodes.each(function (nodeData) {
+      const currentNode = d3.select(this)
+      const isCollasped = checkNodeCollapsed(nodeData, collapsedNodesMap)
 
-			currentNode
-				.transition()
-				.duration(750)
-				.ease(d3.easeLinear)
-				.style('visibility',  isCollasped ? 'hidden' : 'visible');
-		})
-	}
+      currentNode
+        .transition()
+        .duration(750)
+        .ease(d3.easeLinear)
+        .style('visibility', isCollasped ? 'hidden' : 'visible')
+    })
+  }
 }
 
-function checkNodeCollapsed(currentNode, collapsedNodesMap) {
-	let flattenChildren = [];
+function checkNodeCollapsed (currentNode, collapsedNodesMap) {
+  let flattenChildren = []
 
-	for (const node of collapsedNodesMap.values()) {
-		flattenChildren = flattenChildren.concat(node.children || []);
-	}
+  for (const node of collapsedNodesMap.values()) {
+    flattenChildren = flattenChildren.concat(node.children || [])
+  }
 
-	const isCollasped = flattenChildren.find(child => child.id === currentNode.id);
+  const isCollasped = flattenChildren.find(child => child.id === currentNode.id)
 
-	return !!isCollasped;
+  return !!isCollasped
 }
-
