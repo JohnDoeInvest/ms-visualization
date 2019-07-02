@@ -4,20 +4,52 @@ const GITHUB_TOKEN = '7d654565e18e027f023514dc0f8fd2e6308edbda';
 const AUTHORIZATION_HEADER = `token ${GITHUB_TOKEN}`;
 
 const createHeaders = ({ token }) => ({
-    'Authorization': `token ${token}`
-})
+    'Authorization': `token ${token}`,
+});
 
-export async function fetchServiceDescriptionAPI(url) {
+export async function fetchServiceDescriptionAPI({url, token}) {
+    try {
+        let serviceDescription = undefined;
+        serviceDescription = await getStaticJsonContent(url);
+        
+        if (!serviceDescription) {
+            serviceDescription = await getGithubContent({url, token});
+        }
+
+        return serviceDescription;
+    } catch (error) {
+        console.error('fetchServiceDescriptionAPI', error);
+        throw new Error('Cannot fetch service description');
+    }
+}
+
+async function getStaticJsonContent(url) {
     try {
         const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
             return data;
         }
-        throw new Error('Cannot fetch service description');
     } catch (error) {
-        console.error('fetchServiceDescriptionAPI', error);
-        throw new Error('Cannot fetch service description');
+        return undefined;
+    }
+}
+
+async function getGithubContent({url, token}) {
+    try {
+        const urlObj = new URL(url);
+        const pathnameArray = urlObj.pathname.split('/');
+        const repo = `${pathnameArray[1]}/${pathnameArray[2]}`;
+        const path = `${urlObj.pathname.split('/').slice(3).join('/')}`
+        const contentUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
+        const response = await fetch(contentUrl, { headers: createHeaders({ token }) });
+        if (response.ok) {
+            const content = await response.json();
+            const serviceDescription = atob(content);
+            return serviceDescription;
+        }
+    } catch (err) {
+        throw err;
     }
 }
 
@@ -48,10 +80,9 @@ export async function loaddAllCodeContentsAPI({codes, token}) {
         }));
 
         responses = await Promise.all(responses.filter(res => res.ok).map(async (res) => res.json()));
-        const downloadURLs = responses.map(res => res.download_url);
-        let fetchServiceDescriptions = await Promise.all(downloadURLs.map(async (url) => fetchServiceDescriptionAPI(url)));
-
-        return fetchServiceDescriptions;
+        const contents = responses.map(res => res.content);
+        const serviceDescriptions = contents.map(content => JSON.parse(atob(content)));
+        return serviceDescriptions;
     } catch (error) {
         console.error('loaddAllCodeContentsAPI', error);
         throw new Error('Cannot load code contents');

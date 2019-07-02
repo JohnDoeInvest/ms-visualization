@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
-import { searchServiceDescriptionRequest, loadAllCodeContentRequest } from '../../actions/serviceDescription.action';
+import { searchServiceDescriptionRequest, loadAllCodeContentRequest, setToken } from '../../actions/serviceDescription.action';
 import * as arrayHelpers from '../../helpers/array.helper';
 
 class SearchServiceDescription extends Component {
@@ -27,7 +27,9 @@ class SearchServiceDescription extends Component {
     }
 
     handleChangeToken = (event) => {
-        this.setState({ token: event.target.value });
+        const token = event.target.value;
+        // this.setState({ token });
+        this.props.setToken(token)
     }
 
     handleChangeCheckbox = (item) => (event) => {
@@ -41,7 +43,7 @@ class SearchServiceDescription extends Component {
 
     handleSearch = (event) => {
         const { target: { value } } = event;
-        this.props.searchServiceDescriptionRequest({ repo: value, token: this.state.token });
+        this.props.searchServiceDescriptionRequest({ repo: value, token: this.props.token });
     }
 
     handleLoadServiceDescriptions = () => {
@@ -52,7 +54,7 @@ class SearchServiceDescription extends Component {
                 selectedCodes.push(checkbox.value);
             }
         }
-        this.props.loadAllCodeContentRequest({ codes: selectedCodes, token: this.state.token });
+        this.props.loadAllCodeContentRequest({ codes: selectedCodes, token: this.props.token });
     }
 
     handleCheckAllServiceDescriptions = () => {
@@ -72,14 +74,14 @@ class SearchServiceDescription extends Component {
             <div class="search-container full-width">
                 <form class="ui fluid form">
                     <div class="field">
-                        <input type="text" placeholder="Github personal token" value={state.token} onInput={this.handleChangeToken} />
-                        {!this.state.token && (
+                        <input type="text" placeholder="Github personal token" value={props.token} onInput={this.handleChangeToken} />
+                        {!props.token && (
                             <div class="ui pointing red basic label">
                                 Please enter your Github personal token
                             </div>
                         )}
                     </div>
-                    {state.token && (
+                    {props.token && (
                         <div class={`ui search right aligned  ${props.isSearching ? 'loading': ''}`}>
                             <div class="ui icon input fluid">
                                 <input
@@ -139,12 +141,14 @@ class SearchServiceDescription extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
     searchedServiceDescriptions: state.serviceDescription.searchedServiceDescriptions,
-    isSearching: state.ui.isSearching
+    isSearching: state.ui.isSearching,
+    token: state.serviceDescription.token
 });
 
 const mapDispatchToProps = {
     searchServiceDescriptionRequest,
-    loadAllCodeContentRequest
+    loadAllCodeContentRequest,
+    setToken
 };
 
 export default connect(

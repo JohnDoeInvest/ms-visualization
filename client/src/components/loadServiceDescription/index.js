@@ -21,7 +21,7 @@ class ServiceDescriptionLoader extends Component {
 
 	handleLoadServiceDescription = () => {
 		if (this.state.url) {
-			this.props.fetchServiceDescriptionRequest(this.state.url);
+			this.props.fetchServiceDescriptionRequest({url: this.state.url, token: this.props.token});
 		}
 	}
 
@@ -63,6 +63,7 @@ class ServiceDescriptionLoader extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+	token: state.serviceDescription.token
 });
 
 const mapDispatchToProps = {
