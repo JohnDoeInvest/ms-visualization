@@ -34,8 +34,8 @@
    id="namedview4062"
    showgrid="false"
    inkscape:zoom="1.1798429"
-   inkscape:cx="146.62969"
-   inkscape:cy="48.145"
+   inkscape:cx="19.917904"
+   inkscape:cy="48.144999"
    inkscape:window-x="0"
    inkscape:window-y="0"
    inkscape:window-maximized="0"
@@ -66,4 +66,10 @@
    style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
    d="m 228.33413,49.30176 c 6.11852,0 6.11852,0 6.11852,0"
    id="toMS"
-   inkscape:connector-curvature="0" /></svg>
+   inkscape:connector-curvature="0" /><rect
+   style="fill:#e6e6e6"
+   id="description"
+   width="132.22099"
+   height="40.68338"
+   x="98.50901"
+   y="28.67" /></svg>
