@@ -1,12 +1,12 @@
 language: node_js
 node_js:
-  - 'node'
+  - 'lts/*'
   - '10'
   - '9'
   - '8'
 matrix:
   include:
-    - node_js: node
+    - node_js: 'lts/*'
 
 install: cd client && [ -f ./package-lock ] && npm ci || npm install
 script: cd client && npm test
@@ -16,7 +16,7 @@ jobs:
   include:
     - stage: NPM audit
       script: cd client && npm audit
-      node_js: node
+      node_js: 'lts/*'
 
 # Run npm audit before tests
 stages:
