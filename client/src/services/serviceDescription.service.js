@@ -1,8 +1,5 @@
 import fetch from 'unfetch';
 
-const GITHUB_TOKEN = '7d654565e18e027f023514dc0f8fd2e6308edbda';
-const AUTHORIZATION_HEADER = `token ${GITHUB_TOKEN}`;
-
 const createHeaders = ({ token }) => ({
     'Authorization': `token ${token}`,
 });
@@ -40,12 +37,13 @@ async function getGithubContent({url, token}) {
         const urlObj = new URL(url);
         const pathnameArray = urlObj.pathname.split('/');
         const repo = `${pathnameArray[1]}/${pathnameArray[2]}`;
-        const path = `${urlObj.pathname.split('/').slice(3).join('/')}`
+        const path = `${urlObj.pathname.split('/').slice(5).join('/')}`
         const contentUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
         const response = await fetch(contentUrl, { headers: createHeaders({ token }) });
+        
         if (response.ok) {
-            const content = await response.json();
-            const serviceDescription = atob(content);
+            const data = await response.json();
+            const serviceDescription = JSON.parse(atob(data.content));
             return serviceDescription;
         }
     } catch (err) {

@@ -17,8 +17,11 @@ class ServiceDescriptionTable extends Component {
     }
 
     handleSelectServiceDescription = (index) => () => {
-        this.props.selectServiceDescription(index);
-        EventManager.dispatch.highlight.call(EventNames.Highlight, null, this.props.selectedServiceDescriptions[index]);
+        const selectedIdx = this.props.selectedServiceDescriptionIndex !== index ? index : undefined;
+        this.props.selectServiceDescription(selectedIdx);
+
+        const serviceDescription = selectedIdx ? this.props.selectedServiceDescriptions[index] : undefined;
+        EventManager.dispatch.highlight.call(EventNames.Highlight, null, serviceDescription);
     }
 
     render(props, state) {

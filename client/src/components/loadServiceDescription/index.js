@@ -26,7 +26,7 @@ class ServiceDescriptionLoader extends Component {
 	}
 
 	handleToggle = (event) => {
-		this.setState({ enable: !this.state.enable });
+		this.setState({ enable: event.target.checked });
 	}
 
 	render(props, state) {
