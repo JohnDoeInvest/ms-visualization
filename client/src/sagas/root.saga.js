@@ -1,8 +1,8 @@
-import { all } from 'redux-saga/effects';
-import watchFetchAndSearchServiceDescription from './serviceDescription.saga';
+import { all } from 'redux-saga/effects'
+import watchFetchAndSearchServiceDescription from './serviceDescription.saga'
 
-export default function* rootSaga() {
-    yield all([
-        watchFetchAndSearchServiceDescription(),
-    ]);
+export default function * rootSaga () {
+  yield all([
+    watchFetchAndSearchServiceDescription()
+  ])
 }

@@ -1,18 +1,18 @@
-import { h, Component } from 'preact';
+import { h, Component } from 'preact'
 
 class Printer extends Component {
     handlePrint = () => {
-        window.print();
+      window.print()
     }
 
-    render() {
-        return (
-            <button class="ui icon primary basic button" onClick={this.handlePrint}>
-                <i class="print icon"></i>
+    render () {
+      return (
+        <button class='ui icon primary basic button' onClick={this.handlePrint}>
+          <i class='print icon' />
                 Print
-            </button>
-        );
+        </button>
+      )
     }
 }
 
-export default Printer;
+export default Printer

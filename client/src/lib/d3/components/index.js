@@ -1,3 +1,3 @@
-import FlowChart from './FlowChart';
+import FlowChart from './FlowChart'
 
-export { FlowChart };
+export { FlowChart }
