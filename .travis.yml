@@ -8,8 +8,8 @@ matrix:
   include:
     - node_js: 'lts/*'
 
-install: cd client && [ -f ./package-lock ] && npm ci || npm install
-script: cd client && npm test
+install: cd client && [ -f ./package-lock ] && npm ci || npm install && cd ..
+script: cd client && npm test && cd ..
 
 # Create a NPM Audit job
 jobs:
