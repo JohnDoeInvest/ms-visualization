@@ -5,7 +5,7 @@ import {
     SERVICE_DESCRIPTION_SEARCH_REQUESTED,
     SERVICE_DESCRIPTION_LOAD_CONTENT_REQUESTED,
     loadServiceDescriptionSuccess,
-    searchServiceDescriptionSuccess
+    searchServiceDescriptionSuccess,
 }  from '../actions/serviceDescription.action';
 import { fetchFailed, fetchRequest, fetchSuccess } from '../actions/fetch.action';
 import * as serviceAPI from '../services/serviceDescription.service';
@@ -13,7 +13,7 @@ import * as serviceAPI from '../services/serviceDescription.service';
 function* fetchServiceDescription(action) {
     try {
         yield put(fetchRequest());
-        const data = yield call(serviceAPI.fetchServiceDescriptionAPI, action.payload.url);
+        const data = yield call(serviceAPI.fetchServiceDescriptionAPI, {url: action.payload.url, token: action.payload.token});
         yield put(fetchSuccess());
         yield put(loadServiceDescriptionSuccess([data]));
     } catch (error) {

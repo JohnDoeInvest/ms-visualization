@@ -5,24 +5,51 @@ const AUTHORIZATION_HEADER = `token ${GITHUB_TOKEN}`;
 
 const createHeaders = ({ token }) => ({
     'Authorization': `token ${token}`,
-    // 'Access-Control-Expose-Headers': 'ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval',
-    // 'Access-Control-Max-Age': 86400,
-    // 'Access-Control-Allow-Headers': 'Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Accept-Encoding, X-GitHub-OTP, X-Requested-With, User-Agent',
-    // 'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE',
-    // 'Access-Control-Allow-Origin': '*'
-})
+});
 
-export async function fetchServiceDescriptionAPI(url) {
+export async function fetchServiceDescriptionAPI({url, token}) {
+    try {
+        let serviceDescription = undefined;
+        serviceDescription = await getStaticJsonContent(url);
+        
+        if (!serviceDescription) {
+            serviceDescription = await getGithubContent({url, token});
+        }
+
+        return serviceDescription;
+    } catch (error) {
+        console.error('fetchServiceDescriptionAPI', error);
+        throw new Error('Cannot fetch service description');
+    }
+}
+
+async function getStaticJsonContent(url) {
     try {
         const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
             return data;
         }
-        throw new Error('Cannot fetch service description');
     } catch (error) {
-        console.error('fetchServiceDescriptionAPI', error);
-        throw new Error('Cannot fetch service description');
+        return undefined;
+    }
+}
+
+async function getGithubContent({url, token}) {
+    try {
+        const urlObj = new URL(url);
+        const pathnameArray = urlObj.pathname.split('/');
+        const repo = `${pathnameArray[1]}/${pathnameArray[2]}`;
+        const path = `${urlObj.pathname.split('/').slice(3).join('/')}`
+        const contentUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
+        const response = await fetch(contentUrl, { headers: createHeaders({ token }) });
+        if (response.ok) {
+            const content = await response.json();
+            const serviceDescription = atob(content);
+            return serviceDescription;
+        }
+    } catch (err) {
+        throw err;
     }
 }
 

@@ -5,11 +5,12 @@ export const SERVICE_DESCRIPTION_SEARCH_SUCCEEDED = 'SERVICE_DESCRIPTION_SEARCH_
 export const SERVICE_DESCRIPTION_LOAD_CONTENT_REQUESTED = 'SERVICE_DESCRIPTION_LOAD_CONTENT_REQUESTED';
 export const SERVICE_DESCRIPTION_LOAD_CONTENT_SUCCEEDED = 'SERVICE_DESCRIPTION_LOAD_CONTENT_SUCCEEDED';
 export const SERVICE_DESCRIPTION_SELECTED = 'SERVICE_DESCRIPTION_SELECTED';
+export const SERVICE_DESCRIPTION_TOKEN = 'SERVICE_DESCRIPTION_TOKEN';
 
-export const fetchServiceDescriptionRequest = (url) => {
+export const fetchServiceDescriptionRequest = ({url, token}) => {
     return {
         type: SERVICE_DESCRIPTION_FETCH_REQUESTED,
-        payload: { url }
+        payload: { url, token }
     }
 };
 
@@ -40,4 +41,9 @@ export const loadAllCodeContentRequest = ({codes, token}) => {
 export const selectServiceDescription = (selectedServiceDescriptionIndex) => ({
     type: SERVICE_DESCRIPTION_SELECTED,
     payload: { selectedServiceDescriptionIndex }
-})
+});
+
+export const setToken = (token) => ({
+    type: SERVICE_DESCRIPTION_TOKEN,
+    payload: { token }
+});
