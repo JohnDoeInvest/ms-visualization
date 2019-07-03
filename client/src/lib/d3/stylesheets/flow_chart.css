@@ -2,11 +2,12 @@
     position: relative;
 }
 .chart-flow .node > .node-description {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 700;
     stroke: #fff;
     stroke-width: 0.5px;
     pointer-events: none;
+    text-transform: capitalize;
 }
 
 .chart-flow .arrow {

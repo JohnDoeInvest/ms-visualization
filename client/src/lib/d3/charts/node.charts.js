@@ -1,9 +1,9 @@
 
 import * as d3 from 'd3'
-import { limitCharacters } from '../utils/string.utils'
+import { limitCharacters, trimToPixel, measureStringLength } from '../utils/string.utils'
 import { buildTooltip } from './tooltip.charts'
 import { NODE_SIZE } from '../types/node.types'
-import { getIconByNode } from '../utils/icon.utils'
+import { getIconByNode, getBBoxOfDescriptionArea } from '../utils/icon.utils'
 import { EventManager, EventNames } from '../types/event.types'
 import { ServiceTypes } from '../types/service.types'
 
@@ -67,37 +67,35 @@ export function buildNodes () {
 
     textsGroup
       .attr('class', 'node-description')
-      .attr('x', NODE_SIZE)
-      .attr('y', function () {
-        const bbox = d3.select(this.parentNode).node().getBBox()
-        return bbox.height / 2
+      .attr('x', d => {
+        const bbox = getBBoxOfDescriptionArea(d.id, 'description');
+        return bbox.x + bbox.width / 2;
       })
-      .attr('dy', 4)
+      .attr('y', d => {
+        const bbox = getBBoxOfDescriptionArea(d.id, 'description');
+        return bbox.y + bbox.height / 2;
+      })
+      .attr('dy', 3)
       .attr('text-anchor', 'middle')
-      .text(d => limitCharacters(d.name, 12))
+      .text(d => {
+        const padding = 4;
+        const width = getBBoxOfDescriptionArea(d.id, 'description').width;
+        return trimToPixel(d.name, width - padding);
+      })
+      .on('mouseover', (d) => {
+        tooltip.renderContent(
+          ` 
+            <h2>${d.name}</h2>
+            <p>${d.metadata.description}</p>
+          `,
+          { top: d3.event.pageY, left: d3.event.pageX }
+        );
+      })
+      .on('mouseout', () => {
+        tooltip.hide();
+      });
 
     nodeGroups.exit().remove()
-
-    // descriptionTxt
-    //   .attr('class', 'node-description')
-    //   .attr('x', d => (d.x1 - d.x0) / 2)
-    //   .attr('y', d => (d.y1 - d.y0) / 2)
-    //   .attr('dy', 3)
-    //   // .attr('dx', d => d.data.description ? d.data.description.dx : 0)
-    //   // .attr('dy', d => d.data.description ? d.data.description.dy : 0)
-    //   .attr('text-anchor', 'middle')
-    //   .text(d => d.data.name ? limitCharacters(d.data.name, 7) : '')
-    //   // .on('mouseover', function (d) {
-    //   //   tooltip.renderContent(
-    //   //     `<span>${d.data.description ? d.data.description.value : ''}</span>`,
-    //   //     { top: d3.event.pageY, left: d3.event.pageX }
-    //   //   );
-    //   // })
-    //   // .on('mouseout', function () {
-    //   //   tooltip.hide();
-    //   // });
-
-    // nodes.exit().remove();
   }
 
   builder.context = function (value) {

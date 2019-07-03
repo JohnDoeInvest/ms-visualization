@@ -32,3 +32,13 @@ export function getLinkPath ({ source, target }) {
     'S' + offSetX + ',' + offSetY +
     ' ' + target.x + ',' + target.y
 }
+
+export function getScreenCoords (node) {
+  const ctm = node.getCTM()
+  const x = node.getAttribute('cx')
+  const y = node.getAttribute('cy')
+  const xn = ctm.e + x * ctm.a + y * ctm.c
+  const yn = ctm.f + x * ctm.b + y * ctm.d
+
+  return { x: xn, y: yn }
+}

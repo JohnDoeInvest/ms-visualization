@@ -1,12 +1,5 @@
 import fetch from 'unfetch'
 
-<<<<<<< HEAD
-=======
-const GITHUB_TOKEN = '7d654565e18e027f023514dc0f8fd2e6308edbda'
-// eslint-disable-next-line no-unused-vars
-const AUTHORIZATION_HEADER = `token ${GITHUB_TOKEN}`
-
->>>>>>> f048f4ce4e1eefda841e9cb91c556c6a07f6ae83
 const createHeaders = ({ token }) => ({
   'Authorization': `token ${token}`
 })
@@ -56,9 +49,6 @@ async function getGithubContent({url, token}) {
     } catch (err) {
         throw err;
     }
-  } catch (err) {
-    throw err
-  }
 }
 
 export async function searchServiceDescriptionAPI ({ repo, token }) {
