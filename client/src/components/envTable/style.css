@@ -2,6 +2,7 @@
     margin: 16px 0px;
 }
 .active {
-    color: #2185D0;
+    background-color: #2185D0;
+    color: #ffffff;
     font-weight: 700;
 }

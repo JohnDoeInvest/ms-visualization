@@ -85,8 +85,8 @@ export function buildNodes () {
       .on('mouseover', (d) => {
         tooltip.renderContent(
           ` 
-            <h2>${d.name}</h2>
-            <p>${d.metadata.description}</p>
+            <h3 class="title">${d.name}</h3>
+            <p class="description">${d.metadata.description}</p>
           `,
           { top: d3.event.pageY, left: d3.event.pageX }
         );

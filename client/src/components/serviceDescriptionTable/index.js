@@ -27,7 +27,7 @@ class ServiceDescriptionTable extends Component {
       return (
         <div class='full-width'>
           <h2 class='ui header'>Service Descriptions</h2>
-          <table class='ui selectable celled table'>
+          <table class='ui selectable fixed black table'>
             <thead>
               <tr>
                 <th>Name</th>
