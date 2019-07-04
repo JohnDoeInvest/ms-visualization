@@ -27,6 +27,14 @@ div.main {
 	margin-top: 24px;
 }
 
+.is-hovered {
+	cursor: pointer;
+}
+
+.is-capitalize {
+	text-transform: capitalize;
+}
+
 section.content-fluid, div.content-fluid {
 	width: 100%;
 	display: block;

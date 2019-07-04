@@ -16,6 +16,9 @@
 
 .tooltip .description {
     font-size: 12px;
-    text-transform: capitalize;
     color: gray;
+}
+
+.tooltip .description::first-letter {
+    text-transform: capitalize;
 }

@@ -27,7 +27,7 @@ class ServiceDescriptionTable extends Component {
       return (
         <div class='full-width'>
           <h2 class='ui header'>Service Descriptions</h2>
-          <table class='ui selectable fixed black table'>
+          <table class='ui selectable fixed table'>
             <thead>
               <tr>
                 <th>Name</th>
@@ -39,9 +39,9 @@ class ServiceDescriptionTable extends Component {
                 <tr
                   key={i}
                   onClick={this.handleSelectServiceDescription(i)}
-                  class={this.isHighlight(i) ? style.active : style.inactive}
+                  class={`is-hovered ${this.isHighlight(i) ? style.active : style.inactive}`}
                 >
-                  <td>{serviceDescription.name}</td>
+                  <td class="is-capitalize">{serviceDescription.name}</td>
                   <td>{serviceDescription.description}</td>
                 </tr>
               ))}

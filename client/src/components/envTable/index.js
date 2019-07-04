@@ -46,7 +46,7 @@ class ENVTable extends Component {
     return (
       <div class='full-width'>
         <h2 class='ui header'>ENV Vars</h2>
-        <table class='ui selectable fixed black table'>
+        <table class='ui selectable fixed table'>
           <thead>
             <tr>
               <th>Name</th>
