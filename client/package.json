@@ -14,8 +14,13 @@
     "test": "eslint src && jest"
   },
   "eslintConfig": {
-    "extends": ["standard", "standard-preact"],
-    "env": { "browser": true }
+    "extends": [
+      "standard",
+      "standard-preact"
+    ],
+    "env": {
+      "browser": true
+    }
   },
   "eslintIgnore": [
     "build/*"

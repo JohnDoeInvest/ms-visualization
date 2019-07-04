@@ -1,6 +1,6 @@
 
 .tooltip {
-    width: 200px;
+    min-width: 200px;
     padding: 16px 8px;
     border-radius: 8px;
     pointer-events: none;

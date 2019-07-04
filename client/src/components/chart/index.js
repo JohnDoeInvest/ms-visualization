@@ -12,6 +12,10 @@ class ChartContainer extends Component {
 		super(props);
 	}
 
+	shouldComponentUpdate(nextProps) {
+		return nextProps.selectedServiceDescriptions !== this.props.selectedServiceDescriptions;
+	}
+
 	render(props, state) {
 		let nodes = getNodes(this.props.selectedServiceDescriptions);
 		let links = getLinks(nodes);
