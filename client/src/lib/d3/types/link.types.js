@@ -1,4 +1,5 @@
 import { ServiceTypes } from './service.types'
+import { NODE_SIZE } from './node.types'
 
 export const createLink = ({ source, target, sourceNode, targetNode, belongToId }) => {
   return {
@@ -74,10 +75,10 @@ export const getLinks = (nodes) => {
 }
 
 export const LinkDistances = {
-  RestAPI: 10,
-  DB: 20,
-  SharedDB: 30,
-  KAFKA: 20
+  RestAPI: NODE_SIZE,
+  DB: NODE_SIZE,
+  SharedDB: NODE_SIZE * 4,
+  KAFKA: NODE_SIZE * 2
 }
 
 export const getLinkDistance = (link) => {
