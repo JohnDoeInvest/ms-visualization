@@ -19,7 +19,7 @@ export default function serviceDescriptionReducer (state = initialState, action)
     case SERVICE_DESCRIPTION_SEARCH_SUCCEEDED:
       return { ...state, searchedServiceDescriptions: payload.searchedServiceDescriptions }
     case SERVICE_DESCRIPTION_LOAD_SUCCEEDED:
-      return { ...state, selectedServiceDescriptions: payload.selectedServiceDescriptions }
+      return { ...state, selectedServiceDescriptions: payload.selectedServiceDescriptions, selectedServiceDescriptionIndex: undefined }
     case SERVICE_DESCRIPTION_SELECTED:
       return { ...state, selectedServiceDescriptionIndex: payload.selectedServiceDescriptionIndex }
     case SERVICE_DESCRIPTION_TOKEN:
