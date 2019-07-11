@@ -7,11 +7,11 @@
 		<meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <script
-        src="https://code.jquery.com/jquery-3.1.1.min.js"
-        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-        crossorigin="anonymous"></script>
-
-		<link rel="manifest" href="<%= htmlWebpackPlugin.files.publicPath %>manifest.json">
+			src="https://code.jquery.com/jquery-3.1.1.min.js"
+			integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+			crossorigin="anonymous">
+		</script>
+		<script src="<%= htmlWebpackPlugin.files.publicPath %>manifest.json"></script>
 		<% if (htmlWebpackPlugin.options.manifest.theme_color) { %>
 			<meta name="theme-color" content="<%= htmlWebpackPlugin.options.manifest.theme_color %>">
 		<% } %>

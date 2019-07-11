@@ -1,7 +1,6 @@
 // import * as $ from 'jquery';
 import './style'
-import '../semantic/out/semantic'
-import '../semantic/out/semantic.css'
+import '../semantic/dist/semantic.min'
+import '../semantic/dist/semantic.min.css'
 import App from './components/app'
-
 export default App
