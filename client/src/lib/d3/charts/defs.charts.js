@@ -19,7 +19,7 @@ export function buildDefs () {
   return builder
 }
 
-const arrowPattern = (id) => `
+const arrowPattern = id => `
     <marker 
     id=${id}
     class="arrow"

@@ -3,19 +3,19 @@ import { ServiceTypes } from './service.types'
 
 export const NODE_SIZE = 30
 
-export const createNode = ({ id, name, type, belongToIds, metadata, data, fromIds, toIds, children }) => {
-  return {
-    id,
-    name,
-    type,
-    belongToIds,
-    metadata,
-    data,
-    fromIds,
-    toIds,
-    children
-  }
-}
+export const createNode = ({
+  id, name, type, belongToIds, metadata, data, fromIds, toIds, children
+}) => ({
+  id,
+  name,
+  type,
+  belongToIds,
+  metadata,
+  data,
+  fromIds,
+  toIds,
+  children
+})
 
 export const getNodes = (serviceDescriptions) => {
   let serviceNodes = []
@@ -44,7 +44,7 @@ export const getNodes = (serviceDescriptions) => {
 }
 
 function mergeSimilarNodes (serviceNodes) {
-  let microserviceNodes = []
+  const microserviceNodes = []
   let restAPINodes = []
   let dbNodes = []
   let sharedDBNodes = []
@@ -110,7 +110,7 @@ function getRestAPINodes (restAPI, parentId) {
   if (restAPI) {
     const { pathPrefix, endpoints } = restAPI
     if (endpoints) {
-      let groupRestNode = createNode({
+      const groupRestNode = createNode({
         id: validId(`${parentId}_rest_api_group`),
         name: 'Rest APIs',
         type: ServiceTypes.RestAPI,
@@ -156,7 +156,7 @@ function getRestAPINodes (restAPI, parentId) {
 }
 
 function getDBNodes (services, parentId) {
-  let dbNodes = []
+  const dbNodes = []
   if (services.local && services.local.sqllite && services.local.sqllite.db) {
     for (const key of Object.keys(services.local.sqllite.db)) {
       const id = validId(`${parentId}_db_${key}`)
@@ -177,7 +177,7 @@ function getDBNodes (services, parentId) {
 }
 
 function getSharedDBNodes (services, parentId) {
-  let sharedDBNodes = []
+  const sharedDBNodes = []
 
   if (services && services.shared && services.shared.redis) {
     const id = validId(`${parentId}_sharedDB_redis`)
@@ -203,34 +203,30 @@ function getTopicNodes (services, parentId) {
   if (services && services.shared && services.shared.kafka) {
     const { consumes, produces } = services.shared.kafka
 
-    const consumesNodes = consumes.map((consume) => {
-      return createNode({
-        id: validId(`${parentId}_kafka_${consume}`),
-        type: ServiceTypes.Topic,
-        name: consume,
-        belongToIds: [parentId],
-        fromIds: [parentId],
-        metadata: {
-          description: consume
-        }
-      })
-    })
+    const consumesNodes = consumes.map(consume => createNode({
+      id: validId(`${parentId}_kafka_${consume}`),
+      type: ServiceTypes.Topic,
+      name: consume,
+      belongToIds: [parentId],
+      fromIds: [parentId],
+      metadata: {
+        description: consume
+      }
+    }))
 
-    const producesNodes = produces.map((produce) => {
-      return createNode({
-        id: validId(`${parentId}_kafka_${produce}`),
-        type: ServiceTypes.Topic,
-        name: produce,
-        belongToIds: [parentId],
-        toIds: [parentId],
-        metadata: {
-          description: produce
-        }
-      })
-    })
+    const producesNodes = produces.map(produce => createNode({
+      id: validId(`${parentId}_kafka_${produce}`),
+      type: ServiceTypes.Topic,
+      name: produce,
+      belongToIds: [parentId],
+      toIds: [parentId],
+      metadata: {
+        description: produce
+      }
+    }))
 
     for (const consumeNode of consumesNodes) {
-      const idx = producesNodes.findIndex((produce) => consumeNode.name === produce.name)
+      const idx = producesNodes.findIndex(produce => consumeNode.name === produce.name)
 
       if (idx > -1) {
         consumeNode.toIds = [...producesNodes[idx].toIds]
@@ -251,8 +247,7 @@ function mergeNodes (nodes) {
   const nodeMap = new Map()
 
   for (const node of nodes) {
-    // eslint-disable-next-line no-unused-vars
-    const { name, belongToIds, type, fromIds, toIds } = node
+    const { name, belongToIds, fromIds, toIds } = node
     if (nodeMap.has(name)) {
       const oldNode = nodeMap.get(name)
       oldNode.belongToIds = [...oldNode.belongToIds, ...belongToIds]
@@ -276,7 +271,9 @@ function mergeNodes (nodes) {
   }
 
   for (const value of nodeMap.values()) {
-    const { belongToIds, node, fromIds, toIds } = value
+    const {
+      belongToIds, node, fromIds, toIds
+    } = value
     const id = validId(`${belongToIds.join('_')}_${node.type}_${node.name}`)
 
     mergedNodes.push({

@@ -1,4 +1,4 @@
-import { h, Component } from 'preact'
+import { h, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { connect } from 'preact-redux'
 import * as serviceDescriptionActions from '../../actions/serviceDescription.action'
 import { EventManager, EventNames } from '../../lib/d3/types/event.types'
@@ -12,14 +12,14 @@ class ServiceDescriptionTable extends Component {
     )
   }
 
-    handleSelectServiceDescription = (index) => () => {
-        const selectedIdx = this.props.selectedServiceDescriptionIndex !== index ? index : undefined;
-        this.props.selectServiceDescription(selectedIdx);
+    handleSelectServiceDescription = index => () => {
+      const selectedIdx = this.props.selectedServiceDescriptionIndex !== index ? index : undefined
+      this.props.selectServiceDescription(selectedIdx)
 
-        const serviceDescription = (selectedIdx !== undefined) 
-          ? this.props.selectedServiceDescriptions[index] 
-          : undefined;
-        EventManager.dispatch.highlight.call(EventNames.Highlight, null, serviceDescription);
+      const serviceDescription = (selectedIdx !== undefined)
+        ? this.props.selectedServiceDescriptions[index]
+        : undefined
+      EventManager.dispatch.highlight.call(EventNames.Highlight, null, serviceDescription)
     }
 
     render (props, state) {
@@ -27,9 +27,9 @@ class ServiceDescriptionTable extends Component {
         return null
       }
       return (
-        <div class='full-width'>
-          <h2 class='ui header'>Service Descriptions</h2>
-          <table class='ui selectable fixed table'>
+        <div className="full-width">
+          <h2 className="ui header">Service Descriptions</h2>
+          <table className="ui selectable fixed table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -41,9 +41,9 @@ class ServiceDescriptionTable extends Component {
                 <tr
                   key={i}
                   onClick={this.handleSelectServiceDescription(i)}
-                  class={`is-hovered ${this.isHighlight(i) ? style.active : style.inactive}`}
+                  className={`is-hovered ${this.isHighlight(i) ? style.active : style.inactive}`}
                 >
-                  <td class="is-capitalize">{serviceDescription.name}</td>
+                  <td className="is-capitalize">{serviceDescription.name}</td>
                   <td>{serviceDescription.description}</td>
                 </tr>
               ))}
@@ -54,7 +54,7 @@ class ServiceDescriptionTable extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   selectedServiceDescriptions: state.serviceDescription.selectedServiceDescriptions,
   selectedServiceDescriptionIndex: state.serviceDescription.selectedServiceDescriptionIndex
 })

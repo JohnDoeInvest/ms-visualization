@@ -1,14 +1,14 @@
-import { h, Component } from 'preact'
-import { Router } from 'preact-router'
+import { h, Component } from 'preact' // eslint-disable-line no-unused-vars
+import { Router } from 'preact-router' // eslint-disable-line no-unused-vars
 import { createStore, applyMiddleware } from 'redux'
-import { Provider } from 'preact-redux'
+import { Provider } from 'preact-redux' // eslint-disable-line no-unused-vars
 import createSagaMiddleware from 'redux-saga'
 import { createLogger } from 'redux-logger'
 import rootReducer from '../reducers/root.reducer'
-import Home from '../routes/home'
+import Home from '../routes/home' // eslint-disable-line no-unused-vars
 import rootSaga from '../sagas/root.saga'
 
-import LoaderContainer from './loader'
+import LoaderContainer from './loader' // eslint-disable-line no-unused-vars
 
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, createLogger()))
@@ -19,16 +19,16 @@ export default class App extends Component {
    *  @param {Object} event    "change" event from [preact-router](http://git.io/preact-router)
    *  @param {string} event.url  The newly routed URL
    */
-  handleRoute = e => {
+  handleRoute = (e) => {
     this.currentUrl = e.url
   };
 
   render () {
     return (
       <Provider store={store}>
-        <div id='app'>
+        <div id="app">
           <Router onChange={this.handleRoute}>
-            <Home path='/' />
+            <Home path="/" />
           </Router>
           <LoaderContainer />
           {/* <ErrorContainer /> */}

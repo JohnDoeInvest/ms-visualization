@@ -6,8 +6,8 @@ import 'brace/theme/monokai';
 import style from '../style';
 
 class Editor extends Component {
-    editor = null;
-    error = null;
+    editor = null
+    error = null
 
     componentDidMount() {
         this.editor = ace.edit('editor', {

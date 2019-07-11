@@ -1,4 +1,4 @@
-import { h, Component } from 'preact'
+import { h, Component } from 'preact' // eslint-disable-line no-unused-vars
 
 class Printer extends Component {
     handlePrint = () => {
@@ -7,8 +7,8 @@ class Printer extends Component {
 
     render () {
       return (
-        <button class='ui icon primary basic button' onClick={this.handlePrint}>
-          <i class='print icon' />
+        <button className="ui icon primary basic button" onClick={this.handlePrint}>
+          <i className="print icon" />
                 Print
         </button>
       )

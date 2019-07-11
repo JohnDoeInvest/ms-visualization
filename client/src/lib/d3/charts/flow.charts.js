@@ -9,18 +9,18 @@ export function buildFlowChart () {
   let context = null
   let width = 0
   let height = 0
-  let margin = { top: 0, right: 0, bottom: 0, left: 0 }
+  let margin = {
+    top: 0, right: 0, bottom: 0, left: 0
+  }
   let childComponents = []
   let nodes = []
   let links = []
-  let simulation = d3.forceSimulation(nodes)
+  const simulation = d3.forceSimulation(nodes)
     .force('charge', d3.forceManyBody().strength(-20))
-    .force('center', d3.forceCenter(innerWidth / 2, innerHeight / 2))
     .force('link', d3.forceLink().links(links).id(d => d.id).distance(d => getLinkDistance(d)))
     .force('collision', d3.forceCollide().radius(d => NODE_SIZE + 8))
   // .on('tick', buildGraph);
 
-  // eslint-disable-next-line func-style
   const chart = function (selection) {
     const { top, right, bottom, left } = margin
     const innerWidth = width - left - right
@@ -36,7 +36,7 @@ export function buildFlowChart () {
     // .attr('height', height)
       .attr('viewBox', `0 0 ${width} ${height}`)
 
-    const defsBuilder = buildDefs().patterns(getPattern('arrow')('arrow-marker') + '\n' + getPattern('arrow')('arrow-marker-highlight'))
+    const defsBuilder = buildDefs().patterns(`${getPattern('arrow')('arrow-marker')}\n${getPattern('arrow')('arrow-marker-highlight')}`)
     svg.call(defsBuilder)
 
     rootGroup = svg.select('g.root')
@@ -52,7 +52,6 @@ export function buildFlowChart () {
     simulation.nodes(nodes)
       .force('center', d3.forceCenter(innerWidth / 2, innerHeight / 2))
       .force('link', d3.forceLink().links(links).id(d => d.id).distance(d => getLinkDistance(d)))
-    // .on('tick', buildGraph)
       .stop()
 
     for (let i = 0, n = Math.ceil(Math.log(simulation.alphaMin()) / Math.log(1 - simulation.alphaDecay())); i < n; ++i) {
@@ -96,7 +95,9 @@ export function buildFlowChart () {
   }
 
   function getContext () {
-    return { width, height, margin, svg }
+    return {
+      width, height, margin, svg
+    }
   }
 
   function buildGraph () {

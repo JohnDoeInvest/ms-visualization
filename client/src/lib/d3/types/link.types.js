@@ -1,14 +1,14 @@
 import { ServiceTypes } from './service.types'
 
-export const createLink = ({ source, target, sourceNode, targetNode, belongToId }) => {
-  return {
-    source,
-    target,
-    sourceNode,
-    targetNode,
-    belongToId
-  }
-}
+export const createLink = ({
+  source, target, sourceNode, targetNode, belongToId
+}) => ({
+  source,
+  target,
+  sourceNode,
+  targetNode,
+  belongToId
+})
 
 export const getLinks = (nodes) => {
   let restAPILinks = []
@@ -21,9 +21,11 @@ export const getLinks = (nodes) => {
   }
 
   for (const node of nodes) {
-    const { id, type, toIds, fromIds, belongToIds } = node
+    const {
+      id, type, toIds, fromIds, belongToIds
+    } = node
     if (type === ServiceTypes.RestAPI) {
-      let newRestLinks = toIds.map((parentId) => ({
+      const newRestLinks = toIds.map(parentId => ({
         source: id,
         target: parentId,
         belongToId: belongToIds[0],
@@ -33,7 +35,7 @@ export const getLinks = (nodes) => {
 
       restAPILinks = restAPILinks.concat(newRestLinks)
     } else if (type === ServiceTypes.SharedDB || type === ServiceTypes.DB) {
-      let newLinks = fromIds.map((parentId) => ({
+      const newLinks = fromIds.map(parentId => ({
         source: parentId,
         target: id,
         belongToId: parentId,
@@ -44,7 +46,7 @@ export const getLinks = (nodes) => {
       dbLinks = dbLinks.concat(newLinks)
     } else if (type === ServiceTypes.Topic) {
       if (fromIds) {
-        const incLinks = fromIds.map((fromId) => ({
+        const incLinks = fromIds.map(fromId => ({
           source: fromId,
           target: id,
           belongToId: fromId,
@@ -54,7 +56,7 @@ export const getLinks = (nodes) => {
         topicLinks = topicLinks.concat(incLinks)
       }
       if (toIds) {
-        const outLinks = toIds.map((toId) => ({
+        const outLinks = toIds.map(toId => ({
           source: id,
           target: toId,
           belongToId: toId,

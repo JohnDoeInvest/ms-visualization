@@ -1,21 +1,16 @@
 
 import * as d3 from 'd3'
-import { limitCharacters, trimToPixel, measureStringLength } from '../utils/string.utils'
+import { trimToPixel } from '../utils/string.utils'
 import { buildTooltip } from './tooltip.charts'
 import { NODE_SIZE } from '../types/node.types'
 import { getIconByNode, getBBoxOfDescriptionArea } from '../utils/icon.utils'
 import { EventManager, EventNames } from '../types/event.types'
 import { ServiceTypes } from '../types/service.types'
 
-// eslint-disable-next-line no-unused-vars
-const dispatch = d3.dispatch(['event'])
-
 export function buildNodes () {
   let context = null
-  let tooltip = buildTooltip()
   let selectionRef = null
-  // eslint-disable-next-line no-unused-vars
-  let selectedServiceId = null
+  const tooltip = buildTooltip()
 
   const builder = function (selection) {
     selectionRef = selection
@@ -34,9 +29,9 @@ export function buildNodes () {
       .attr('id', d => d.id)
       .attr('class', 'node')
       .attr('transform', d => `translate(${d.x}, ${d.y})`)
-      .style('cursor', d => d.metadata.canClickable ? 'pointer' : 'auto')
+      .style('cursor', d => (d.metadata.canClickable ? 'pointer' : 'auto'))
       .style('visibility', 'visible')
-      .on('click', function (d) {
+      .on('click', (d) => {
         if (d.type === ServiceTypes.RestAPI && d.metadata.canClickable) {
           const updatedNode = {
             ...d,
@@ -67,20 +62,20 @@ export function buildNodes () {
 
     textsGroup
       .attr('class', 'node-description')
-      .attr('x', d => {
-        const bbox = getBBoxOfDescriptionArea(d.id, 'description');
-        return bbox.x + bbox.width / 2;
+      .attr('x', (d) => {
+        const bbox = getBBoxOfDescriptionArea(d.id, 'description')
+        return bbox.x + bbox.width / 2
       })
-      .attr('y', d => {
-        const bbox = getBBoxOfDescriptionArea(d.id, 'description');
-        return bbox.y + bbox.height / 2;
+      .attr('y', (d) => {
+        const bbox = getBBoxOfDescriptionArea(d.id, 'description')
+        return bbox.y + bbox.height / 2
       })
       .attr('dy', 3)
       .attr('text-anchor', 'middle')
-      .text(d => {
-        const padding = 4;
-        const width = getBBoxOfDescriptionArea(d.id, 'description').width;
-        return trimToPixel(d.name, width - padding);
+      .text((d) => {
+        const padding = 4
+        const { width } = getBBoxOfDescriptionArea(d.id, 'description')
+        return trimToPixel(d.name, width - padding)
       })
       .on('mouseover', (d) => {
         tooltip.renderContent(
@@ -89,11 +84,11 @@ export function buildNodes () {
             <p class="description">${d.metadata.description}</p>
           `,
           { top: d3.event.pageY, left: d3.event.pageX }
-        );
+        )
       })
       .on('mouseout', () => {
-        tooltip.hide();
-      });
+        tooltip.hide()
+      })
 
     nodeGroups.exit().remove()
   }
@@ -103,30 +98,9 @@ export function buildNodes () {
     return builder
   }
 
-  builder.selectedServiceId = function (value) {
-    selectedServiceId = value
-    return builder
-  }
-
   builder.destroy = function () {
     tooltip.destroy()
     d3.select(selectionRef).remove()
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  function alignText (d) {
-    // eslint-disable-next-line no-unused-vars
-    const { data, x0, x1, y0, y1 } = d
-    const width = x1 - x0
-    const { rootId } = data
-
-    switch (rootId) {
-      case 'microservices': return width / 2
-      case 'restAPI': return (width * 2) / 3
-      case 'stores': return (width * 2) / 3
-      case 'topics': return (width * 3) / 4
-      default: return width / 2
-    }
   }
 
   return builder

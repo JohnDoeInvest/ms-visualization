@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 
 export function buildTooltip () {
-  let rootEl = document.body
+  const rootEl = document.body
   let nodeEl = null
   let node = null
 
@@ -21,8 +21,8 @@ export function buildTooltip () {
     const { top, left } = position
 
     node
-      .style('left', left + 'px')
-      .style('top', top + 'px')
+      .style('left', `${left}px`)
+      .style('top', `${top}px`)
       .html(htmlContent)
 
     builder.show()

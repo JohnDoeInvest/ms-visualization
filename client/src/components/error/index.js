@@ -1,4 +1,4 @@
-import { h, Component } from 'preact'
+import { h, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { connect } from 'preact-redux'
 
 class ErrorContainer extends Component {
@@ -13,12 +13,12 @@ class ErrorContainer extends Component {
     }
 
     return (
-      <div class='ui page active dimmer'>
-        <div class='content'>
-          <div class='center'>
-            <h2 class='ui inverted header'>
+      <div className="ui page active dimmer">
+        <div className="content">
+          <div className="center">
+            <h2 className="ui inverted header">
                             Error
-              <div class='sub header'>{props.error}</div>
+              <div className="sub header">{props.error}</div>
             </h2>
           </div>
         </div>
@@ -27,7 +27,7 @@ class ErrorContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   error: state.ui.error
 })
 

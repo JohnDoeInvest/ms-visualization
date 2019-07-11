@@ -28,9 +28,9 @@ export function getLinkPath ({ source, target }) {
   const offSetX = midpointX + offset * (dy / normalise)
   const offSetY = midpointY - offset * (dx / normalise)
 
-  return 'M' + source.x + ',' + source.y +
-    'S' + offSetX + ',' + offSetY +
-    ' ' + target.x + ',' + target.y
+  return `M${source.x},${source.y
+  }S${offSetX},${offSetY
+  } ${target.x},${target.y}`
 }
 
 export function getScreenCoords (node) {

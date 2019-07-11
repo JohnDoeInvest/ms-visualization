@@ -1,10 +1,10 @@
 import { ServiceTypes } from '../types/service.types'
 import * as IconResources from '../types/icon.types'
 
-const getMicroserviceIcon = (microservice) => IconResources.SERVICE_ICON
-const getStoreIcon = (store) => IconResources.DB_ICON
-const getSharedServiceIcon = (sharedSerice) => IconResources.DB_SHARED_ICON
-const getTopicIcon = ({ name, producerConsumerName }) => {
+const getMicroserviceIcon = () => IconResources.SERVICE_ICON
+const getStoreIcon = () => IconResources.DB_ICON
+const getSharedServiceIcon = () => IconResources.DB_SHARED_ICON
+const getTopicIcon = ({ producerConsumerName }) => {
   switch (producerConsumerName.toLowerCase()) {
     case 'kafka': return IconResources.KAFKA_ICON
     default: return ''
@@ -20,12 +20,12 @@ const getRestAPIIcon = (restAPI) => {
   }
 }
 
-export const ServiceIconFactory = (type) => (service) => {
+export const ServiceIconFactory = type => (service) => {
   switch (type) {
-    case ServiceTypes.Microservice: return getMicroserviceIcon(service)
+    case ServiceTypes.Microservice: return getMicroserviceIcon()
     case ServiceTypes.RestAPI: return getRestAPIIcon(service)
     case ServiceTypes.Topic: return getTopicIcon(service)
-    case ServiceTypes.Store: return getStoreIcon(service)
-    default: return getSharedServiceIcon(service)
+    case ServiceTypes.Store: return getStoreIcon()
+    default: return getSharedServiceIcon()
   }
 }

@@ -23,7 +23,7 @@ export function buildLinks () {
     linkGroupMerge.select('path')
       .attr('d', d => getPath(d))
       .attr('fill', 'none')
-      .attr('marker-end', d => d.belongToId === selectedServiceId ? 'url(#arrow-marker-highlight)' : 'url(#arrow-marker)')
+      .attr('marker-end', d => (d.belongToId === selectedServiceId ? 'url(#arrow-marker-highlight)' : 'url(#arrow-marker)'))
 
     linkGroups.exit().remove()
     // const rootNodesData = context.svg.datum();
@@ -106,7 +106,7 @@ function getBBoxOfPath (parentId, pathId) {
   const svgBBox = svg.node().getBBox()
   const pathBBox = path.node().getBBox()
   const scale = svgBBox.width / svgBBox.height
-  const width = imgBBox.width
+  const { width } = imgBBox
   const height = width / scale
   const dx = pathBBox.x * width / svgBBox.width
   const dy = pathBBox.y * height / svgBBox.height

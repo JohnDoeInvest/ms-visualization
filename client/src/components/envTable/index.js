@@ -1,4 +1,4 @@
-import { h, Component } from 'preact'
+import { h, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { connect } from 'preact-redux'
 
 import style from './style.css'
@@ -15,8 +15,8 @@ class ENVTable extends Component {
   }
 
   getEnvs () {
-    let envs = []
-    let envMap = new Map()
+    const envs = []
+    const envMap = new Map()
 
     for (const serviceDescription of this.props.selectedServiceDescriptions) {
       const { envVars } = serviceDescription
@@ -44,9 +44,9 @@ class ENVTable extends Component {
     }
 
     return (
-      <div class='full-width'>
-        <h2 class='ui header'>ENV Vars</h2>
-        <table class='ui selectable fixed table'>
+      <div className="full-width">
+        <h2 className="ui header">ENV Vars</h2>
+        <table className="ui selectable fixed table">
           <thead>
             <tr>
               <th>Name</th>
@@ -55,7 +55,7 @@ class ENVTable extends Component {
           </thead>
           <tbody>
             {envs.map((env, i) => (
-              <tr class={this.isHighlight(env) ? style.active : style.inactive} key={i}>
+              <tr className={this.isHighlight(env) ? style.active : style.inactive} key={i}>
                 <td>{env.name}</td>
                 <td>{env.description}</td>
               </tr>
@@ -67,7 +67,7 @@ class ENVTable extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   selectedServiceDescriptions: state.serviceDescription.selectedServiceDescriptions,
   selectedServiceDescriptionIndex: state.serviceDescription.selectedServiceDescriptionIndex
 })

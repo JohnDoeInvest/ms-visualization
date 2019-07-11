@@ -1,4 +1,4 @@
-import { h, Component } from 'preact'
+import { h, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { connect } from 'preact-redux'
 
 class LoaderContainer extends Component {
@@ -8,14 +8,14 @@ class LoaderContainer extends Component {
     }
 
     return (
-      <div class='ui page active dimmer'>
-        <div class='ui text loader'>Loading</div>
+      <div className="ui page active dimmer">
+        <div className="ui text loader">Loading</div>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   isFetching: state.ui.isFetching
 })
 
