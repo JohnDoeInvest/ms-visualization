@@ -9044,7 +9044,7 @@ $.fn.embed.settings = {
 
 
 
-})( jQuery, window, document );
+})( window.jQuery, window, document );
 
 /*!
  * # Semantic UI 2.4.2 - Modal
