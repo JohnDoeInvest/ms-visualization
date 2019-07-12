@@ -4,8 +4,7 @@ export function limitCharacters (value, maxCharacters) {
 }
 
 export function validId (str) {
-  // eslint-disable-next-line no-useless-escape
-  return str.replace(/[-|\/|:]/gi, '_')
+  return str.trim().toLowerCase().replace(/[(&+\(\)-:\.)|(\s)]+/g, '_') // eslint-disable-line no-useless-escape
 }
 
 export function measureStringLength (str) {

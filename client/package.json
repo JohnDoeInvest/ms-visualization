@@ -11,7 +11,7 @@
     "serve": "preact build --no-prerender --template src/template.html && preact serve",
     "dev": "preact watch --template src/template.html",
     "lint": "eslint src --fix",
-    "test": "eslint src && jest && npm run build"
+    "test": "eslint src && npm run build"
   },
   "eslintConfig": {
     "extends": "eslint-config-synacor"
@@ -29,7 +29,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^21.2.1",
+    "jest": "^24.8.0",
     "per-env": "^1.0.2",
     "preact-cli": "^3.0.0-next.19",
     "preact-render-spy": "^1.2.1",
@@ -39,8 +39,8 @@
     "brace": "^0.11.1",
     "d3": "^5.7.0",
     "jquery": "^3.4.1",
-    "preact": "^8.2.6",
-    "preact-compat": "^3.17.0",
+    "preact": "^8.4.2",
+    "preact-compat": "^3.19.0",
     "preact-redux": "^2.1.0",
     "preact-render-to-string": "^4.1.0",
     "preact-router": "^2.5.7",
