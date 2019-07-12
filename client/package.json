@@ -13,6 +13,9 @@
     "lint": "eslint src --fix",
     "test": "eslint src && npm run build"
   },
+  "browserslist": [
+    "defaults"
+  ],
   "eslintConfig": {
     "extends": "eslint-config-synacor"
   },
@@ -42,7 +45,7 @@
     "preact": "^8.4.2",
     "preact-compat": "^3.19.0",
     "preact-redux": "^2.1.0",
-    "preact-render-to-string": "^4.1.0",
+    "preact-render-to-string": "^5.0.5",
     "preact-router": "^2.5.7",
     "redux": "^4.0.4",
     "redux-saga": "^1.0.5",
