@@ -146,7 +146,7 @@ function getRestAPINodes (restAPI, parentId) {
       if (childrenAPINodes.length === 1) {
         childrenAPINodes[0].toIds = [parentId]
         childrenAPINodes[0].toIds = [parentId]
-        restAPINodes = [childrenAPINodes[0]] 
+        restAPINodes = [childrenAPINodes[0]]
       } else if (childrenAPINodes.length > 1) {
         for (const childNode of childrenAPINodes) {
           groupRestNode.toIds.push(childNode.id)
@@ -154,7 +154,7 @@ function getRestAPINodes (restAPI, parentId) {
         groupRestNode.children = [...childrenAPINodes]
         restAPINodes = [groupRestNode, ...childrenAPINodes]
       } else {
-        restAPINodes = [];
+        restAPINodes = []
       }
     }
   }
