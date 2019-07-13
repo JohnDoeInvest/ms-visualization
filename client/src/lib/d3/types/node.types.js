@@ -143,13 +143,19 @@ function getRestAPINodes (restAPI, parentId) {
         childrenAPINodes = childrenAPINodes.concat(apis)
       }
 
-      for (const childNode of childrenAPINodes) {
-        groupRestNode.toIds.push(childNode.id)
+      if (childrenAPINodes.length === 1) {
+        childrenAPINodes[0].toIds = [parentId]
+        childrenAPINodes[0].toIds = [parentId]
+        restAPINodes = [childrenAPINodes[0]] 
+      } else if (childrenAPINodes.length > 1) {
+        for (const childNode of childrenAPINodes) {
+          groupRestNode.toIds.push(childNode.id)
+        }
+        groupRestNode.children = [...childrenAPINodes]
+        restAPINodes = [groupRestNode, ...childrenAPINodes]
+      } else {
+        restAPINodes = [];
       }
-
-      groupRestNode.children = [...childrenAPINodes]
-
-      restAPINodes = [groupRestNode, ...childrenAPINodes]
     }
   }
   return restAPINodes
