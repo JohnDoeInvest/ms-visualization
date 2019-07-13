@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import { getLinkPath } from '../utils/link.utils'
 import { ServiceTypes } from '../types/service.types'
-import { ConnectorIdDics } from '../types/icon.types'
+import { ConnectorIdDics } from '../utils/icon.utils'
 
 export function buildLinks () {
   let context = null

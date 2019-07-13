@@ -12,6 +12,38 @@ import {
   GLOBAL_ICON
 } from '../types/icon.types'
 
+export const ConnectorIdDics = {
+  DB_SHARED: {
+    left: 'toMS'
+  },
+  DB: {
+    left: 'toMS'
+  },
+  KAFKA: {
+    left: 'producer',
+    right: 'consumer'
+  },
+  MICROSERVICE: {
+    left: 'incoming',
+    topRight: 'kafkaProduce',
+    bottomRight: 'kafkaConsume',
+    right: 'db',
+    bottom: 'dbShared'
+  },
+  GET_API: {
+    right: 'toMS'
+  },
+  POST_API: {
+    right: 'toMS'
+  },
+  DELETE_API: {
+    right: 'toMS'
+  },
+  PUT_API: {
+    right: 'toMS'
+  }
+}
+
 const getRestAPIIcon = (service) => {
   try {
     const method = service.method.toLowerCase()
