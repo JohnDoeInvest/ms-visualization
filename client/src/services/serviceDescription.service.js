@@ -44,7 +44,11 @@ export async function fetchServiceDescriptionAPI ({ url, token }) {
       serviceDescription = await getGithubContent({ url, token })
     }
 
-    return serviceDescription
+    if (serviceDescription) {
+      return serviceDescription
+    } else {
+      throw new Error('Cannot fetch service description')
+    }
   } catch (error) {
     throw new Error('Cannot fetch service description')
   }

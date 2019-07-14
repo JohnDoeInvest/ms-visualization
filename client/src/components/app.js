@@ -9,6 +9,7 @@ import Home from '../routes/home' // eslint-disable-line no-unused-vars
 import rootSaga from '../sagas/root.saga'
 
 import LoaderContainer from './loader' // eslint-disable-line no-unused-vars
+import ErrorContainer from './error' // eslint-disable-line no-unused-vars
 
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, createLogger()))
@@ -31,7 +32,7 @@ export default class App extends Component {
             <Home path="/" />
           </Router>
           <LoaderContainer />
-          {/* <ErrorContainer /> */}
+          <ErrorContainer />
         </div>
       </Provider>
     )

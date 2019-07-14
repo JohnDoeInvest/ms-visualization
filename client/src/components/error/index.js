@@ -1,5 +1,6 @@
 import { h, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { connect } from 'preact-redux'
+import { fetchSuccess } from '../../actions/fetch.action'
 
 class ErrorContainer extends Component {
   constructor (props) {
@@ -7,19 +8,26 @@ class ErrorContainer extends Component {
     this.state = { active: false }
   }
 
+  handleClose = () => {
+    this.props.fetchSuccess()
+  }
+
   render (props, state) {
     if (!props.error) {
       return null
     }
 
+    const errorMessage = (props.error instanceof Error) ? props.error.message : props.error
+
     return (
-      <div className="ui page active dimmer">
-        <div className="content">
-          <div className="center">
-            <h2 className="ui inverted header">
-                            Error
-              <div className="sub header">{props.error}</div>
-            </h2>
+      <div class="ui dimmer modals page visible active">
+        <div class="active mini modal ui visible">
+          <div class="header">Error</div>
+          <div class="content">
+            <p>{errorMessage}</p>
+          </div>
+          <div class="actions">
+            <div class="ui center negative button" onClick={this.handleClose}>CLOSE</div>
           </div>
         </div>
       </div>
@@ -33,5 +41,7 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  null
+  {
+    fetchSuccess: fetchSuccess
+  }
 )(ErrorContainer)
