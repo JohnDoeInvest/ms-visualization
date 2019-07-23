@@ -207,7 +207,7 @@ function getTopicNodes (services, parentId) {
   let topicNodes = []
 
   if (services && services.shared && services.shared.kafka) {
-    const { consumes, produces } = services.shared.kafka
+    const { consumes = [], produces = [] } = services.shared.kafka
 
     const consumesNodes = consumes.map(consume => createNode({
       id: validId(`${parentId}_kafka_${consume}`),
