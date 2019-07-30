@@ -7,7 +7,7 @@ import { getIconByNode, getBBoxOfDescriptionArea } from '../utils/icon.utils'
 import { EventManager, EventNames } from '../types/event.types'
 import { ServiceTypes } from '../types/service.types'
 
-export function buildNodes () {
+export const buildNodes = () => {
   let context = null
   let selectionRef = null
   const tooltip = buildTooltip()
@@ -106,7 +106,7 @@ export function buildNodes () {
   return builder
 }
 
-export function toggleNodes (rootNodeClass, collapsedNodesMap) {
+export const toggleNodes = (rootNodeClass, collapsedNodesMap) => {
   const rootSelection = d3.select(`.${rootNodeClass}`)
   if (!rootSelection.empty()) {
     const nodes = rootSelection.selectAll('.node')

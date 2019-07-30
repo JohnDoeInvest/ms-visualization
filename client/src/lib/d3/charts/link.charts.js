@@ -3,7 +3,7 @@ import { getLinkPath } from '../utils/link.utils'
 import { ServiceTypes } from '../types/service.types'
 import { ConnectorIdDics } from '../utils/icon.utils'
 
-export function buildLinks () {
+export const buildLinks = () => {
   let context = null
   let selectedServiceId = null
 
@@ -54,6 +54,24 @@ export function buildLinks () {
   }
 
   return builder
+}
+
+export const toggleLinks = (rootLinkClass, collapsedNodesMap) => {
+  const rootSelection = d3.select(`.${rootLinkClass}`)
+  if (!rootSelection.empty()) {
+    const links = rootSelection.selectAll('.link')
+
+    links.each(function (linkData) {
+      const currentLink = d3.select(this)
+      const isCollasped = checkLinkCollapsed(linkData, collapsedNodesMap)
+
+      currentLink
+        .transition()
+        .duration(750)
+        .ease(d3.easeLinear)
+        .style('visibility', isCollasped ? 'hidden' : 'visible')
+    })
+  }
 }
 
 function getPath (link) {
@@ -124,24 +142,6 @@ function getScreenCoords (node) {
   const yn = ctm.f + x * ctm.b + y * ctm.d
 
   return { x: xn, y: yn }
-}
-
-export function toggleLinks (rootLinkClass, collapsedNodesMap) {
-  const rootSelection = d3.select(`.${rootLinkClass}`)
-  if (!rootSelection.empty()) {
-    const links = rootSelection.selectAll('.link')
-
-    links.each(function (linkData) {
-      const currentLink = d3.select(this)
-      const isCollasped = checkLinkCollapsed(linkData, collapsedNodesMap)
-
-      currentLink
-        .transition()
-        .duration(750)
-        .ease(d3.easeLinear)
-        .style('visibility', isCollasped ? 'hidden' : 'visible')
-    })
-  }
 }
 
 function checkLinkCollapsed (currentLink, collapsedNodesMap) {

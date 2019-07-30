@@ -1,13 +1,11 @@
 
-export function limitCharacters (value, maxCharacters) {
-  return value.length > maxCharacters ? `${value.substr(0, maxCharacters)}...` : value
-}
+export const limitCharacters = (value, maxCharacters) =>
+  value.length > maxCharacters ? `${value.substr(0, maxCharacters)}...` : value
 
-export function validId (str) {
-  return str.trim().toLowerCase().replace(/[(&+\(\)-:\.)|(\s)]+/g, '_') // eslint-disable-line no-useless-escape
-}
+export const validId = (str) =>
+  str.trim().toLowerCase().replace(/[(&+\(\)-:\.)|(\s)]+/g, '_') // eslint-disable-line no-useless-escape
 
-export function measureStringLength (str) {
+export const measureStringLength = (str) => {
   const SPAN_ID = 'string-measurement'
   let spanEl = document.getElementById(SPAN_ID)
   if (!spanEl) {
@@ -22,7 +20,7 @@ export function measureStringLength (str) {
   return spanEl.offsetWidth
 }
 
-export function trimToPixel (str, pixelLen) {
+export const trimToPixel = (str, pixelLen) => {
   let trimmedStr = str
   let tmpStr = str
   if (measureStringLength(str) > pixelLen) {

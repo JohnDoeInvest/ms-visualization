@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-export function buildTooltip () {
+export const buildTooltip = () => {
   const rootEl = document.body
   let nodeEl = null
   let node = null

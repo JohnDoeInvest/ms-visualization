@@ -1,20 +1,9 @@
-// import * as d3 from 'd3';
-
-// export function diagonal({ source, target }) {
-//  const path = `M ${source.x} ${source.y}
-//     C ${(source.x + target.x)/2} ${source.y},
-//       ${(source.x + target.x) / 2} ${target.y},
-//       ${target.x} ${target.y}`;
-
-//   return path;
-// }
-
-export function getPathData ({ source, target }) {
+export const getPathData = ({ source, target }) => {
   const path = `M ${source.x} ${source.y} L ${target.x} ${target.y}`
   return path
 }
 
-export function getLinkPath ({ source, target }) {
+export const getLinkPath = ({ source, target }) => {
   const offset = 30
 
   const midpointX = (source.x + target.x) / 2
@@ -33,7 +22,7 @@ export function getLinkPath ({ source, target }) {
   } ${target.x},${target.y}`
 }
 
-export function getScreenCoords (node) {
+export const getScreenCoords = (node) => {
   const ctm = node.getCTM()
   const x = node.getAttribute('cx')
   const y = node.getAttribute('cy')

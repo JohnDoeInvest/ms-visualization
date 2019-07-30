@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-export function buildHighlight (rootLinkClass, selectedRootId) {
+export const buildHighlight = (rootLinkClass, selectedRootId) => {
   const rootLink = d3.select(`.${rootLinkClass}`)
   if (!rootLink.empty()) {
     const links = rootLink.selectAll('.link')

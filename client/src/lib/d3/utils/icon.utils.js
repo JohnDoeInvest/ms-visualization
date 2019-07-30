@@ -81,7 +81,7 @@ export const getIconByNode = (node) => {
   }
 }
 
-export function getBBoxOfDescriptionArea (parentId, descriptionId) {
+export const getBBoxOfDescriptionArea = (parentId, descriptionId) => {
   const parent = d3.select(`#${parentId}`)
   const nodeImg = parent.select('.node-icon')
   const svg = parent.select('svg')

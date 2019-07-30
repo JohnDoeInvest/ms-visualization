@@ -43,6 +43,28 @@ export const getNodes = (serviceDescriptions) => {
   return mergeSimilarNodes(serviceNodes)
 }
 
+export const updateNodes = (nodes, updatedNode) => {
+  if (updatedNode) {
+    let newNodes = []
+    const { children, metadata: { canClickable, isCollapsed } } = updatedNode
+    for (const node of nodes) {
+      if (node.id !== updatedNode.id && !children.find(child => child.id === node.id)) {
+        newNodes.push(node)
+      }
+    }
+    newNodes.push(updatedNode)
+
+    if (canClickable) {
+      if (!isCollapsed) {
+        newNodes = newNodes.concat(children)
+      }
+    }
+
+    return newNodes
+  }
+  return nodes
+}
+
 function mergeSimilarNodes (serviceNodes) {
   const microserviceNodes = []
   let restAPINodes = []
@@ -292,26 +314,4 @@ function mergeNodes (nodes) {
   }
 
   return mergedNodes
-}
-
-export function updateNodes (nodes, updatedNode) {
-  if (updatedNode) {
-    let newNodes = []
-    const { children, metadata: { canClickable, isCollapsed } } = updatedNode
-    for (const node of nodes) {
-      if (node.id !== updatedNode.id && !children.find(child => child.id === node.id)) {
-        newNodes.push(node)
-      }
-    }
-    newNodes.push(updatedNode)
-
-    if (canClickable) {
-      if (!isCollapsed) {
-        newNodes = newNodes.concat(children)
-      }
-    }
-
-    return newNodes
-  }
-  return nodes
 }

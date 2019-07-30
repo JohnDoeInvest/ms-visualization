@@ -1,4 +1,4 @@
-export function buildDefs () {
+export const buildDefs = () => {
   let patterns = ''
 
   // eslint-disable-next-line func-style
@@ -34,8 +34,7 @@ const arrowPattern = id => `
     </marker>
 `
 
-// type: 'arrow'
-export function getPattern (type) {
+export const getPattern = (type) => {
   switch (type) {
     case 'arrow': return arrowPattern
     default: return arrowPattern

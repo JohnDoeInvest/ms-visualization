@@ -3,7 +3,7 @@ import { buildDefs, getPattern } from './defs.charts'
 import { NODE_SIZE } from '../types/node.types'
 import { getLinkDistance } from '../types/link.types'
 
-export function buildFlowChart () {
+export const buildFlowChart = () => {
   let svg = null
   let rootGroup = null
   let context = null

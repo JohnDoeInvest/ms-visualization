@@ -11,27 +11,28 @@ class Editor extends Component {
 
     componentDidMount() {
         this.editor = ace.edit('editor', {
-            enableBasicAutocompletion: true
+            enableBasicAutocompletion: true,
         });
-        this.editor.getSession().setMode('ace/mode/json');
-        this.editor.setTheme('ace/theme/monokai');
+        this.editor.getSession().setMode('ace/mode/json')
+        this.editor.setTheme('ace/theme/monokai')
+        this.editor.$blockScrolling = Infinity
     }
 
     componentDidUpdate() {
         if (this.editor) {
-            this.editor.setValue(this.props.value || '');
+            this.editor.setValue(this.props.value || '')
         }
     }
 
     handleVisualize = () => {
         try {
-            const jsonStr = this.editor.getSession().getValue();
-            const jsonObj = JSON.parse(jsonStr);
-            this.props.onData(jsonObj);
-            this.setState({ error: null });
+            const jsonStr = this.editor.getSession().getValue()
+            const jsonObj = JSON.parse(jsonStr)
+            this.props.onData(jsonObj)
+            this.setState({ error: null })
         } catch (err) {
             console.error(err);
-            this.setState({ error: 'Invlaid input' });
+            this.setState({ error: 'Invlaid input' })
         }
     }
 
