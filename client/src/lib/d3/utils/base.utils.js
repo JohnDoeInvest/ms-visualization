@@ -29,3 +29,10 @@ export const ServiceIconFactory = type => (service) => {
     default: return getSharedServiceIcon()
   }
 }
+
+export const getContainerDimension = (containerEl, {width, height}) => {
+  const clientRect = containerEl.getBoundingClientRect()
+  const containerWidth = (width === 'auto') ? clientRect.width : width
+  const containerHeight = (height === 'auto') ? clientRect.height : height
+  return {containerWidth, containerHeight}
+}

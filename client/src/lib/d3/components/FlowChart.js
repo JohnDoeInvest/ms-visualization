@@ -9,6 +9,7 @@ import { buildDefs, getPattern } from '../charts/defs.charts';
 import { EventManager, EventNames } from '../types/event.types';
 import { validId } from '../utils/string.utils';
 import { buildHighlight } from '../charts/highlight.charts';
+import { getContainerDimension } from '../utils/base.utils'
 
 class FlowChart extends Component {
     containerEl = null;
@@ -45,20 +46,13 @@ class FlowChart extends Component {
         }
     }
 
-    initializeChart() {
+    initializeChart = () => {
         this.containerEl = document.getElementById(this.props.id);
         this.svg = d3.select(this.containerEl).select('svg');
 
-        const dimension = this.getContainerDimension();
-        const nodes = createConfigurationBuilder(
-            this.nodesBuilder, 
-            builder => builder)
-        ('nodes-root-group');
-
-        const links = createConfigurationBuilder(
-            this.linksBuilder, 
-            builder => builder)
-        ('links-root-group');
+        const dimension = getContainerDimension(this.containerEl, {width: this.props.width, height: this.props.height})
+        const nodes = createConfigurationBuilder(this.nodesBuilder, builder => builder)('nodes-root-group');
+        const links = createConfigurationBuilder(this.linksBuilder,  builder => builder)('links-root-group');
 
         this.chart
             .width(dimension.containerWidth)
@@ -69,7 +63,7 @@ class FlowChart extends Component {
         this.redraw();
     }
 
-    initializeCollapsedMap() {
+    initializeCollapsedMap = () => {
         this.collapsedNodesMap.clear();
         if (this.props.nodes && Array.isArray(this.props.nodes)) {
             for (const node of this.props.nodes) {
@@ -82,7 +76,20 @@ class FlowChart extends Component {
         toggleLinks('links-root-group', this.collapsedNodesMap);
     }
 
-    handleEvents() {
+    redraw = () => {
+        if (!this.containerEl) {
+            this.containerEl = document.getElementById(this.props.id);
+            this.svg = d3.select(this.containerEl).select('svg');
+        }
+
+        this.chart
+            .nodes(this.props.nodes)
+            .links(this.props.links);
+        
+        this.svg.call(this.chart);
+    }
+
+    handleEvents = () => {
         EventManager.dispatch.collapse.on(EventNames.Collapsable, (data) => {
             if (data.metadata.canClickable) {
                 if (this.collapsedNodesMap.has(data.id)) {
@@ -102,33 +109,9 @@ class FlowChart extends Component {
         });
     }
 
-    redraw() {
-        if (!this.containerEl) {
-            this.containerEl = document.getElementById(this.props.id);
-            this.svg = d3.select(this.containerEl).select('svg');
-        }
-
-        this.chart
-            .nodes(this.props.nodes)
-            .links(this.props.links);
-        
-        this.svg.call(this.chart);
-    }
-
-    getContainerDimension() {
-        const { width, height } = this.props;
-        const clientRect = this.containerEl.getBoundingClientRect();
-        const containerWidth = (width === 'auto') ? clientRect.width : width;
-        const containerHeight = (height === 'auto') ? clientRect.height : height;
-        return { containerWidth, containerHeight };
-    }
-
-    render(props, state) {
+    render(props) {
         return (
-            <div 
-                id={props.id}
-                className={`chart chart-flow ${this.props.className || ''}`}
-            >
+            <div id={props.id} className={`chart chart-flow ${this.props.className || ''}`}>
                 <svg className="svg-container" />
             </div>
         )

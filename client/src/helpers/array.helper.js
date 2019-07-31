@@ -7,4 +7,6 @@ export const debounce = (fn, time) => {
   }
 }
 
-export default { debounce }
+export const isEmptyArray = arr => !(Array.isArray(arr) && arr.length > 0)
+
+export default { debounce, isEmptyArray }
