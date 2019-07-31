@@ -30,9 +30,9 @@ export const ServiceIconFactory = type => (service) => {
   }
 }
 
-export const getContainerDimension = (containerEl, {width, height}) => {
+export const getContainerDimension = (containerEl, { width, height }) => {
   const clientRect = containerEl.getBoundingClientRect()
   const containerWidth = (width === 'auto') ? clientRect.width : width
   const containerHeight = (height === 'auto') ? clientRect.height : height
-  return {containerWidth, containerHeight}
+  return { containerWidth, containerHeight }
 }
